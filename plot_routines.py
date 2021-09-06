@@ -119,52 +119,73 @@ def initFigAxis():
 
 
 def stacked_bar_cumulative(x, y_zip,
-                           fname, xmax=None, myxlabel='Year',
-                           myylabel='Installed capacity, MW', myy2label='Cumulative capacity, MW', linecol='k'):
-    fig, axL = initFigAxis()
+                           fname=None, fig_in=None, ax_in=None, xmax=None, ymax=None, width=None, order=1,
+                           myxlabel='Year', myylabel='Installed capacity, MW', myy2label='Cumulative capacity, MW',
+                           linecol='k'):
+    if ax_in:
+        fig = fig_in
+        axL = ax_in
+    else:
+        fig, axL = initFigAxis()
 
     data_num = 0
     for y, c, n in y_zip:
         if data_num == 0:
-            axL.bar(x, y, color=c, edgecolor='k', label=n)
+            try:
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n)
+            except TypeError:
+                # Width not defined
+                axL.bar(x, y, color=c, edgecolor='k', label=n)
             y_total = y
         else:
-            axL.bar(x, y, color=c, edgecolor='k', label=n, bottom=y_total)
+            try:
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n, bottom=y_total)
+            except TypeError:
+                axL.bar(x, y,  color=c, edgecolor='k', label=n, bottom=y_total)
             y_total += y
         data_num+=1
 
-
-    # xticks = np.arange(x.min(), x.max() + 1, 2, dtype=np.int_)
-    if xmax:
-        xticks = np.arange(x.min(), xmax + 1, 1, dtype=np.int_)
-        xv = [x.min(), xmax +1]
-    else:
-        xticks=x
-        xv = [x.min(), x.max() + 1]
-    axL.set_xticks(xticks)
-    axL.set_xticklabels([str(m) for m in xticks], rotation=90)
-    axL.set_xlabel(myxlabel)
-    axL.set_ylabel(myylabel)
-    axL.legend()
-    # axL.grid()
-    # yv = np.array( axL.get_ylim() )
-    axL.set_xlim(xv)
-    #
     axR = axL.twinx()
     axR.plot(x, np.cumsum(y_total), '-', color=linecol)
-    axR.set_xlim(xv)
-    axR.set_ylabel(myy2label)
-    # # If plotted as percent of total:
-    # # ytick = 0.1*np.arange(11)
-    # # axR.set_ylim([0, 1])
-    # # axR.set_yticks(ytick)
-    # # ytick = [int(m) if m%1.0 == 0.0 else m for m in np.round(100*ytick,1)]
-    # # yticklab = [str(i)+'%' for i in ytick]
-    # # axR.set_yticklabels(yticklab)
-    # for tl in axR.get_yticklabels():
-    #     tl.set_color(linecol)
-    #
-    # myformat([axL, axR])
-    # mysave(fig, fname)
-    # plt.close()
+    axR.set_yticks([])
+    if order ==-1:
+        if xmax:
+            xticks = np.arange(x.min(), xmax + 1, 1, dtype=np.int_)
+            xv = [x.min(), xmax +1]
+        else:
+            xticks=x
+            xv = [x.min(), x.max() + 1]
+        axL.set_xticks(xticks)
+        axL.set_xticklabels([str(m) for m in xticks], rotation=90)
+        axL.set_xlabel(myxlabel)
+        axL.set_ylabel(myylabel)
+        axL.legend()
+        # axL.grid()
+        # yv = np.array( axL.get_ylim() )
+        axL.set_xlim(xv)
+        #
+        # axR = axL.twinx()
+        # axR.plot(x, np.cumsum(y_total), '-', color=linecol)
+        axR.set_xlim(xv)
+        if ymax:
+            axR.set_ylim([0,ymax])
+            yRticks = np.arange(0, ymax, 10000, dtype=np.int_)
+            axR.set_yticks(yRticks)
+        axR.set_ylabel(myy2label)
+
+    if fname:
+        myformat([axL, axR])
+        mysave(fig, fname)
+        plt.close()
+
+def bar_cumulative_comp(x, y1_zip, y2_zip, fname,fig, ax,
+                        xmax=None, ymax=50001, width=None,
+                        myxlabel='Year', myylabel='Installed capacity, MW', myy2label='Cumulative capacity, MW',
+                        linecol='k'):
+    # Plot first set
+    stacked_bar_cumulative(x, y1_zip, fig_in=fig, ax_in=ax, width=width)
+    stacked_bar_cumulative(x, y2_zip, ymax=ymax, order=-1, fig_in=fig, ax_in=ax, width=width)
     plt.show()
+
+
+

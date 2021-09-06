@@ -15,14 +15,30 @@ if __name__ == '__main__':
 
     # Stacked bar charts of fixed and floating with cumulative
     COD_years = fixed_pipeline_30GW.columns.to_numpy()
-    fixed_list = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'], 'b', 'Fixed bottom']
-    float_list = [float_pipeline.loc['Total Project Capacity, MW'], 'y', 'Floating']
+    # fixed_list = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'], 'b', 'Fixed bottom (30 GW target)']
+    # float_list = [float_pipeline.loc['Total Project Capacity, MW'], 'y', 'Floating (30 GW target)']
 
+    # Single scenario
     yvals = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'].to_numpy(), float_pipeline.loc['Total Project Capacity, MW'].to_numpy()]
     colors = ['b', 'y']
-    names = ['Fixed bottom', 'Floating']
+    names = ['Fixed bottom (30 GW target)', 'Floating (30 GW target)']
 
-    pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), 'Deployment_plot')
+
+    # pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), '30GW_deployment')
+
+    # Add BAU scenario
+    yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
+    colors_BAU = ['g']
+    names_BAU = ['Fixed-bottom (BAU)']
+
+    fig, ax = pr.initFigAxis()
+
+    pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), '30GW_BAU_deployment',
+                           fig=fig, ax=ax, width = 0.35)
+
+
+
+
 
 
 

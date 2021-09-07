@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Import CSVs with 30 GW pipeline
@@ -20,21 +21,20 @@ if __name__ == '__main__':
 
     # Single scenario
     yvals = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'].to_numpy(), float_pipeline.loc['Total Project Capacity, MW'].to_numpy()]
-    colors = ['b', 'y']
+    colors = ['#0B5E90', '#00A4E4']
     names = ['Fixed bottom (30 GW target)', 'Floating (30 GW target)']
 
-
-    # pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), '30GW_deployment')
+    pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), '30GW_deployment', y1max=10000)
 
     # Add BAU scenario
     yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
-    colors_BAU = ['g']
+    colors_BAU = ['#3D6321']
     names_BAU = ['Fixed-bottom (BAU)']
 
-    fig, ax = pr.initFigAxis()
-
     pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), '30GW_BAU_deployment',
-                           fig=fig, ax=ax, width = 0.35)
+                           width = 0.35)
+
+    print(fixed_pipeline_30GW.index)
 
 
 

@@ -153,6 +153,7 @@ def stacked_bar_cumulative(x, y_zip,
         axR = axL.twinx()
 
     axR.plot(x, np.cumsum(y_total), cumsumline, color=linecol, label=mycumsumlabel)
+
     if order == -1:
         if xmax:
             xticks = np.arange(x.min(), xmax + 1, 1, dtype=np.int_)
@@ -185,18 +186,19 @@ def bar_cumulative_comp(x, y1_zip, y2_zip, fname,
                         xmax=None, y1max=10000, y2max=50001, width=None):
     fig, ax = initFigAxis()
     # Plot first set
-    axL1, axR1 = stacked_bar_cumulative(x, y1_zip, y1max=y1max, y2max=y2max, single=False, fig_in=fig, ax_in=ax, width=width,
+    axL1, axR1 = stacked_bar_cumulative(x, y1_zip, xmax=None, y1max=y1max, y2max=y2max, single=False, fig_in=fig, ax_in=ax, width=width,
                            mycumsumlabel='Cumulative deployment (30 GW target)', cumsumline='-', linecol='#0B5E90')
     # Plot second set
-    axL2, axR2 = stacked_bar_cumulative(x, y2_zip, y1max=y1max, y2max=y2max, single=False,  order=-1,
+    axL2, axR2 = stacked_bar_cumulative(x, y2_zip, xmax=None, y1max=y1max, y2max=y2max, single=False,  order=-1,
                                         fig_in=fig, ax_in=ax, axR_in=axR1, width=width,
-                                      mycumsumlabel='Cumulative deployment (BAU)', cumsumline='--', linecol='#3D6321')
+                                      mycumsumlabel='Cumulative deployment (conservative)', cumsumline='--', linecol='#3D6321')
 
     # Combine legends
     linesL2, labelsL2 = axL2.get_legend_handles_labels()
     linesR2, labelsR2 = axR2.get_legend_handles_labels()
     axR2.legend(linesL2+linesR2, labelsL2+labelsR2, loc='upper left')
-
+    if xmax:
+        axL2.set_xlim(x.min()-width, xmax+width)
     if fname:
         myformat([axL2, axR2])
         mysave(fig, fname)

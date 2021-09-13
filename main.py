@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-import matplotlib.pyplot as plt
+from helpers import group_rows
 
 if __name__ == '__main__':
     # Import CSVs with 30 GW pipeline
@@ -29,12 +29,15 @@ if __name__ == '__main__':
     # Add BAU scenario
     yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
     colors_BAU = ['#3D6321']
-    names_BAU = ['Fixed-bottom (BAU)']
+    names_BAU = ['Fixed-bottom (conservative)']
 
     pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), '30GW_BAU_deployment',
-                           width = 0.35)
+                           width = 0.35, xmax=2030)
 
+    # Create output data tables
     print(fixed_pipeline_30GW.index)
+    fixed_30_group = fixed_pipeline_30GW.groupby(group_rows).sum().drop('Delete')
+    print(fixed_30_group.loc['Total number turbines'].max())
 
 
 

@@ -16,8 +16,6 @@ if __name__ == '__main__':
 
     # Stacked bar charts of fixed and floating with cumulative
     COD_years = fixed_pipeline_30GW.columns.to_numpy()
-    # fixed_list = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'], 'b', 'Fixed bottom (30 GW target)']
-    # float_list = [float_pipeline.loc['Total Project Capacity, MW'], 'y', 'Floating (30 GW target)']
 
     # Single scenario
     yvals = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'].to_numpy(), float_pipeline.loc['Total Project Capacity, MW'].to_numpy()]
@@ -35,9 +33,7 @@ if __name__ == '__main__':
                            width = 0.35, xmax=2030)
 
     # Create output data tables
-    print(fixed_pipeline_30GW.index)
     fixed_30_group = fixed_pipeline_30GW.groupby(group_rows).sum().drop('Delete')
-    print(fixed_30_group.loc['Total number turbines'].max())
 
 
 

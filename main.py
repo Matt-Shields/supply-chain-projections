@@ -17,6 +17,14 @@ if __name__ == '__main__':
     # Stacked bar charts of fixed and floating with cumulative
     COD_years = fixed_pipeline_30GW.columns.to_numpy()
 
+    # Set max year if desired
+    xmax = None
+    if xmax:
+        COD_years = np.extract(COD_years < (xmax+1), COD_years)
+        fixed_pipeline_30GW = fixed_pipeline_30GW[list(np.extract(COD_years < (xmax+1), COD_years))]
+        fixed_pipeline_BAU = fixed_pipeline_BAU[list(np.extract(COD_years < (xmax+1), COD_years))]
+        float_pipeline = float_pipeline[list(np.extract(COD_years < (xmax+1), COD_years))]
+
     # Single scenario
     yvals = [fixed_pipeline_30GW.loc['Total Project Capacity, MW'].to_numpy(), float_pipeline.loc['Total Project Capacity, MW'].to_numpy()]
     colors = ['#0B5E90', '#00A4E4']
@@ -30,7 +38,7 @@ if __name__ == '__main__':
     names_BAU = ['Fixed-bottom (conservative)']
 
     pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), '30GW_BAU_deployment',
-                           width = 0.35, xmax=2030)
+                           width = 0.35)
 
     # Create output data tables
     fixed_30_group = fixed_pipeline_30GW.groupby(group_rows).sum().drop('Delete')

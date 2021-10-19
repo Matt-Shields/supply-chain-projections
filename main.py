@@ -1,4 +1,4 @@
-"""Plots and supply chain components for PTC and ITC proposed legislation"""
+"""Plotting routines for supply chain and workforce projections"""
 
 import numpy as np
 import pandas as pd

@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Import CSVs with 30 GW pipeline
-    DNV_gantt = 'U.S. OFfshore Wind Demand - Gantt Charts-20210730.xlsm'
-    other_gantt = 'BAU_Floating_Gantt.xlsx'
-    fixed_pipeline_30GW_raw = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='B:W', nrows=30)
-    fixed_pipeline_BAU = pd.read_excel(other_gantt, sheet_name='BAU', header=0, usecols='A:O',index_col='Project COD',)
-    float_pipeline = pd.read_excel(other_gantt, sheet_name='Floating', header=0, usecols='A:O',index_col='Project COD',)
+    DNV_gantt = '4.3 NREL Supply Chain Study-for NREL.v2.xlsm'
+    other_gantt = 'All Scenarios_Varied LC_Jobs.xlsx'#'BAU_Floating_Gantt.xlsx'
+    fixed_pipeline_30GW_raw = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=0, usecols='Z:AN', nrows=23, index_col='DEFINED PROJECTS',) #should header = none?
+    fixed_pipeline_BAU = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='AO:BC',index_col='EC-UNDEVELOPED',)
+    float_pipeline = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
     fixed_pipeline_30GW = pd.pivot_table(fixed_pipeline_30GW_raw, index='Project COD', aggfunc=np.sum).transpose().drop(['PROJECTS', 'UNDEVELOPPED AREAS'], axis=1)
 
     # Stacked bar charts of fixed and floating with cumulative
@@ -51,15 +51,3 @@ if __name__ == '__main__':
 
     # Create output data tables
     fixed_30_group = fixed_pipeline_30GW.groupby(group_rows).sum().drop('Delete')
-
-
-
-
-
-
-
-
-
-
-
-

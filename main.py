@@ -11,21 +11,21 @@ if __name__ == '__main__':
     DNV_gantt = '4.3 NREL Supply Chain Study-for NREL.v2.xlsm'
     other_gantt = 'All Scenarios_Varied LC_Jobs.xlsx'#'BAU_Floating_Gantt.xlsx'
     fixed_pipeline_30GW_raw = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='B:W', nrows=30,) #should header = none?
-    fixed_pipeline_BAU = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
-    #float_pipeline = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
+    #fixed_pipeline_BAU = pd.read_excel(DNV_gantt, sheet_name='Aggregated', dtype=object, header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
+    float_pipeline = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
     fixed_pipeline_30GW = pd.pivot_table(fixed_pipeline_30GW_raw, index='Project COD', aggfunc=np.sum).transpose().drop(['PROJECTS', 'EC -UNDEVELOPED'], axis=1)
 
-    print(fixed_pipeline_BAU)
+    #print(fixed_pipeline_BAU)
     # Stacked bar charts of fixed and floating with cumulative
     COD_years = fixed_pipeline_30GW.columns.to_numpy()
-
+    #print(COD_years)
     # Set max year if desired
     xmax = 2030
     try:
         # Set max COD on x axis
         COD_years = np.extract(COD_years < (xmax+1), COD_years)
         fixed_pipeline_30GW = fixed_pipeline_30GW[list(np.extract(COD_years < (xmax+1), COD_years))]
-        fixed_pipeline_BAU = fixed_pipeline_BAU[list(np.extract(COD_years < (xmax+1), COD_years))]
+        #fixed_pipeline_BAU = fixed_pipeline_BAU[list(np.extract(COD_years < (xmax+1), COD_years))]
         float_pipeline = float_pipeline[list(np.extract(COD_years < (xmax+1), COD_years))]
     except NameError:
         # xmax not defined
@@ -39,12 +39,12 @@ if __name__ == '__main__':
     pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), fname='30GW_deployment', y1max=10000)
 
     # Add BAU scenario
-    yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
-    colors_BAU = ['#3D6321']
-    names_BAU = ['Fixed-bottom (conservative)']
+    #yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
+    #colors_BAU = ['#3D6321']
+    #names_BAU = ['Fixed-bottom (conservative)']
 
-    pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), fname='30GW_BAU_deployment',
-                           width = 0.35)
+    #pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), fname='30GW_BAU_deployment',
+                           #width = 0.35)
 
     # Vessels
     # y_vessels = pd.read_excel(DNV_gantt, sheet_name='OUTPUT-UNC', header=122, usecols='D:L', nrows=1).fillna(0).to_numpy()

@@ -42,6 +42,15 @@ if __name__ == '__main__':
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), fname='30GW_deployment', y1max=10000)
 
+    #Figure 3 econ gaps assessment
+    yvals_fig3 = [fixed_pipeline_30GW.loc['Total # of 12 MW turbines'].to_numpy(), [fixed_pipeline_30GW.loc['Total # of 15 MW turbines'].to_numpy(), [fixed_pipeline_30GW.loc['Total # of 18 MW turbines'].to_numpy()
+    colors_fig3 = ['#3D6321']
+    names_fig3 = ['Fixed-bottom (low constrained)']
+
+    #pr.bar_cumulative_comp(COD_years, zip(yvals, colors, names), zip(yvals_BAU, colors_BAU,names_BAU), fname='30GW_BAU_deployment',
+                           #width = 0.35)
+
+
     # Add BAU scenario
     #yvals_BAU = [fixed_pipeline_BAU.loc['Total Project Capacity, MW'].to_numpy()]
     #colors_BAU = ['#3D6321']

@@ -9,13 +9,17 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     # Import CSVs with 30 GW pipeline
     DNV_gantt = '4.3 NREL Supply Chain Study-for NREL.v2.xlsm'
-    other_gantt = 'All Scenarios_Varied LC_Jobs.xlsx'#'BAU_Floating_Gantt.xlsx'
-    fixed_pipeline_30GW_raw = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='B:W', nrows=30,) #should header = none?
+    DNV_gantt_v2 = '4.3 NREL Supply Chain Study-for NREL.v3.xlsx'
+    #other_gantt = 'All Scenarios_Varied LC_Jobs.xlsx'#'BAU_Floating_Gantt.xlsx'
+    fixed_pipeline_30GW_raw = pd.read_excel(DNV_gantt_v2, sheet_name='Aggregated', header=4, usecols='B:W', nrows=30,) #should header = none?
     #fixed_pipeline_BAU = pd.read_excel(DNV_gantt, sheet_name='Aggregated', dtype=object, header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
-    float_pipeline = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
+    float_pipeline_raw = pd.read_excel(DNV_gantt_v2, sheet_name='Aggregated', header=36, usecols='B:W',nrows=16,)
+    #float_pipeline = pd.read_excel(DNV_gantt, sheet_name='Aggregated', header=4, usecols='BD:BR',index_col='WC-UNDEVELOPED',)
     fixed_pipeline_30GW = pd.pivot_table(fixed_pipeline_30GW_raw, index='Project COD', aggfunc=np.sum).transpose().drop(['PROJECTS', 'EC -UNDEVELOPED'], axis=1)
+    float_pipeline = pd.pivot_table(float_pipeline_raw, index='Project COD', aggfunc=np.sum).transpose().drop(['WC -UNDEVELOPED'], axis=1)
 
-    #print(fixed_pipeline_BAU)
+    #print(fixed_pipeline_30GW)
+    #print(float_pipeline)
     # Stacked bar charts of fixed and floating with cumulative
     COD_years = fixed_pipeline_30GW.columns.to_numpy()
     #print(COD_years)

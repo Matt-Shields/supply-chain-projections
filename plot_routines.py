@@ -121,14 +121,13 @@ def initFigAxis():
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
                            width=None, order=1, single=True,
-                           myxlabel='Year', myylabel='Installed capacity, MW', myy2label='Cumulative capacity, MW',
+                           myxlabel='Year', myylabel='Annual installed capacity, MW', myy2label='Cumulative capacity, MW',
                            mycumsumlabel='Cumulative deployment', cumsumline='-', linecol='k'):
     if ax_in:
         fig = fig_in
         axL = ax_in
     else:
         fig, axL = initFigAxis()
-
     data_num = 0
     for y, c, n in y_zip:
         if data_num == 0:

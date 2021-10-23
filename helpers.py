@@ -47,6 +47,26 @@ DNV_indices = {
     '2022col': 2,
 }
 
+colors_list = {
+    'fixed': '#0B5E90',
+    'float': '#00A4E4',
+    'wtiv':'#F7A11A',
+    'barge': '#5D9732',
+    'clv': '#933C06',
+    'ctv': '#5E6A71',
+    '12MW': 'orange',
+    '15MW': 'blue',
+    '18MW': 'seagreen',
+    'static_array': 'olive',
+    'static_export': 'steelblue',
+    'dynamic_array': 'maroon',
+    'dynamic_export': 'darkviolet',
+    'monopiles': '#282D30',
+    'jackets': 'lightsalmon',
+    'gbfs': '#8CC63F',
+    'semis': '#5DD2FF'
+}
+
 # def create_ITC_tables(df):
 def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indices):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)

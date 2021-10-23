@@ -91,7 +91,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
         _jacketTurb = df.iloc[ind['jacketTurb'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _jacketOSS = df.iloc[ind['jacketOSS'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _jacket = np.add(_jacketTurb, _jacketOSS)
-        _gbf = df.iloc[ind['gbf'], ind['2022col']:ind['2022col']+len(xrange)-1].to_numpy()
+        _gbf = df.iloc[ind['gbf'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
         _array = df.iloc[ind['array'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _out = {

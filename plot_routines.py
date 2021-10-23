@@ -198,6 +198,74 @@ def bar_cumulative_comp(x, y1_zip, y2_zip, fname,
         mysave(fig, fname)
         plt.close()
 
+def stacked_bar_line(x, y_bar_zip, y_line_zip,
+                           fname=None, y1max=None, y2max=None,
+                           width=None, order=1, single=True,
+                           myxlabel='Year', myylabel='Annual installed capacity, MW', myy2label='Cumulative capacity, MW',
+                           mycumsumlabel='Cumulative deployment', cumsumline='-', linecol='k'):
+
+    fig, axL = initFigAxis()
+    data_num = 0
+    for y, c, n in y_bar_zip:
+        if data_num == 0:
+            try:
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n)
+            except TypeError:
+                # Width not defined
+                axL.bar(x, y, color=c, edgecolor='k', label=n)
+            y_total = np.copy(y)
+        else:
+            try:
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n, bottom=y_total)
+            except TypeError:
+                axL.bar(x, y,  color=c, edgecolor='k', label=n, bottom=y_total)
+            y_total += y
+        data_num+=1
+    if y1max:
+        axL.set_ylim([0, y1max])
+
+    axR = axL.twinx()
+    for y, c, n in y_line_zip:
+        axR.plot(x, y, cumsumline, color=c, label=n)
+
+    xticks=x
+    xv = [x.min(), x.max() + 1]
+    axL.set_xticks(xticks)
+    axL.set_xticklabels([str(m) for m in xticks], rotation=90)
+    axL.set_xlabel(myxlabel)
+    axL.set_ylabel(myylabel)
+
+    # axL.grid()
+    # yv = np.array( axL.get_ylim() )
+    axL.set_xlim(xv)
+    axR.set_xlim(xv)
+    axR.set_ylabel(myy2label)
+    axR.set_ylim([0, y2max])
+
+    linesL, labelsL = axL.get_legend_handles_labels()
+    linesR, labelsR = axR.get_legend_handles_labels()
+    axR.legend(linesL+linesR, labelsL+labelsR, loc='upper left')
 
 
+    if fname:
+        myformat([axL, axR])
+        mysave(fig, fname)
+        plt.close()
+
+    return axL, axR
+
+def line_plots(x, y_zip, fname):
+    fig, ax = initFigAxis()
+
+    for y, c, n in y_zip:
+        ax.plot(x, y, color=c, label=n)
+
+    ax.legend(loc='upper left')
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+    return ax
 

@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-from helpers import group_rows, read_vars#, DNV_indices
+from helpers import group_rows, read_vars
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -51,5 +51,40 @@ if __name__ == '__main__':
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_expand, colors, names), fname='Figs/expanded_installedMW', y1max=10000)
 
-    # Create output data tables
-    # fixed_30_group = fixed_pipeline_30GW.groupby(group_rows).sum().drop('Delete')
+    ### Number of projects and installation vessels
+    yvals_proj = [pipeline['EC-UNCONSTR']['projects'], pipeline['WC-UNC']['projects']]
+    y_vals_wtiv = pipeline['EC-UNCONSTR']['wtiv'] + pipeline['WC-UNC']['wtiv']
+    y_vals_barge= pipeline['EC-UNCONSTR']['barge'] + pipeline['WC-UNC']['barge']
+    y_vals_clv = pipeline['EC-UNCONSTR']['clv'] + pipeline['WC-UNC']['clv']
+    y_vals_ctv = pipeline['EC-UNCONSTR']['ctv'] + pipeline['WC-UNC']['ctv']
+
+    y_vessels = [y_vals_wtiv, y_vals_barge, y_vals_clv, y_vals_ctv]
+    vessel_colors = ['#F7A11A','#5D9732','#933C06','#5E6A71']
+    vessel_names = ['WTIV', 'Feeder barge', 'CLV', 'CTV']
+
+    pr.stacked_bar_line(COD_years, zip(yvals_proj, colors, names), zip(y_vessels, vessel_colors, vessel_names),
+                        fname='Figs/baseline_proj_vessels')
+
+    #### Add for other scenarios
+
+    ### Line plots for individual components
+    y1 = pipeline['EC-UNCONSTR']
+    y2 = pipeline['WC-UNC']
+    component_plots = {
+        'Turbines': {
+                    'data': [y1['turb']+y2['turb'], y1['turb12MW']+y2['turb12MW'], y1['turb15MW']+y2['turb15MW'], y1['turb18MW']+y2['turb18MW']],
+                    'colors': ['k','g','b','r'],
+                    'names': ['Total', '12MW', '15MW','18MW'],
+                    },
+        'Foundations': {
+            'data': [y1['monopiles'], y1['jacket'], y1['gbf'], y2['semi']],
+            'colors': ['k', 'g', 'b', 'r'],
+            'names': ['Monopiles', 'Jackets', 'GBFs', 'Semisubmersibles'],
+        },
+    }
+
+    for k, v in component_plots.items():
+        plot_name = 'Figs/baseline_component_'+ k
+        pr.line_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name)
+
+

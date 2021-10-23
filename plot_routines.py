@@ -165,6 +165,7 @@ def stacked_bar_cumulative(x, y_zip,
     axL.set_xlim(xv)
     axR.set_xlim(xv)
     axR.set_ylabel(myy2label)
+    axR.set_ylim([0, y2max])
 
     if single == True:
         axL.legend(loc='upper left')

@@ -57,18 +57,18 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
     _turb12MW = df.iloc[ind['turb12MW'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _turb15MW = df.iloc[ind['turb15MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _turb18MW = df.iloc[ind['turb18MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
-    _array = df.iloc[ind['array'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
-    _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _ctv = df.iloc[ind['ctv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _clv = df.iloc[ind['clv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
-    _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
+    # _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     if 'WC' in sheet:
         # Floating
         _semiTurb = df.iloc[ind['semiTurb'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _semiOSS = df.iloc[ind['semiOSS'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _semi = np.add(_semiTurb, _semiOSS)
+        _array = df.iloc[ind['array'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _out = {
                 'installMW': _installMW,
                 'projects': _projects,
@@ -85,7 +85,6 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
                 'barge': _barge,
                 'ctv': _ctv,
                 'clv': _clv,
-                'berths': _berths
             }
     else:
         _monopiles = df.iloc[ind['monopiles'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
@@ -93,6 +92,8 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
         _jacketOSS = df.iloc[ind['jacketOSS'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _jacket = np.add(_jacketTurb, _jacketOSS)
         _gbf = df.iloc[ind['gbf'], ind['2022col']:ind['2022col']+len(xrange)-1].to_numpy()
+        _array = df.iloc[ind['array'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _out = {
                 'installMW': _installMW,
                 'projects': _projects,
@@ -111,7 +112,6 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
                 'barge': _barge,
                 'ctv': _ctv,
                 'clv': _clv,
-                'berths': _berths
             }
 
     return _out

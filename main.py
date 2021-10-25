@@ -211,3 +211,19 @@ if __name__ == '__main__':
     for k, v in component_plots.items():
         plot_name = 'Figs/uniform_found_component_' + k
         pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
+
+
+    #JEDI - Varied Scenarios graphs
+
+    JEDI_pipeline = 'All Scenarios_Varied LC_Jobs.xlsx' #Define input spreadsheet
+
+    scenarios_JEDI = ['Scenarios'] #Define sheet to pull from to plot scenarios
+    #data start and end dates
+    dateStart = 2021
+    dateEnd = 2035 #2035? - check w/ matt or jeremy
+    dateYrs = np.arange(dateStart, dateEnd+1)
+
+    #loop through scenarios
+    jobsPipeline = {}
+    for n in scenarios_JEDI:
+        scenarios_JEDI = read_vars(file=JEDI_pipeline, sheet=n, xrange=dateYrs) #read in Excel

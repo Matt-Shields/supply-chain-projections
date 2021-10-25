@@ -67,7 +67,6 @@ colors_list = {
     'semis': '#5DD2FF'
 }
 
-# def create_ITC_tables(df):
 def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indices):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
     # Extract all required variables as numpy arrays

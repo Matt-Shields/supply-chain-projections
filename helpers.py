@@ -228,7 +228,7 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
         }
     return _outjobs
 
-def read_varsScen(file, sheet, xrange, header=3, cols='B:Q', rows=136, ind=Jobs_indices):
+def read_varsScen(file, sheet, xrange, header=2, cols='B:Q', rows=136, ind=Jobs_indices):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
     _25demandEC_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandEC_UNC = df.iloc[ind['100demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()

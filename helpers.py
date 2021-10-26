@@ -53,8 +53,6 @@ Jobs_indices = {
     '100domEC_UNC': 3,
     '25domEC_LOW': 7,
     '100domEC_LOW': 8,
-    '25domEC_MED': 12,
-    '100domEC_MED': 13,
     '25domEC_HIGH': 17,
     '100domEC_HIGH': 18,
     '25totEC_UNC': 22,
@@ -69,12 +67,6 @@ Jobs_indices = {
     '100totEC_LOW': 33,
     '100dirEC_LOW': 34,
     '100indEC_LOW': 35,
-    '25totEC_MED': 38,
-    '25dirEC_MED': 39,
-    '25indEC_MED': 40,
-    '100totEC_MED': 41,
-    '100dirEC_MED': 42,
-    '100indEC_MED': 43,
     '25totEC_HIGH': 46,
     '25dirEC_HIGH': 47,
     '25indEC_HIGH': 48,
@@ -83,24 +75,12 @@ Jobs_indices = {
     '100indEC_HIGH': 51,
     '2021col': 1,
     '25demandEC_UNC': 4,
-    '50demandEC_UNC': 5,
-    '75demandEC_UNC': 6,
     '100demandEC_UNC': 7,
     '25demandEC_LOW': 36,
-    '50demandEC_LOW': 37,
-    '75demandEC_LOW': 38,
     '100demandEC_LOW': 39,
-    '25demandEC_MED': 66,
-    '50demandEC_MED': 67,
-    '75demandEC_MED': 68,
-    '100demandEC_MED': 69,
     '25demandEC_HIGH': 98,
-    '50demandEC_HIGH': 99,
-    '75demandEC_HIGH': 100,
     '100demandEC_HIGH': 101,
     '25demandGBF_UNC': 130,
-    '50demandGBF_UNC': 131,
-    '75demandGBF_UNC': 132,
     '100demandGBF_UNC': 133
 }
 
@@ -200,8 +180,6 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
     _100domEC_UNC = df.iloc[ind['100domEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25domEC_LOW = df.iloc[ind['25domEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100domEC_LOW = df.iloc[ind['100domEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_25domEC_MED = df.iloc[ind['25domEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_100domEC_MED = df.iloc[ind['100domEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25domEC_HIGH = df.iloc[ind['25domEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100domEC_HIGH = df.iloc[ind['100domEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25totEC_UNC = df.iloc[ind['25totEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
@@ -216,12 +194,6 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
     _100totEC_LOW = df.iloc[ind['100totEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100dirEC_LOW = df.iloc[ind['100dirEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100indEC_LOW = df.iloc[ind['100indEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_25totEC_MED = df.iloc[ind['25totEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_25dirEC_MED = df.iloc[ind['25dirEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_25indEC_MED = df.iloc[ind['25indEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_100totEC_MED = df.iloc[ind['100totEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_100dirEC_MED = df.iloc[ind['100dirEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_100indEC_MED = df.iloc[ind['100indEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25totEC_HIGH = df.iloc[ind['25totEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25dirEC_HIGH = df.iloc[ind['25dirEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25indEC_HIGH = df.iloc[ind['25indEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
@@ -233,8 +205,6 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
             '100domEC_UNC': _100domEC_UNC,
             '25domEC_LOW' :_25domEC_LOW,
             '100domEC_LOW':_100domEC_LOW,
-            #'25domEC_MED':_25domEC_MED,
-            #'100domEC_MED': _100domEC_MED,
             '25domEC_HIGH': _25domEC_HIGH,
             '100domEC_HIGH': _100domEC_HIGH,
             '25totEC_UNC': _25totEC_UNC,
@@ -249,12 +219,6 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
             '100totEC_LOW':_100totEC_LOW,
             '100dirEC_LOW':_100dirEC_LOW,
             '100indEC_LOW':_100indEC_LOW,
-            #'25totEC_MED':_25totEC_MED,
-            #'25dirEC_MED':_25dirEC_MED,
-            #'25indEC_MED':_25indEC_MED,
-            #'100totEC_MED':_100totEC_MED,
-            #'100dirEC_MED':_100dirEC_MED,
-            #'100indEC_MED':_100indEC_MED,
             '25totEC_HIGH':_25totEC_HIGH,
             '25dirEC_HIGH':_25dirEC_HIGH,
             '25indEC_HIGH':_25indEC_HIGH,
@@ -267,47 +231,23 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
 def read_varsScen(file, sheet, xrange, header=3, cols='B:Q', rows=136, ind=Jobs_indices):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
     _25demandEC_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_50demandEC_UNC = df.iloc[ind['50demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_75demandEC_UNC = df.iloc[ind['75demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandEC_UNC = df.iloc[ind['100demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25demandEC_LOW = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_50demandEC_LOW = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_75demandEC_LOW = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandEC_LOW = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_25demandEC_MED = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_50demandEC_MED = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_75demandEC_MED = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_100demandEC_MED = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25demandEC_HIGH = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_50demandEC_HIGH = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_75demandEC_HIGH = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandEC_HIGH = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25demandGBF_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_50demandGBF_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    #_75demandGBF_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandGBF_UNC  = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _outScen = {
             '25demandEC_UNC': _25demandEC_UNC,
-            #'50demandEC_UNC': ,
-            #'75demandEC_UNC': ,
             '100demandEC_UNC': _100demandEC_UNC,
             '25demandEC_LOW': _25demandEC_LOW,
-            #'50demandEC_LOW': ,
-            #'75demandEC_LOW': ,
             '100demandEC_LOW': _100demandEC_LOW,
-            #'25demandEC_MED': ,
-            #'50demandEC_MED': ,
-            #'75demandEC_MED': ,
-            #'100demandEC_MED': ,
             '25demandEC_HIGH': _25demandEC_HIGH,
-            #'50demandEC_HIGH': ,
-            #'75demandEC_HIGH': ,
             '100demandEC_HIGH': _100demandEC_HIGH,
             '25demandGBF_UNC': _25demandGBF_UNC,
-            #'50demandGBF_UNC': ,
-            #'75demandGBF_UNC': ,
             '100demandGBF_UNC': _100demandGBF_UNC
-    }
+            }
     return _outScen
 
 #ignore 50%, 75%, and MED scenerios

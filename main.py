@@ -275,53 +275,102 @@ if __name__ == '__main__':
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
     ######### GENERATE PLOTS
-    ### Domestic Content via JEDI Model
-    #Nacelle Unconstrained East Coast
-    yvals_nac = [jobsPipeline['Nacelle']['25domEC_UNC'], jobsPipeline['Nacelle']['100domEC_UNC']]
-    colors_fte = [colors_list['static_export'], colors_list['fixed']]
-    names_fte = ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario']
-    lines_fte =['dashed','solid']
-    pr.line_plots2(dateYrs, zip(yvals_nac, colors_fte, lines_fte, names_fte), fname='Figs/Nacelle_Job_Requirements_ECUNC', ymax=30000)
+    ### Domestic Content via JEDI Model for Baseline Scenario
+    # looped plots for jobs
+    p1 = jobsPipeline['Nacelle']
+    p2 = jobsPipeline['Rotor Blades']
+    p3 = jobsPipeline['Towers']
+    p4 = jobsPipeline['Monopiles']
+    p5 = jobsPipeline['Transition Piece']
+    p6 = jobsPipeline['Jacket (For Turbine)']
+    p7 = jobsPipeline['GBF']
+    p8 = jobsPipeline['Jacket (For Substation)']
+    p9 = jobsPipeline['Substation (Topside)']
+    p10 = jobsPipeline['Array Cable']
+    p11 = jobsPipeline['Export Cable']
 
-    #Rotor Blades Unconstrained East Coast
-    yvals_blades = [jobsPipeline['Rotor Blades']['25domEC_UNC'], jobsPipeline['Rotor Blades']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_blades, colors_fte, lines_fte, names_fte), fname='Figs/Rotor_Blades_Job_Requirements_ECUNC', ymax=6000)
-
-    #Towers Unconstrained East Coast
-    yvals_tower = [jobsPipeline['Towers']['25domEC_UNC'], jobsPipeline['Towers']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_tower, colors_fte, lines_fte, names_fte), fname='Figs/Towers_Job_Requirements_ECUNC', ymax=8000)
-
-    #Transition Piece Unconstrained East Coast
-    yvals_tp = [jobsPipeline['Transition Piece']['25domEC_UNC'], jobsPipeline['Transition Piece']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_tp, colors_fte, lines_fte, names_fte), fname='Figs/Transition_Piece_Job_Requirements_ECUNC', ymax=5000)
-
-    #Jacket Unconstrained East Coast
-    yvals_jacket = [jobsPipeline['Jacket (For Turbine)']['25domEC_UNC'], jobsPipeline['Jacket (For Turbine)']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_jacket, colors_fte, lines_fte, names_fte), fname='Figs/Turbine_Jacket_Job_Requirements_ECUNC', ymax=5000)
-
-    #Monopile Unconstrained East Coast
-    yvals_mono = [jobsPipeline['Monopiles']['25domEC_UNC'], jobsPipeline['Monopiles']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_mono, colors_fte, lines_fte, names_fte), fname='Figs/Monopiles_Job_Requirements_ECUNC', ymax=8000)
-
-    #GBF Unconstrained East Coast
-    yvals_GBF = [jobsPipeline['GBF']['25domEC_UNC'], jobsPipeline['GBF']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_GBF, colors_fte, lines_fte, names_fte), fname='Figs/GBF_Job_Requirements_ECUNC', ymax=8000)
-
-    #Substation Jacket Unconstrained East Coast
-    yvals_subj = [jobsPipeline['Jacket (For Substation)']['25domEC_UNC'], jobsPipeline['Jacket (For Substation)']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_subj, colors_fte, lines_fte, names_fte), fname='Figs/Substation_Jacket_Job_Requirements_ECUNC', ymax=80)
-
-    #Substation (Topside) Unconstrained East Coast
-    yvals_subt = [jobsPipeline['Substation (Topside)']['25domEC_UNC'], jobsPipeline['Substation (Topside)']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_subt, colors_fte, lines_fte, names_fte), fname='Figs/Substation_Topside_Job_Requirements_ECUNC', ymax=60)
-
-    #Array Cable Unconstrained East Coast
-    yvals_array = [jobsPipeline['Array Cable']['25domEC_UNC'], jobsPipeline['Array Cable']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_array, colors_fte, lines_fte, names_fte), fname='Figs/Array_Cable_Job_Requirements_ECUNC', ymax=2000)
-
-    #Export Cable Unconstrained East Coast
-    yvals_export = [jobsPipeline['Export Cable']['25domEC_UNC'], jobsPipeline['Export Cable']['100domEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_export, colors_fte, lines_fte, names_fte), fname='Figs/Export_Cable_Job_Requirements_ECUNC', ymax=5000)
+    scenario_plots = {
+        'Nacelle': {
+            'data': [p1['25domEC_UNC'], p1['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 30000
+        },
+        'Rotor Blades': {
+            'data': [p2['25domEC_UNC'], p2['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 6000
+        },
+        'Towers': {
+            'data': [p3['25domEC_UNC'], p3['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 8000
+        },
+        'Monopiles': {
+            'data': [p4['25domEC_UNC'], p4['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 8000
+        },
+        'Transition Piece': {
+            'data': [p5['25domEC_UNC'], p5['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 5000
+        },
+        'Jacket (For Turbine)': {
+            'data': [p6['25domEC_UNC'], p6['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 5000
+        },
+        'GBF': {
+            'data': [p7['25domEC_UNC'], p7['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 8000
+        },
+        'Jacket (For Substation)': {
+            'data': [p8['25domEC_UNC'], p8['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 80
+        },
+        'Substation (Topside)': {
+            'data': [p9['25domEC_UNC'], p9['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 60
+        },
+        'Array Cable': {
+            'data': [p10['25domEC_UNC'], p10['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 2000
+        },
+        'Export Cable': {
+            'data': [p11['25domEC_UNC'], p11['100domEC_UNC']],
+            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 5000
+        }
+    }
+    for k, v in scenario_plots.items():
+        plot_name = 'Figs/EC_UNC_JobRequirements_'+ k
+        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
 
     #####Varied Scenario Job Requirements

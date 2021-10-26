@@ -220,7 +220,7 @@ if __name__ == '__main__':
 
     JEDI_pipeline = 'All Scenarios_Varied LC_Jobs.xlsx' #Define input spreadsheet
 
-    scenarios_JEDI = ['Scenarios'] #Define sheet to pull from to plot scenarios
+    scenarios_JEDI = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece', 'Jacket (For Turbine)'] #Define sheet to pull from to plot scenarios
     #data start and end dates
     dateStart = 2021
     dateEnd = 2035 #2035? - check w/ matt or jeremy
@@ -229,4 +229,30 @@ if __name__ == '__main__':
     #loop through scenarios
     jobsPipeline = {}
     for n in scenarios_JEDI:
-        scenarios_JEDI = read_vars(file=JEDI_pipeline, sheet=n, xrange=dateYrs) #read in Excel
+        scenarios_JEDI = read_varsScen(file=JEDI_pipeline, sheet=n, xrange=dateYrs) #read in Excel
+        #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
+
+    ######### GENERATE PLOTS
+    ### Domestic Content via JEDI Model
+    #Nacelle Unconstrained East Coast
+    yvals_nac = [jobsPipeline['Nacelle']['25demandEC_UNC'], jobsPipeline['Nacelle']['100demandEC_UNC']]
+    colors_fte = [colors_list['fixed'], colors_list['float']]
+    names_fte = ['25% Domestic Content', '100% Domestic Content']
+
+    pr.line_plots2(dateStart, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Nacelle_Job_Requirements_ECUNC', ymax=30000)
+
+    #Rotor Blades Unconstrained East Coast
+    yvals_constr = [jobsPipeline['Rotor Blades']['25demandEC_UNC'], jobsPipeline['Rotor Blades']['100demandEC_UNC']]
+    pr.line_plots2(dateStart, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Rotor_Blades_Job_Requirements_ECUNC', ymax=30000)
+
+    #Towers Unconstrained East Coast
+    yvals_constr = [jobsPipeline['Towers']['25demandEC_UNC'], jobsPipeline['Towers']['100demandEC_UNC']]
+    pr.line_plots2(dateStart, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Towers_Job_Requirements_ECUNC', ymax=30000)
+
+    #Transition Piece Unconstrained East Coast
+    yvals_constr = [jobsPipeline['Transition Piece']['25demandEC_UNC'], jobsPipeline['Transition Piece']['100demandEC_UNC']]
+    pr.line_plots2(dateStart, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Transition_Piece_Job_Requirements_ECUNC', ymax=30000)
+
+    #Jacket Unconstrained East Coast
+    yvals_constr = [jobsPipeline['Jacket(For Turbine)']['25demandEC_UNC'], jobsPipeline['Jacket(For Turbine)']['100demandEC_UNC']]
+    pr.line_plots2(dateStart, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Turbine_Jacket_Job_Requirements_ECUNC', ymax=30000)

@@ -112,10 +112,8 @@ if __name__ == '__main__':
     }
 
     for k, v in component_plots.items():
-        plot_name = 'Figs/baseline_component_'+ k
-        pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
-        plot2_name = 'Figs/baseline_component_bar_' + k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot2_name,
+        plot_name = 'Figs/baseline_component_' + k
+        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
                                   myylabel=v['ylabel'], myy2label='Cumulative ' +v['ylabel'])
 
     # Significant supply chain constraints
@@ -149,8 +147,44 @@ if __name__ == '__main__':
     }
 
     for k, v in component_plots.items():
-        plot_name = 'Figs/constrained_component_'+ k
-        pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
+        plot_name = 'Figs/constrained_high_component_'+ k
+        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
+
+    # Moderate supply chain constraints
+    y1 = pipeline['EC-LOW']
+    y2 = pipeline['WC-UNC']
+    component_plots = {
+        'Turbines': {
+                    'data': [y1['turb12MW']+y2['turb12MW'], y1['turb15MW']+y2['turb15MW'], y1['turb18MW']+y2['turb18MW']],
+                    'colors': [colors_list['12MW'], colors_list['15MW'], colors_list['18MW']],
+                    'names': [ '12MW', '15MW','18MW'],
+                    'ylabel': 'Number of turbines'
+                    },
+        'Foundations': {
+            'data': [y1['monopiles'], y1['jacket'], y1['gbf'], y2['semi']],
+            'colors': [colors_list['monopiles'], colors_list['jackets'], colors_list['gbfs'], colors_list['semis']],
+            'names': ['Monopiles', 'Jackets', 'GBFs', 'Semisubmersibles'],
+            'ylabel': 'Number of foundations'
+        },
+        'Cables': {
+            'data': [y1['array'], y1['export'], y2['array'], y2['export']],
+            'colors': [colors_list['static_array'], colors_list['static_export'], colors_list['dynamic_array'], colors_list['dynamic_export']],
+            'names': ['Static array cables', 'Static export cables', 'Dynamic array cables', 'Dynamic export cables'],
+            'ylabel': 'Length of cable, km'
+        },
+        'Vessels':{
+            'data': [y1['wtiv']+y2['wtiv'], y1['barge']+y2['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
+            'ylabel': 'Number of vessels'
+        }
+    }
+    print(component_plots['Cables']['data'])
+    for k, v in component_plots.items():
+        plot_name = 'Figs/constrained_low_component_'+ k
+        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # Expanded pipeline
     y1 = expand_install_fixed
@@ -184,7 +218,8 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/expanded_component_'+ k
-        pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
+        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # GBF market share
     y1 = pipeline['GBF-UNC']
@@ -218,8 +253,9 @@ if __name__ == '__main__':
     }
 
     for k, v in component_plots.items():
-        plot_name = 'Figs/uniform_found_component_' + k
-        pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
+        plot_name = 'Figs/uniform_found_component_'+ k
+        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
 
     #JEDI - Varied Scenarios graphs
@@ -244,7 +280,6 @@ if __name__ == '__main__':
     yvals_nac = [jobsPipeline['Nacelle']['25demandEC_UNC'], jobsPipeline['Nacelle']['100demandEC_UNC']]
     colors_fte = [colors_list['fixed'], colors_list['float']]
     names_fte = ['25% Domestic Content', '100% Domestic Content']
-
     pr.line_plots2(dateYrs, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Nacelle_Job_Requirements_ECUNC', ymax=30000)
 
     #Rotor Blades Unconstrained East Coast

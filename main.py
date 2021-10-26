@@ -286,3 +286,35 @@ if __name__ == '__main__':
     #Export Cable Unconstrained East Coast
     yvals_export = [jobsPipeline['Export Cable']['25domEC_UNC'], jobsPipeline['Export Cable']['100domEC_UNC']]
     pr.line_plots2(dateYrs, zip(yvals_export, colors_fte, names_fte), fname='Figs/Export_Cable_Job_Requirements_ECUNC', ymax=5000)
+
+
+    #####Varied Scenario Job Requirements
+    ##Low vs High constrained
+
+    #Nacelle Low and High constrained scenarios
+    yvals_nac_lh = [jobsPipeline['Nacelle']['25domEC_LOW'], jobsPipeline['Nacelle']['100domEC_LOW'], jobsPipeline['Nacelle']['25domEC_HIGH'], jobsPipeline['Nacelle']['100domEC_HIGH']]
+    colors_lh = [colors_list['fixed'], colors_list['float'], colors_list['fixed'], colors_list['float']]
+    names_lh = ['25% Domestic Content, Low Constrained', '100% Domestic Content, Low Constrained', '25% Domestic Content, High Constrained', '100% Domestic Content, High Constrained']
+    lines_lh = ['dashed', 'solid', 'dashed', 'solid']
+
+    pr.line_plots4(dateYrs, zip(yvals_nac_lh, colors_lh, lines_lh, names_lh), fname='Figs/Nacelle_Job_Requirements_ECLH', ymax=30000)
+
+    #Rotor Blades Low and High East Coast
+    yvals_blades_lh = [jobsPipeline['Rotor Blades']['25domEC_LOW'], jobsPipeline['Rotor Blades']['100domEC_LOW'], jobsPipeline['Rotor Blades']['25domEC_HIGH'], jobsPipeline['Rotor Blades']['100domEC_HIGH']]
+    pr.line_plots4(dateYrs, zip(yvals_blades_lh, colors_lh, lines_lh, names_lh), fname='Figs/Blades_Job_Requirements_ECLH', ymax=6000)
+
+    #Tower Low and High East Coast
+    yvals_tower_lh = [jobsPipeline['Towers']['25domEC_LOW'], jobsPipeline['Towers']['100domEC_LOW'], jobsPipeline['Towers']['25domEC_HIGH'], jobsPipeline['Towers']['100domEC_HIGH']]
+    pr.line_plots4(dateYrs, zip(yvals_tower_lh, colors_lh, lines_lh, names_lh), fname='Figs/Tower_Job_Requirements_ECLH', ymax=8000)
+
+    #Transition Piece Low and High East Coast
+    yvals_tp_lh = [jobsPipeline['Transition Piece']['25domEC_LOW'], jobsPipeline['Transition Piece']['100domEC_LOW'], jobsPipeline['Transition Piece']['25domEC_HIGH'], jobsPipeline['Transition Piece']['100domEC_HIGH']]
+    pr.line_plots4(dateYrs, zip(yvals_tp_lh, colors_lh, lines_lh, names_lh), fname='Figs/Transition_Piece_Job_Requirements_ECLH', ymax=6000)
+
+    #Rotor Blades Low and High East Coast
+    yvals_blades_lh = [jobsPipeline['Rotor Blades']['25domEC_LOW'], jobsPipeline['Rotor Blades']['100domEC_LOW'], jobsPipeline['Rotor Blades']['25domEC_HIGH'], jobsPipeline['Rotor Blades']['100domEC_HIGH']]
+    pr.line_plots4(dateYrs, zip(yvals_blades_lh, colors_lh, lines_lh, names_lh), fname='Figs/Nacelle_Job_Requirements_ECLH', ymax=6000)
+
+    #Rotor Blades Low and High East Coast
+    yvals_blades_lh = [jobsPipeline['Rotor Blades']['25domEC_LOW'], jobsPipeline['Rotor Blades']['100domEC_LOW'], jobsPipeline['Rotor Blades']['25domEC_HIGH'], jobsPipeline['Rotor Blades']['100domEC_HIGH']]
+    pr.line_plots4(dateYrs, zip(yvals_blades_lh, colors_lh, lines_lh, names_lh), fname='Figs/Nacelle_Job_Requirements_ECLH', ymax=6000)

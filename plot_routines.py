@@ -197,7 +197,7 @@ def bar_cumulative_comp(x, y1_zip, y2_zip, fname,
         myformat([axL2, axR2])
         mysave(fig, fname)
         plt.close()
-
+#TODO: stacked bar line for deployment + jobs
 def stacked_bar_line(x, y_bar_zip, y_line_zip,
                            fname=None, y1max=None, y2max=None,
                            width=None, order=1, single=True,
@@ -253,7 +253,7 @@ def stacked_bar_line(x, y_bar_zip, y_line_zip,
         plt.close()
 
     return axL, axR
-
+#TODO: component timeline domestic content scneraios #1
 def line_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
     fig, ax = initFigAxis()
 
@@ -307,3 +307,27 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
 
     return ax
 
+    def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
+        fig, ax = initFigAxis()
+
+        for y, c, n in y_zip:
+            ax.plot(x, y, color=c, label=n)
+
+        if y1max:
+            axL.set_ylim([0, ymax])
+
+        ax.legend(loc='upper left')
+
+        xticks=x
+        xv = [x.min(), x.max() + 1]
+        ax.set_xticks(xticks)
+        ax.set_xticklabels([str(m) for m in xticks], rotation=90)
+        ax.set_xlabel(myxlabel)
+        ax.set_ylabel(myylabel)
+
+        if fname:
+            myformat(ax)
+            mysave(fig, fname)
+            plt.close()
+
+        return ax

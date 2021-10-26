@@ -10,7 +10,7 @@ if __name__ == '__main__':
     # Define input spreadsheet
     DNV_gantt = 'DNV_pipelines.xlsm'
     # Define scenarios to plot
-    scenarios = ['EC-UNCONSTR', 'WC-UNC', 'EC-HIGH', 'GBF-UNC']
+    scenarios = ['EC-UNCONSTR', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC']
     # Define date range
     CODstart = 2022
     CODend = 2035
@@ -33,7 +33,13 @@ if __name__ == '__main__':
     # Significant supply chain constraints
     yvals_constr = [pipeline['EC-HIGH']['installMW'], pipeline['WC-UNC']['installMW']]
 
-    pr.stacked_bar_cumulative(COD_years, zip(yvals_constr, colors, names), fname='Figs/constrained_installedMW', y1max=10000, y2max=40000)
+    pr.stacked_bar_cumulative(COD_years, zip(yvals_constr, colors, names), fname='Figs/constrained_installedMW_high', y1max=10000, y2max=40000)
+
+    # Moderate supply chain constraints
+    yvals_constr_low = [pipeline['EC-LOW']['installMW'], pipeline['WC-UNC']['installMW']]
+
+    pr.stacked_bar_cumulative(COD_years, zip(yvals_constr_low, colors, names), fname='Figs/constrained_installedMW_low',
+                              y1max=10000, y2max=40000)
 
     # Constant throughput after 2029
     # Extend out baseline scenarios
@@ -110,7 +116,7 @@ if __name__ == '__main__':
         pr.area_plots(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, myylabel=v['ylabel'])
         plot2_name = 'Figs/baseline_component_bar_' + k
         pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot2_name,
-                                  myylabel=v['ylabel'], myy2label='Cumulative'+v['ylabel'])
+                                  myylabel=v['ylabel'], myy2label='Cumulative ' +v['ylabel'])
 
     # Significant supply chain constraints
     y1 = pipeline['EC-HIGH']

@@ -278,7 +278,7 @@ if __name__ == '__main__':
     ### Domestic Content via JEDI Model
     #Nacelle Unconstrained East Coast
     yvals_nac = [jobsPipeline['Nacelle']['25domEC_UNC'], jobsPipeline['Nacelle']['100domEC_UNC']]
-    colors_fte = [colors_list['12MW'], colors_list['wtiv']]
+    colors_fte = [colors_list['static_export'], colors_list['fixed']]
     names_fte = ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario']
     lines_fte =['dashed','solid']
     pr.line_plots2(dateYrs, zip(yvals_nac, colors_fte, lines_fte, names_fte), fname='Figs/Nacelle_Job_Requirements_ECUNC', ymax=30000)

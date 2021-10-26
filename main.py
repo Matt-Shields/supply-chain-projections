@@ -271,53 +271,53 @@ if __name__ == '__main__':
     #loop through scenarios
     jobsPipeline = {}
     for s in scenarios_JEDI:
-        jobsPipeline[s] = read_varsScen(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
+        jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
     ######### GENERATE PLOTS
     ### Domestic Content via JEDI Model
     #Nacelle Unconstrained East Coast
-    yvals_nac = [jobsPipeline['Nacelle']['25demandEC_UNC'], jobsPipeline['Nacelle']['100demandEC_UNC']]
+    yvals_nac = [jobsPipeline['Nacelle']['25domEC_UNC'], jobsPipeline['Nacelle']['100domEC_UNC']]
     colors_fte = [colors_list['fixed'], colors_list['float']]
     names_fte = ['25% Domestic Content', '100% Domestic Content']
     pr.line_plots2(dateYrs, zip(yvals_nac, colors_fte, names_fte), fname='Figs/Nacelle_Job_Requirements_ECUNC', ymax=30000)
 
     #Rotor Blades Unconstrained East Coast
-    yvals_blades = [jobsPipeline['Rotor Blades']['25demandEC_UNC'], jobsPipeline['Rotor Blades']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_blades, colors_fte, names_fte), fname='Figs/Rotor_Blades_Job_Requirements_ECUNC', ymax=30000)
+    yvals_blades = [jobsPipeline['Rotor Blades']['25domEC_UNC'], jobsPipeline['Rotor Blades']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_blades, colors_fte, names_fte), fname='Figs/Rotor_Blades_Job_Requirements_ECUNC', ymax=6000)
 
     #Towers Unconstrained East Coast
-    yvals_tower = [jobsPipeline['Towers']['25demandEC_UNC'], jobsPipeline['Towers']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_tower, colors_fte, names_fte), fname='Figs/Towers_Job_Requirements_ECUNC', ymax=30000)
+    yvals_tower = [jobsPipeline['Towers']['25domEC_UNC'], jobsPipeline['Towers']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_tower, colors_fte, names_fte), fname='Figs/Towers_Job_Requirements_ECUNC', ymax=8000)
 
     #Transition Piece Unconstrained East Coast
-    yvals_tp = [jobsPipeline['Transition Piece']['25demandEC_UNC'], jobsPipeline['Transition Piece']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_tp, colors_fte, names_fte), fname='Figs/Transition_Piece_Job_Requirements_ECUNC', ymax=30000)
+    yvals_tp = [jobsPipeline['Transition Piece']['25domEC_UNC'], jobsPipeline['Transition Piece']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_tp, colors_fte, names_fte), fname='Figs/Transition_Piece_Job_Requirements_ECUNC', ymax=5000)
 
     #Jacket Unconstrained East Coast
-    yvals_jacket = [jobsPipeline['Jacket (For Turbine)']['25demandEC_UNC'], jobsPipeline['Jacket (For Turbine)']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_jacket, colors_fte, names_fte), fname='Figs/Turbine_Jacket_Job_Requirements_ECUNC', ymax=30000)
+    yvals_jacket = [jobsPipeline['Jacket (For Turbine)']['25domEC_UNC'], jobsPipeline['Jacket (For Turbine)']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_jacket, colors_fte, names_fte), fname='Figs/Turbine_Jacket_Job_Requirements_ECUNC', ymax=5000)
 
     #Monopile Unconstrained East Coast
-    yvals_mono = [jobsPipeline['Monopiles']['25demandEC_UNC'], jobsPipeline['Monopiles']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_mono, colors_fte, names_fte), fname='Figs/Monopiles_Job_Requirements_ECUNC', ymax=30000)
+    yvals_mono = [jobsPipeline['Monopiles']['25domEC_UNC'], jobsPipeline['Monopiles']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_mono, colors_fte, names_fte), fname='Figs/Monopiles_Job_Requirements_ECUNC', ymax=8000)
 
     #GBF Unconstrained East Coast
-    yvals_GBF = [jobsPipeline['GBF']['25demandEC_UNC'], jobsPipeline['GBF']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_GBF, colors_fte, names_fte), fname='Figs/GBF_Job_Requirements_ECUNC', ymax=30000)
+    yvals_GBF = [jobsPipeline['GBF']['25domEC_UNC'], jobsPipeline['GBF']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_GBF, colors_fte, names_fte), fname='Figs/GBF_Job_Requirements_ECUNC', ymax=8000)
 
     #Substation Jacket Unconstrained East Coast
-    yvals_subj = [jobsPipeline['Jacket (For Substation)']['25demandEC_UNC'], jobsPipeline['Jacket (For Substation)']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_subj, colors_fte, names_fte), fname='Figs/Substation_Jacket_Job_Requirements_ECUNC', ymax=30000)
+    yvals_subj = [jobsPipeline['Jacket (For Substation)']['25domEC_UNC'], jobsPipeline['Jacket (For Substation)']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_subj, colors_fte, names_fte), fname='Figs/Substation_Jacket_Job_Requirements_ECUNC', ymax=80)
 
     #Substation (Topside) Unconstrained East Coast
-    yvals_subt = [jobsPipeline['Substation (Topside)']['25demandEC_UNC'], jobsPipeline['Substation (Topside)']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_subt, colors_fte, names_fte), fname='Figs/Substation_Topside_Job_Requirements_ECUNC', ymax=30000)
+    yvals_subt = [jobsPipeline['Substation (Topside)']['25domEC_UNC'], jobsPipeline['Substation (Topside)']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_subt, colors_fte, names_fte), fname='Figs/Substation_Topside_Job_Requirements_ECUNC', ymax=60)
 
     #Array Cable Unconstrained East Coast
-    yvals_array = [jobsPipeline['Array Cable']['25demandEC_UNC'], jobsPipeline['Array Cable']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_array, colors_fte, names_fte), fname='Figs/Array_Cable_Job_Requirements_ECUNC', ymax=30000)
+    yvals_array = [jobsPipeline['Array Cable']['25domEC_UNC'], jobsPipeline['Array Cable']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_array, colors_fte, names_fte), fname='Figs/Array_Cable_Job_Requirements_ECUNC', ymax=2000)
 
     #Export Cable Unconstrained East Coast
-    yvals_export = [jobsPipeline['Export Cable']['25demandEC_UNC'], jobsPipeline['Export Cable']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_export, colors_fte, names_fte), fname='Figs/Export_Cable_Job_Requirements_ECUNC', ymax=30000)
+    yvals_export = [jobsPipeline['Export Cable']['25domEC_UNC'], jobsPipeline['Export Cable']['100domEC_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_export, colors_fte, names_fte), fname='Figs/Export_Cable_Job_Requirements_ECUNC', ymax=5000)

@@ -307,27 +307,27 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
 
     return ax
 
-    def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
-        fig, ax = initFigAxis()
+def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
+    fig, ax = initFigAxis()
 
-        for y, c, n in y_zip:
-            ax.plot(x, y, color=c, label=n)
+    for y, c, n in y_zip:
+        ax.plot(x, y, color=c, label=n)
 
-        if y1max:
-            axL.set_ylim([0, ymax])
+    if ymax:
+        ax.set_ylim([0, ymax])
 
-        ax.legend(loc='upper left')
+    ax.legend(loc='upper left')
 
-        xticks=x
-        xv = [x.min(), x.max() + 1]
-        ax.set_xticks(xticks)
-        ax.set_xticklabels([str(m) for m in xticks], rotation=90)
-        ax.set_xlabel(myxlabel)
-        ax.set_ylabel(myylabel)
+    xticks=x
+    xv = [x.min(), x.max() + 1]
+    ax.set_xticks(xticks)
+    ax.set_xticklabels([str(m) for m in xticks], rotation=90)
+    ax.set_xlabel(myxlabel)
+    ax.set_ylabel(myylabel)
 
-        if fname:
-            myformat(ax)
-            mysave(fig, fname)
-            plt.close()
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
 
-        return ax
+    return ax

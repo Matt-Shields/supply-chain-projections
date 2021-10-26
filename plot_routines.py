@@ -310,8 +310,8 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
 def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
     fig, ax = initFigAxis()
 
-    for y, c, n in y_zip:
-        ax.plot(x, y, color=c, label=n)
+    for y, c, l, n in y_zip:
+        ax.plot(x, y, color=c, linestyle=l, label=n)
 
     if ymax:
         ax.set_ylim([0, ymax])

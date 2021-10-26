@@ -74,14 +74,14 @@ Jobs_indices = {
     '100dirEC_HIGH': 49,
     '100indEC_HIGH': 50,
     '2021col': 1,
-    '25demandEC_UNC': 4,
-    '100demandEC_UNC': 7,
-    '25demandEC_LOW': 36,
-    '100demandEC_LOW': 39,
-    '25demandEC_HIGH': 98,
-    '100demandEC_HIGH': 101,
-    '25demandGBF_UNC': 130,
-    '100demandGBF_UNC': 133
+    '25demandEC_UNC': 2,
+    '100demandEC_UNC': 5,
+    '25demandEC_LOW': 34,
+    '100demandEC_LOW': 37,
+    '25demandEC_HIGH': 96,
+    '100demandEC_HIGH': 99,
+    '25demandGBF_UNC': 128,
+    '100demandGBF_UNC': 131
 }
 
 

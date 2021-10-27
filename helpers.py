@@ -47,7 +47,7 @@ DNV_indices = {
     '2022col': 2,
 }
 
-Jobs_indices = {
+Jobs_indices = { #east coast job indicies
     'yr': 0,
     '25domEC_UNC': 1,
     '100domEC_UNC': 2,
@@ -73,6 +73,19 @@ Jobs_indices = {
     '100totEC_HIGH': 48,
     '100dirEC_HIGH': 49,
     '100indEC_HIGH': 50,
+    '2021col': 1,
+}
+
+Jobs_indices_WC = { #west coast job indicies
+    'yr': 0,
+    '25domWC_UNC': 1,
+    '100domWC_UNC': 2,
+    '25totWC_UNC': 21,
+    '25dirWC_UNC': 22,
+    '25indWC_UNC': 23,
+    '100totWC_UNC': 24,
+    '100dirWC_UNC': 25,
+    '100indWC_UNC': 26,
     '2021col': 1,
 }
 
@@ -248,3 +261,25 @@ def read_varsTot(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=EC_WC_i
     return _outTot
 
 #ignore 50%, 75%, and MED scenerios
+def read_jobvars_WC(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_indices_WC):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    # Extract all required variables as numpy arrays
+    _25domWC_UNC = df.iloc[ind['25domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100domWC_UNC = df.iloc[ind['100domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25totWC_UNC = df.iloc[ind['25totWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25dirWC_UNC = df.iloc[ind['25dirWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25indWC_UNC = df.iloc[ind['25indWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100totWC_UNC = df.iloc[ind['100totWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100dirWC_UNC = df.iloc[ind['100dirWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100indWC_UNC = df.iloc[ind['100indWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _outjobsWC = {
+            '25domWC_UNC' : _25domWC_UNC,
+            '100domWC_UNC': _100domWC_UNC,
+            '25totWC_UNC': _25totWC_UNC,
+            '25dirWC_UNC':_25dirWC_UNC,
+            '25indWC_UNC':_25indWC_UNC,
+            '100totWC_UNC':_100totWC_UNC,
+            '100dirWC_UNC':_100dirWC_UNC,
+            '100indWC_UNC':_100indWC_UNC,
+        }
+    return _outjobsWC

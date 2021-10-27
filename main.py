@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Define input spreadsheet
-    DNV_gantt = 'DNV_pipelines.xlsm'
+    DNV_gantt = 'DNV_pipelines_v2.xlsm'
     # Define scenarios to plot
-    scenarios = ['EC-UNCONSTR', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC']
+    scenarios = ['EC-UNC', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC']
     # Define date range
     CODstart = 2022
     CODend = 2035
@@ -19,12 +19,15 @@ if __name__ == '__main__':
     pipeline = {}
     for s in scenarios:
         # Read in Excel
-        pipeline[s] = read_vars(file=DNV_gantt, sheet=s, xrange=COD_years)
+        if 'WC' in s:
+            pipeline[s] = read_vars(file=DNV_gantt, sheet=s, xrange=COD_years)
+        else:
+            pipeline[s] = read_vars(file=DNV_gantt, sheet=s, xrange=COD_years)
 
     ######### GENERATE PLOTS
     ### Annual deployment + cumulative line
     # Baseline
-    yvals = [pipeline['EC-UNCONSTR']['installMW'], pipeline['WC-UNC']['installMW']]
+    yvals = [pipeline['EC-UNC']['installMW'], pipeline['WC-UNC']['installMW']]
     colors = [colors_list['fixed'], colors_list['float']]
     names = ['Fixed bottom', 'Floating']
 
@@ -54,7 +57,7 @@ if __name__ == '__main__':
     #                                        np.repeat(pipeline['WC-UNC']['installMW'][max_ind_float-1], num_repeat_float)])
     expand_install_fixed = {}
     expand_install_float = {}
-    for k,v in pipeline['EC-UNCONSTR'].items():
+    for k,v in pipeline['EC-UNC'].items():
         expand_install_fixed[k] = np.concatenate(
             [v[0:max_ind_fixed], np.repeat(v[max_ind_fixed-1], num_repeat_fixed)])
     for k, v in pipeline['WC-UNC'].items():
@@ -65,11 +68,11 @@ if __name__ == '__main__':
     pr.stacked_bar_cumulative(COD_years, zip(yvals_expand, colors, names), fname='Figs/expanded_installedMW', y1max=10000)
 
     ### Number of projects and installation vessels
-    yvals_proj = [pipeline['EC-UNCONSTR']['projects'], pipeline['WC-UNC']['projects']]
-    y_vals_wtiv = pipeline['EC-UNCONSTR']['wtiv'] + pipeline['WC-UNC']['wtiv']
-    y_vals_barge= pipeline['EC-UNCONSTR']['barge'] + pipeline['WC-UNC']['barge']
-    y_vals_clv = pipeline['EC-UNCONSTR']['clv'] + pipeline['WC-UNC']['clv']
-    y_vals_ctv = pipeline['EC-UNCONSTR']['ctv'] + pipeline['WC-UNC']['ctv']
+    yvals_proj = [pipeline['EC-UNC']['projects'], pipeline['WC-UNC']['projects']]
+    y_vals_wtiv = pipeline['EC-UNC']['wtiv']
+    y_vals_barge= pipeline['EC-UNC']['barge']
+    y_vals_clv = pipeline['EC-UNC']['clv'] + pipeline['WC-UNC']['clv']
+    y_vals_ctv = pipeline['EC-UNC']['ctv'] + pipeline['WC-UNC']['ctv']
 
     y_vessels = [y_vals_wtiv, y_vals_barge, y_vals_clv, y_vals_ctv]
     vessel_colors = [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']]
@@ -82,7 +85,7 @@ if __name__ == '__main__':
 
     ### Line plots for individual components
     # Baseline
-    y1 = pipeline['EC-UNCONSTR']
+    y1 = pipeline['EC-UNC']
     y2 = pipeline['WC-UNC']
     component_plots = {
         'Turbines': {
@@ -104,9 +107,9 @@ if __name__ == '__main__':
             'ylabel': 'Length of Cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv']+y2['wtiv'], y1['barge']+y2['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
             'ylabel': 'Number of Vessels'
         }
     }
@@ -139,10 +142,10 @@ if __name__ == '__main__':
             'ylabel': 'Length of cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv']+y2['wtiv'], y1['barge']+y2['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
-            'ylabel': 'Number of vessels'
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
+            'ylabel': 'Number of Vessels'
         }
     }
 
@@ -174,13 +177,13 @@ if __name__ == '__main__':
             'ylabel': 'Length of cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv']+y2['wtiv'], y1['barge']+y2['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
-            'ylabel': 'Number of vessels'
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
+            'ylabel': 'Number of Vessels'
         }
     }
-    print(component_plots['Cables']['data'])
+
     for k, v in component_plots.items():
         plot_name = 'Figs/constrained_low_component_'+ k
         pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
@@ -209,10 +212,10 @@ if __name__ == '__main__':
             'ylabel': 'Length of cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv']+y2['wtiv'], y1['barge']+y2['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
-            'ylabel': 'Number of vessels'
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
+            'ylabel': 'Number of Vessels'
         }
     }
 
@@ -245,10 +248,10 @@ if __name__ == '__main__':
             'ylabel': 'Length of cable, km'
         },
         'Vessels': {
-            'data': [y1['wtiv'] + y2['wtiv'], y1['barge'] + y2['barge'], y1['clv'] + y2['clv'], y1['ctv'] + y2['ctv']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV'],
-            'ylabel': 'Number of vessels'
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
+            'ylabel': 'Number of Vessels'
         }
     }
 

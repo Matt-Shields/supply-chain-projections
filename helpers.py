@@ -24,7 +24,7 @@ group_rows = {'# of OSP': 'Delete',
               'substructure: total jacket, #\n': 'Total number of foundations'
               }
 
-DNV_indices = {
+DNV_indices_EC = {
     'installMW': 0,
     'projects': 1,
     'turb': 2,
@@ -35,8 +35,6 @@ DNV_indices = {
     'gbf': 21,
     'jacketTurb': 22,
     'jacketOSS': 23,
-    'semiTurb': 22,
-    'semiOSS': 23,
     'array': 27,
     'export': 28,
     'wtiv': 43,
@@ -44,6 +42,27 @@ DNV_indices = {
     'ctv': 47,
     'clv': 48,
     'berths': 53,
+    'laydown': 54,
+    '2022col': 2,
+}
+
+DNV_indices_WC = {
+    'installMW': 0,
+    'projects': 1,
+    'turb': 2,
+    'turb12MW': 3,
+    'turb15MW': 4,
+    'turb18MW': 5,
+    'semiTurb': 22,
+    'semiOSS': 23,
+    'array': 27,
+    'export': 28,
+    'tugs': 37,
+    'ahts': 38,
+    'ctv': 40,
+    'clv': 41,
+    'berths': 45,
+    'laydown': 46,
     '2022col': 2,
 }
 
@@ -92,6 +111,8 @@ colors_list = {
     'barge': '#5D9732',
     'clv': '#933C06',
     'ctv': '#5E6A71',
+    'tugs': 'k',
+    'ahts': 'g',
     '12MW': 'orange',
     '15MW': 'blue',
     '18MW': 'seagreen',
@@ -105,7 +126,7 @@ colors_list = {
     'semis': '#5DD2FF'
 }
 
-def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indices):
+def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indices_EC, ind_WC=DNV_indices_WC):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
     # Extract all required variables as numpy arrays
     _installMW = df.iloc[ind['installMW'], ind['2022col']:ind['2022col'] + len(xrange) ].to_numpy()
@@ -116,16 +137,18 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
     _turb18MW = df.iloc[ind['turb18MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
-    _ctv = df.iloc[ind['ctv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
-    _clv = df.iloc[ind['clv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     # _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     if 'WC' in sheet:
         # Floating
-        _semiTurb = df.iloc[ind['semiTurb'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
-        _semiOSS = df.iloc[ind['semiOSS'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _semiTurb = df.iloc[ind_WC['semiTurb'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _semiOSS = df.iloc[ind_WC['semiOSS'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _semi = np.add(_semiTurb, _semiOSS)
-        _array = df.iloc[ind['array'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
-        _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _array = df.iloc[ind_WC['array'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _export = df.iloc[ind_WC['export'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _tugs = df.iloc[ind_WC['tugs'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _ahts = df.iloc[ind_WC['ahts'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _ctv = df.iloc[ind_WC['ctv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _clv = df.iloc[ind_WC['clv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _out = {
                 'installMW': _installMW,
                 'projects': _projects,
@@ -138,8 +161,8 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
                 'semi': _semi,
                 'array': _array,
                 'export': _export,
-                'wtiv': _wtiv,
-                'barge': _barge,
+                'tugs': _tugs,
+                'ahts': _ahts,
                 'ctv': _ctv,
                 'clv': _clv,
             }
@@ -151,6 +174,8 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
         _gbf = df.iloc[ind['gbf'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
         _array = df.iloc[ind['array'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _ctv = df.iloc[ind['ctv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _clv = df.iloc[ind['clv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _out = {
                 'installMW': _installMW,
                 'projects': _projects,

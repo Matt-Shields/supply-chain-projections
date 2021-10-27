@@ -108,7 +108,7 @@ Jobs_indices_WC = { #west coast job indicies
     '2021col': 1,
 }
 
-EC_WC_indicies = {
+EC_WC_indicies = { #east coast + west coast job indicies for ttoal workforce demand
     'yr': 0,
     '2021col': 1,
     '25demandEC_UNC': 0,
@@ -118,6 +118,18 @@ EC_WC_indicies = {
     '25demandTot_UNC': 14,
     '100demandTot_UNC': 17
 }
+
+EC_indicies = {
+    'yr': 0,
+    '2021col': 1,
+    '25demandEC_LOW': 33,
+    '100demandEC_LOW': 36,
+    '25demandEC_MED': 63,
+    '100demandEC_MED': 66,
+    '25demandEC_HIGH': 95,
+    '100demandEC_HIGH': 98
+}
+
 colors_list = {
     'fixed': '#0B5E90',
     'float': '#00A4E4',
@@ -284,6 +296,24 @@ def read_varsTot(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=EC_WC_i
             '100demandTot_UNC': _100demandTot_UNC
             }
     return _outTot
+
+def read_varsEC(file, sheet, xrange, header=2, cols='B:Q', rows=150, ind=EC_indicies):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    _25demandEC_LOW = df.iloc[ind['25demandEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_LOW = df.iloc[ind['100demandEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25demandEC_MED = df.iloc[ind['25demandEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_MED = df.iloc[ind['100demandEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25demandEC_HIGH = df.iloc[ind['25demandEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_HIGH = df.iloc[ind['100demandEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _outTotEC = {
+            '25demandEC_LOW': _25demandEC_LOW,
+            '100demandEC_LOW': _100demandEC_LOW,
+            '25demandEC_MED': _25demandEC_MED,
+            '100demandEC_MED': _100demandEC_MED,
+            '25demandEC_HIGH': _25demandEC_HIGH,
+            '100demandEC_HIGH': _100demandEC_HIGH
+            }
+    return _outTotEC
 
 #ignore 50%, 75%, and MED scenerios
 def read_jobvars_WC(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_indices_WC):

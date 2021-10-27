@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list
+from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list, read_varsEC
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -448,7 +448,7 @@ if __name__ == '__main__':
 
     ###Total workforce for baseline scenarios
     ##define variables
-    colors_ecwc = [colors_list['static_export'], colors_list['float']]
+    colors_ecwc = [colors_list['ctv'], colors_list['tugs']]
     names_ecwc = ['25% Domestic Content, East Coast Baseline Scenario', '100% Domestic Content, East Coast Baseline Scenario']
     lines_ecwc = ['dashed', 'solid']
 
@@ -458,9 +458,9 @@ if __name__ == '__main__':
 
     #west coast workforce demand
     yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandWC_UNC'],ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandWC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ecwc), fname='Figs/West_Coast_Workforce_Demand', ymax = 85000)
+    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ecwc), fname='Figs/West_Coast_Workforce_Demand', ymax = 30000)
 
-    colors_tot = [colors_list['fixed'], colors_list['float']]
+    colors_tot = [colors_list['ctv'], colors_list['tugs']]
     names_tot = ['25% Domestic Content, Total Workforce Baseline Scenario', '100% Domestic Content, Total Workforce Baseline Scenario']
     lines_tot = ['dashed', 'solid']
 
@@ -501,56 +501,56 @@ if __name__ == '__main__':
     scenario_plots_WC = {
         'Nacelle': {
             'data': [f1['25domWC_UNC'], f1['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 6000
         },
         'Rotor Blades': {
             'data': [f2['25domWC_UNC'], f2['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 1000
         },
         'Towers': {
             'data': [f3['25domWC_UNC'], f3['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 2000
         },
         'Floating (turbine)': {
             'data': [f4['25domWC_UNC'], f4['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 10250
         },
         'Floating (floating OSS)': {
             'data': [f5['25domWC_UNC'], f5['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 350
         },
         'Floating OSS Topside': {
             'data': [f6['25domWC_UNC'], f6['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 25
         },
         'Array Cable': {
             'data': [f7['25domWC_UNC'], f7['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 600
         },
         'Export Cable': {
             'data': [f8['25domWC_UNC'], f8['100domWC_UNC']],
-            'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
             'yvalmax': 1500

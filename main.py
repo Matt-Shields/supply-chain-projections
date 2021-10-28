@@ -298,7 +298,7 @@ if __name__ == '__main__':
     scenario_plots_LH = {
         'Low_Scenario': {
         'data': [p0['25demandEC_LOW'], p0['100demandEC_LOW']],
-        'colors': [colors_list['static_export'], colors_list['fixed']],
+        'colors': [colors_list['ctv'], colors_list['tugs']],
         'names': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints'],
         'lines': ['dashed','solid'],
         'yvalmax': 60000
@@ -306,7 +306,7 @@ if __name__ == '__main__':
 
         'High_Scenario': {
         'data': [p0['25demandEC_HIGH'], p0['100demandEC_HIGH']],
-        'colors': [colors_list['static_export'], colors_list['fixed']],
+        'colors': [colors_list['ctv'], colors_list['tugs']],
         'names': ['25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
         'lines': ['dashed','solid'],
         'yvalmax': 60000
@@ -551,7 +551,7 @@ if __name__ == '__main__':
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed','solid'],
-            'yvalmax': 10250
+            'yvalmax': 10500
         },
         'Floating (floating OSS)': {
             'data': [f5['25domWC_UNC'], f5['100domWC_UNC']],

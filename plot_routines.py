@@ -307,7 +307,7 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
 
     return ax
 
-def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
+def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
     fig, ax = initFigAxis()
 
     for y, c, l, n in y_zip:
@@ -324,6 +324,7 @@ def line_plots2(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalent
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+    ax.set_title(title)
 
     if fname:
         myformat(ax)

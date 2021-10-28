@@ -272,14 +272,17 @@ if __name__ == '__main__':
     dateYrs = np.arange(dateStart, dateEnd+1)
 
     #loop through scenarios
+    EC_jobs_LH = {}
     jobsPipeline = {}
     for s in scenarios_JEDI:
         jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
+        EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
     ######### GENERATE PLOTS
     ### Domestic Content via JEDI Model for Baseline Scenario
     # looped plots for jobs
+    p0 = EC_jobs_LH['Scenarios']
     p1 = jobsPipeline['Nacelle']
     p2 = jobsPipeline['Rotor Blades']
     p3 = jobsPipeline['Towers']
@@ -292,7 +295,25 @@ if __name__ == '__main__':
     p10 = jobsPipeline['Array Cable']
     p11 = jobsPipeline['Export Cable']
 
+    scenario_plots_LH = {
+        'Low_Scenario': {
+        'data': [p0['25demandEC_LOW'], p0['100demandEC_LOW']],
+        'colors': [colors_list['static_export'], colors_list['fixed']],
+        'names': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints'],
+        'lines': ['dashed','solid'],
+        'yvalmax': 60000
+        },
+
+        'High_Scenario': {
+        'data': [p0['25demandEC_HIGH'], p0['100demandEC_HIGH']],
+        'colors': [colors_list['static_export'], colors_list['fixed']],
+        'names': ['25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
+        'lines': ['dashed','solid'],
+        'yvalmax': 60000
+        }
+    }
     scenario_plots = {
+
         'Nacelle': {
             'data': [p1['25domEC_UNC'], p1['100domEC_UNC']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
@@ -373,6 +394,10 @@ if __name__ == '__main__':
     }
     for k, v in scenario_plots.items():
         plot_name = 'Figs/EC_UNC_JobRequirements_'+ k
+        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
+
+    for k, v in scenario_plots_LH.items():
+        plot_name = 'Figs/EC_WorkforcePipeline_'+ k
         pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
 

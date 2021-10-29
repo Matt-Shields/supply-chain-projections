@@ -357,3 +357,29 @@ def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalent
         plt.close()
 
     return ax
+
+def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', myxlabel='Year'):
+    fig, ax = initFigAxis()
+
+    for y, c, l, n in y_zip:
+        ax.plot(x, y, color=c, linestyle=l, label=n)
+
+    if ymax:
+        ax.set_ylim([0, ymax])
+
+    ax.legend(loc='upper left')
+
+    xticks=x
+    xv = [x.min(), x.max() + 1]
+    ax.set_xticks(xticks)
+    ax.set_xticklabels([str(m) for m in xticks], rotation=90)
+    ax.set_xlabel(myxlabel)
+    ax.set_ylabel(myylabel)
+    ax.set_title(title)
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+    return ax

@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list, read_varsEC
+from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list, read_varsEC, read_varsGDP
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -595,3 +595,29 @@ if __name__ == '__main__':
     for k, v in scenario_plots_WC.items():
         plot_name = 'Figs/WC_UNC_JobRequirements_'+ k
         pr.line_plots2(yrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
+
+
+    total_GDP = 'Total GDP.xlsx' #Define input spreadsheet
+
+    GDP_ECWC = ['Total GDP']
+    #data start and end dates
+    strt1 = 2021
+    end1 = 2035 #2035? - check w/ matt or jeremy
+    yrs1 = np.arange(strt, end+1)
+    #loop through scenarios
+
+    totalGDP = {}
+    for s in GDP_ECWC:
+        totalGDP[s] = read_varsGDP(file=total_GDP, sheet=s, xrange=yrs1) #read in Excel
+        #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
+
+
+    colors_GDP = [colors_list['ctv'], colors_list['tugs']]
+    names_GDP = ['25% Domestic Content, Total Baseline Scenario', '100% Domestic Content, Total Baseline Scenario']
+    lines_GDP = ['dashed', 'solid']
+
+    #east coast workforce demand
+    yvals_GDP = [totalGDP['Total GDP']['25GDP_tot_UNC'], totalGDP['Total GDP']['100GDP_tot_UNC']]
+    pr.line_plotsGDP(yrs1, zip(yvals_GDP, colors_GDP, lines_GDP, names_GDP), fname='Figs/Total_GDP', ymax = 10000)
+
+    #west coast workforce demand

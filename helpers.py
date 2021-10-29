@@ -349,9 +349,9 @@ def read_jobvars_WC(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs
         }
     return _outjobsWC
 
-def read_varsGDP(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=GDP_indicies):
+def read_varsGDP(file, sheet, xrange, header=2, cols='B:Q', rows=36, ind=GDP_indicies):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
-    _25GDP_EC_UN = df.iloc[ind['25GDP_EC_UN'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25GDP_EC_UNC = df.iloc[ind['25GDP_EC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100GDP_EC_UNC = df.iloc[ind['100GDP_EC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25GDP_WC_UNC = df.iloc[ind['25GDP_WC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100GDP_WC_UNC = df.iloc[ind['100GDP_WC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()

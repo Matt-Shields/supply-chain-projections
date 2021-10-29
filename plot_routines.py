@@ -120,7 +120,7 @@ def initFigAxis():
 
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
-                           width=None, order=1, single=True,
+                           width=None, order=1, single=True, cumulative_line=True,
                            myxlabel='Year', myylabel='Annual installed capacity, MW', myy2label='Cumulative capacity, MW',
                            mycumsumlabel='Cumulative deployment', cumsumline='-', linecol='k'):
     if ax_in:
@@ -146,12 +146,14 @@ def stacked_bar_cumulative(x, y_zip,
         data_num+=1
     if y1max:
         axL.set_ylim([0, y1max])
-    if axR_in:
-        axR = axR_in
-    else:
-        axR = axL.twinx()
 
-    axR.plot(x, np.cumsum(y_total), cumsumline, color=linecol, label=mycumsumlabel)
+    if cumulative_line is True:
+        if axR_in:
+            axR = axR_in
+        else:
+            axR = axL.twinx()
+
+        axR.plot(x, np.cumsum(y_total), cumsumline, color=linecol, label=mycumsumlabel)
 
     xticks=x
     xv = [x.min(), x.max() + 1]
@@ -163,19 +165,27 @@ def stacked_bar_cumulative(x, y_zip,
     # axL.grid()
     # yv = np.array( axL.get_ylim() )
     axL.set_xlim(xv)
-    axR.set_xlim(xv)
-    axR.set_ylabel(myy2label)
-    axR.set_ylim([0, y2max])
+    if cumulative_line is True:
+        axR.set_xlim(xv)
+        axR.set_ylabel(myy2label)
+        axR.set_ylim([0, y2max])
 
     if single == True:
         axL.legend(loc='upper left')
 
     if fname:
-        myformat([axL, axR])
-        mysave(fig, fname)
-        plt.close()
+        if cumulative_line is True:
+            myformat([axL, axR])
+            mysave(fig, fname)
+            plt.close()
+            return axL, axR
+        else:
+            myformat(axL)
+            mysave(fig, fname)
+            plt.close()
+            return axL
 
-    return axL, axR
+
 
 def bar_cumulative_comp(x, y1_zip, y2_zip, fname,
                          y1max=10000, y2max=50001, width=None):

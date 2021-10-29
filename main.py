@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-from helpers import group_rows, read_vars, read_jobvars, read_varsTot, colors_list
+from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list, read_varsEC
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -296,14 +296,17 @@ if __name__ == '__main__':
     dateYrs = np.arange(dateStart, dateEnd+1)
 
     #loop through scenarios
+    EC_jobs_LH = {}
     jobsPipeline = {}
     for s in scenarios_JEDI:
         jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
+        EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
     ######### GENERATE PLOTS
     ### Domestic Content via JEDI Model for Baseline Scenario
     # looped plots for jobs
+    p0 = EC_jobs_LH['Scenarios']
     p1 = jobsPipeline['Nacelle']
     p2 = jobsPipeline['Rotor Blades']
     p3 = jobsPipeline['Towers']
@@ -316,146 +319,178 @@ if __name__ == '__main__':
     p10 = jobsPipeline['Array Cable']
     p11 = jobsPipeline['Export Cable']
 
+    scenario_plots_LH = {
+        'Low_Scenario': {
+        'data': [p0['25demandEC_LOW'], p0['100demandEC_LOW']],
+        'colors': [colors_list['ctv'], colors_list['tugs']],
+        'names': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints'],
+        'lines': ['dashed','solid'],
+        'yvalmax': 60000
+        },
+
+        'High_Scenario': {
+        'data': [p0['25demandEC_HIGH'], p0['100demandEC_HIGH']],
+        'colors': [colors_list['ctv'], colors_list['tugs']],
+        'names': ['25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
+        'lines': ['dashed','solid'],
+        'yvalmax': 60000
+        }
+    }
     scenario_plots = {
+
         'Nacelle': {
             'data': [p1['25domEC_UNC'], p1['100domEC_UNC']],
+            'data_lh': [p1['25domEC_LOW'], p1['100domEC_LOW'], p1['25domEC_HIGH'], p1['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 35000
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 35000,
+            'yval_lh': 35000
         },
         'Rotor Blades': {
             'data': [p2['25domEC_UNC'], p2['100domEC_UNC']],
+            'data_lh': [p2['25domEC_LOW'], p2['100domEC_LOW'], p2['25domEC_HIGH'], p2['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 6000
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 6000,
+            'yval_lh': 6000
+
         },
         'Towers': {
             'data': [p3['25domEC_UNC'], p3['100domEC_UNC']],
+            'data_lh': [p3['25domEC_LOW'], p3['100domEC_LOW'], p3['25domEC_HIGH'], p3['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 8050
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 8050,
+            'yval_lh': 8050
         },
         'Monopiles': {
             'data': [p4['25domEC_UNC'], p4['100domEC_UNC']],
+            'data_lh': [p4['25domEC_LOW'], p4['100domEC_LOW'], p4['25domEC_HIGH'], p4['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 8750
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 9000,
+            'yval_lh': 9500
         },
         'Transition Piece': {
             'data': [p5['25domEC_UNC'], p5['100domEC_UNC']],
+            'data_lh': [p5['25domEC_LOW'], p5['100domEC_LOW'], p5['25domEC_HIGH'], p5['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 5000
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 5000,
+            'yval_lh': 5500
         },
         'Jacket (For Turbine)': {
             'data': [p6['25domEC_UNC'], p6['100domEC_UNC']],
+            'data_lh': [p6['25domEC_LOW'], p6['100domEC_LOW'], p6['25domEC_HIGH'], p6['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 5000
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 5000,
+            'yval_lh': 5250
         },
         'GBF': {
             'data': [p7['25domEC_UNC'], p7['100domEC_UNC']],
+            'data_lh': [p7['25domEC_LOW'], p7['100domEC_LOW'], p7['25domEC_HIGH'], p7['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 8500
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 8900,
+            'yval_lh': 8950
         },
         'Jacket (For Substation)': {
             'data': [p8['25domEC_UNC'], p8['100domEC_UNC']],
+            'data_lh': [p8['25domEC_LOW'], p8['100domEC_LOW'], p8['25domEC_HIGH'], p8['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 80
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 85,
+            'yval_lh': 85
         },
         'Substation (Topside)': {
             'data': [p9['25domEC_UNC'], p9['100domEC_UNC']],
+            'data_lh': [p9['25domEC_LOW'], p9['100domEC_LOW'], p9['25domEC_HIGH'], p9['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 65
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 65,
+            'yval_lh': 65
         },
         'Array Cable': {
             'data': [p10['25domEC_UNC'], p10['100domEC_UNC']],
+            'data_lh': [p10['25domEC_LOW'], p10['100domEC_LOW'], p10['25domEC_HIGH'], p10['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 2500
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 2500,
+            'yval_lh': 2250
         },
         'Export Cable': {
             'data': [p11['25domEC_UNC'], p11['100domEC_UNC']],
+            'data_lh': [p11['25domEC_LOW'], p11['100domEC_LOW'], p11['25domEC_HIGH'], p11['100domEC_HIGH']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
+            'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'names_lh': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
             'lines': ['dashed','solid'],
-            'yvalmax': 5500
+            'lines_lh': ['dashed', 'solid', 'dashed', 'solid'],
+            'yvalmax': 5750,
+            'yval_lh': 5800
         }
     }
+    #########East coast scenario plots
     for k, v in scenario_plots.items():
         plot_name = 'Figs/EC_UNC_JobRequirements_'+ k
         pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
+    ########Total job requirements for east coast low and high constraints
+    for k, v in scenario_plots_LH.items():
+        plot_name = 'Figs/EC_WorkforcePipeline_'+ k
+        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
-    #####Varied Scenario Job Requirements
-    ##Low vs High constrained
-
-    #Nacelle Low and High constrained scenarios
-    yvals_nac_lh = [jobsPipeline['Nacelle']['25domEC_LOW'], jobsPipeline['Nacelle']['100domEC_LOW'], jobsPipeline['Nacelle']['25domEC_HIGH'], jobsPipeline['Nacelle']['100domEC_HIGH']]
-    colors_lh = [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']]
-    names_lh = ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints', '25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints']
-    lines_lh = ['dashed', 'solid', 'dashed', 'solid']
-
-    pr.line_plots4(dateYrs, zip(yvals_nac_lh, colors_lh, lines_lh, names_lh), fname='Figs/Nacelle_Job_Requirements_ECLH', ymax=35000)
-
-    #Rotor Blades Low and High East Coast
-    yvals_blades_lh = [jobsPipeline['Rotor Blades']['25domEC_LOW'], jobsPipeline['Rotor Blades']['100domEC_LOW'], jobsPipeline['Rotor Blades']['25domEC_HIGH'], jobsPipeline['Rotor Blades']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_blades_lh, colors_lh, lines_lh, names_lh), fname='Figs/Blades_Job_Requirements_ECLH', ymax=6000)
-
-    #Tower Low and High East Coast
-    yvals_tower_lh = [jobsPipeline['Towers']['25domEC_LOW'], jobsPipeline['Towers']['100domEC_LOW'], jobsPipeline['Towers']['25domEC_HIGH'], jobsPipeline['Towers']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_tower_lh, colors_lh, lines_lh, names_lh), fname='Figs/Tower_Job_Requirements_ECLH', ymax=8050)
-
-    #Transition Piece Low and High East Coast
-    yvals_tp_lh = [jobsPipeline['Transition Piece']['25domEC_LOW'], jobsPipeline['Transition Piece']['100domEC_LOW'], jobsPipeline['Transition Piece']['25domEC_HIGH'], jobsPipeline['Transition Piece']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_tp_lh, colors_lh, lines_lh, names_lh), fname='Figs/Transition_Piece_Job_Requirements_ECLH', ymax=5000)
-
-    #Jacket (For Turbine) Low and High East Coast
-    yvals_jacket_lh = [jobsPipeline['Jacket (For Turbine)']['25domEC_LOW'], jobsPipeline['Jacket (For Turbine)']['100domEC_LOW'], jobsPipeline['Jacket (For Turbine)']['25domEC_HIGH'], jobsPipeline['Jacket (For Turbine)']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_jacket_lh, colors_lh, lines_lh, names_lh), fname='Figs/Turbine_Jacket_Job_Requirements_ECLH', ymax=5000)
-
-    #Monopiles Low and High East Coast
-    yvals_mono_lh = [jobsPipeline['Monopiles']['25domEC_LOW'], jobsPipeline['Monopiles']['100domEC_LOW'], jobsPipeline['Monopiles']['25domEC_HIGH'], jobsPipeline['Monopiles']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_mono_lh, colors_lh, lines_lh, names_lh), fname='Figs/Monopiles_Job_Requirements_ECLH', ymax=8750)
-
-    #GBF Low and High East Coast
-    yvals_GBF_lh = [jobsPipeline['GBF']['25domEC_LOW'], jobsPipeline['GBF']['100domEC_LOW'], jobsPipeline['GBF']['25domEC_HIGH'], jobsPipeline['GBF']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_GBF_lh, colors_lh, lines_lh, names_lh), fname='Figs/GBF_Job_Requirements_ECLH', ymax=8500)
-
-    #Jacket (For Substation) and High East Coast
-    yvals_subj_lh = [jobsPipeline['Jacket (For Substation)']['25domEC_LOW'], jobsPipeline['Jacket (For Substation)']['100domEC_LOW'], jobsPipeline['Jacket (For Substation)']['25domEC_HIGH'], jobsPipeline['Jacket (For Substation)']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_subj_lh, colors_lh, lines_lh, names_lh), fname='Figs/Substation_Jacket_Job_Requirements_ECLH', ymax=85)
-
-    #Substation (Topside) Low and High East Coast
-    yvals_subt_lh = [jobsPipeline['Substation (Topside)']['25domEC_LOW'], jobsPipeline['Substation (Topside)']['100domEC_LOW'], jobsPipeline['Substation (Topside)']['25domEC_HIGH'], jobsPipeline['Substation (Topside)']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_subt_lh, colors_lh, lines_lh, names_lh), fname='Figs/Substation_Topside_Job_Requirements_ECLH', ymax=60)
-
-    #Array Cable Low and High East Coast
-    yvals_array_lh = [jobsPipeline['Array Cable']['25domEC_LOW'], jobsPipeline['Array Cable']['100domEC_LOW'], jobsPipeline['Array Cable']['25domEC_HIGH'], jobsPipeline['Array Cable']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_array_lh, colors_lh, lines_lh, names_lh), fname='Figs/Array_Cable_Job_Requirements_ECLH', ymax=2500)
-
-    #Export Cable Low and High East Coast
-    yvals_export_lh = [jobsPipeline['Export Cable']['25domEC_LOW'], jobsPipeline['Export Cable']['100domEC_LOW'], jobsPipeline['Export Cable']['25domEC_HIGH'], jobsPipeline['Export Cable']['100domEC_HIGH']]
-    pr.line_plots4(dateYrs, zip(yvals_export_lh, colors_lh, lines_lh, names_lh), fname='Figs/Export_Cable_Job_Requirements_ECLH', ymax=5500)
-
+    #####Varied Scenario Job Requirements for east coast
+        ##Low vs High constrained
+    for k, v in scenario_plots.items():
+        plot_name = 'Figs/EC_LH_JobRequirements_'+ k
+        pr.line_plots4(dateYrs, zip(v['data_lh'], v['colors_lh'], v['lines_lh'], v['names_lh']), fname=plot_name, ymax = v['yval_lh'])
 
 
     #####Total direct and indirect jobs for east and west Coast
     #JEDI - Varied Scenarios graphs
-
     total_pipeline = 'East Coast + West Coast.xlsx' #Define input spreadsheet
 
     total_JEDI = ['Total Jobs EC-WC Job Impact'] #Define sheet to pull from to plot scenarios
@@ -472,22 +507,115 @@ if __name__ == '__main__':
 
     ###Total workforce for baseline scenarios
     ##define variables
-    colors_ecwc = [colors_list['static_export'], colors_list['float']]
-    names_ecwc = ['25% Domestic Content, East Coast Baseline Scenario', '100% Domestic Content, East Coast Baseline Scenario']
+    colors_ecwc = [colors_list['ctv'], colors_list['tugs']]
+    names_ec = ['25% Domestic Content, East Coast Baseline Scenario', '100% Domestic Content, East Coast Baseline Scenario']
+    names_wc = ['25% Domestic Content, West Coast Baseline Scenario', '100% Domestic Content, West Coast Baseline Scenario']
     lines_ecwc = ['dashed', 'solid']
 
     #east coast workforce demand
     yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandEC_UNC'], ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ecwc), fname='Figs/East_Coast_Workforce_Demand', ymax = 85000)
+    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ec), fname='Figs/East_Coast_Workforce_Demand', ymax = 85000)
 
     #west coast workforce demand
     yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandWC_UNC'],ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandWC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ecwc), fname='Figs/West_Coast_Workforce_Demand', ymax = 85000)
+    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_wc), fname='Figs/West_Coast_Workforce_Demand', ymax = 25000)
 
-    colors_tot = [colors_list['fixed'], colors_list['float']]
+    colors_tot = [colors_list['ctv'], colors_list['tugs']]
     names_tot = ['25% Domestic Content, Total Workforce Baseline Scenario', '100% Domestic Content, Total Workforce Baseline Scenario']
     lines_tot = ['dashed', 'solid']
 
     #Total workforce demand
     yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandTot_UNC'], ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandTot_UNC']]
     pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand', ymax = 85000)
+
+
+
+    #JEDI - Floating Varied Scenarios graphs
+
+    float_pipeline = 'WC_Varied LC_Jobs.xlsx' #Define input spreadsheet
+
+    scenarios_float = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (turbine)', 'Floating (floating OSS)', 'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
+    #data start and end dates
+    strt = 2021
+    end = 2035 #2035? - check w/ matt or jeremy
+    yrs = np.arange(strt, end+1)
+
+    #loop through scenarios
+    floatPipeline = {}
+    for s in scenarios_float:
+        floatPipeline[s] = read_jobvars_WC(file=float_pipeline, sheet=s, xrange=yrs) #read in Excel
+        #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
+
+    ######### GENERATE PLOTS
+    ### Domestic Content via JEDI Model for Baseline Scenario
+    # looped plots for jobs
+    f1 = floatPipeline['Nacelle']
+    f2 = floatPipeline['Rotor Blades']
+    f3 = floatPipeline['Towers']
+    f4 = floatPipeline['Floating (turbine)']
+    f5 = floatPipeline['Floating (floating OSS)']
+    f6 = floatPipeline['Floating OSS Topside']
+    f7 = floatPipeline['Array Cable']
+    f8 = floatPipeline['Export Cable']
+
+    scenario_plots_WC = {
+        'Nacelle': {
+            'data': [f1['25domWC_UNC'], f1['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 7000
+        },
+        'Rotor Blades': {
+            'data': [f2['25domWC_UNC'], f2['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 1500
+        },
+        'Towers': {
+            'data': [f3['25domWC_UNC'], f3['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 2000
+        },
+        'Floating (turbine)': {
+            'data': [f4['25domWC_UNC'], f4['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 12000
+        },
+        'Floating (floating OSS)': {
+            'data': [f5['25domWC_UNC'], f5['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 400
+        },
+        'Floating OSS Topside': {
+            'data': [f6['25domWC_UNC'], f6['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 23
+        },
+        'Array Cable': {
+            'data': [f7['25domWC_UNC'], f7['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 700
+        },
+        'Export Cable': {
+            'data': [f8['25domWC_UNC'], f8['100domWC_UNC']],
+            'colors': [colors_list['ctv'], colors_list['tugs']],
+            'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
+            'lines': ['dashed','solid'],
+            'yvalmax': 1500
+        }
+    }
+    for k, v in scenario_plots_WC.items():
+        plot_name = 'Figs/WC_UNC_JobRequirements_'+ k
+        pr.line_plots2(yrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])

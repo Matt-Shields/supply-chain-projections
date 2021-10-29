@@ -66,7 +66,7 @@ DNV_indices_WC = {
     '2022col': 2,
 }
 
-Jobs_indices = {
+Jobs_indices = { #east coast job indicies
     'yr': 0,
     '25domEC_UNC': 1,
     '100domEC_UNC': 2,
@@ -95,7 +95,20 @@ Jobs_indices = {
     '2021col': 1,
 }
 
-EC_WC_indicies = {
+Jobs_indices_WC = { #west coast job indicies
+    'yr': 0,
+    '25domWC_UNC': 1,
+    '100domWC_UNC': 2,
+    '25totWC_UNC': 21,
+    '25dirWC_UNC': 22,
+    '25indWC_UNC': 23,
+    '100totWC_UNC': 24,
+    '100dirWC_UNC': 25,
+    '100indWC_UNC': 26,
+    '2021col': 1,
+}
+
+EC_WC_indicies = { #east coast + west coast job indicies for ttoal workforce demand
     'yr': 0,
     '2021col': 1,
     '25demandEC_UNC': 0,
@@ -105,6 +118,28 @@ EC_WC_indicies = {
     '25demandTot_UNC': 14,
     '100demandTot_UNC': 17
 }
+
+EC_indicies = {
+    'yr': 0,
+    '2021col': 1,
+    '25demandEC_LOW': 33,
+    '100demandEC_LOW': 36,
+    '25demandEC_MED': 63,
+    '100demandEC_MED': 66,
+    '25demandEC_HIGH': 95,
+    '100demandEC_HIGH': 98
+}
+
+GDP_indicies = {
+    '2021col': 1,
+    '25GDP_EC_UNC': 0,
+    '100GDP_EC_UNC': 3,
+    '25GDP_WC_UNC': 7,
+    '100GDP_WC_UNC': 10,
+    '25GDP_tot_UNC': 14,
+    '100GDP_tot_UNC': 17
+}
+
 colors_list = {
     'fixed': '#0B5E90',
     'float': '#00A4E4',
@@ -272,4 +307,63 @@ def read_varsTot(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=EC_WC_i
             }
     return _outTot
 
+def read_varsEC(file, sheet, xrange, header=2, cols='B:Q', rows=150, ind=EC_indicies):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    _25demandEC_LOW = df.iloc[ind['25demandEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_LOW = df.iloc[ind['100demandEC_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25demandEC_MED = df.iloc[ind['25demandEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_MED = df.iloc[ind['100demandEC_MED'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25demandEC_HIGH = df.iloc[ind['25demandEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandEC_HIGH = df.iloc[ind['100demandEC_HIGH'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _outTotEC = {
+            '25demandEC_LOW': _25demandEC_LOW,
+            '100demandEC_LOW': _100demandEC_LOW,
+            '25demandEC_MED': _25demandEC_MED,
+            '100demandEC_MED': _100demandEC_MED,
+            '25demandEC_HIGH': _25demandEC_HIGH,
+            '100demandEC_HIGH': _100demandEC_HIGH
+            }
+    return _outTotEC
+
 #ignore 50%, 75%, and MED scenerios
+def read_jobvars_WC(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_indices_WC):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    # Extract all required variables as numpy arrays
+    _25domWC_UNC = df.iloc[ind['25domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100domWC_UNC = df.iloc[ind['100domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25totWC_UNC = df.iloc[ind['25totWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25dirWC_UNC = df.iloc[ind['25dirWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25indWC_UNC = df.iloc[ind['25indWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100totWC_UNC = df.iloc[ind['100totWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100dirWC_UNC = df.iloc[ind['100dirWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100indWC_UNC = df.iloc[ind['100indWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _outjobsWC = {
+            '25domWC_UNC' : _25domWC_UNC,
+            '100domWC_UNC': _100domWC_UNC,
+            '25totWC_UNC': _25totWC_UNC,
+            '25dirWC_UNC':_25dirWC_UNC,
+            '25indWC_UNC':_25indWC_UNC,
+            '100totWC_UNC':_100totWC_UNC,
+            '100dirWC_UNC':_100dirWC_UNC,
+            '100indWC_UNC':_100indWC_UNC,
+        }
+    return _outjobsWC
+
+def read_varsGDP(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=GDP_indicies):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    _25GDP_EC_UN = df.iloc[ind['25GDP_EC_UN'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100GDP_EC_UNC = df.iloc[ind['100GDP_EC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25GDP_WC_UNC = df.iloc[ind['25GDP_WC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100GDP_WC_UNC = df.iloc[ind['100GDP_WC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25GDP_tot_UNC = df.iloc[ind['25GDP_tot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100GDP_tot_UNC = df.iloc[ind['100GDP_tot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _outGDP = {
+            '25GDP_EC_UNC': _25GDP_EC_UNC,
+            '100GDP_EC_UNC': _100GDP_EC_UNC,
+            '25GDP_WC_UNC': _25GDP_WC_UNC,
+            '100GDP_WC_UNC': _100GDP_WC_UNC,
+            '25GDP_tot_UNC': _25GDP_tot_UNC,
+            '100GDP_tot_UNC': _100GDP_tot_UNC
+            }
+
+    return _outGDP

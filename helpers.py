@@ -159,7 +159,14 @@ colors_list = {
     'monopiles': '#282D30',
     'jackets': 'lightsalmon',
     'gbfs': '#8CC63F',
-    'semis': '#5DD2FF'
+    'semis': '#5DD2FF',
+    'rotors':'firebrick',
+    'towers':'rebeccapurple',
+    'transp': 'darkorange',
+    'jackt_t':'navy',
+    'subt':'indigo',
+
+
 }
 
 def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indices_EC, ind_WC=DNV_indices_WC):

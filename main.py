@@ -116,8 +116,13 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/baseline_component_' + k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                  myylabel=v['ylabel'], myy2label='Cumulative ' +v['ylabel'])
+        if 'Vessel' in k:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                      cumulative_line=False)
+        else:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # Significant supply chain constraints
     y1 = pipeline['EC-HIGH']
@@ -151,8 +156,13 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/constrained_high_component_'+ k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
+        if 'Vessel' in k:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                      cumulative_line=False)
+        else:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # Moderate supply chain constraints
     y1 = pipeline['EC-LOW']
@@ -186,8 +196,13 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/constrained_low_component_'+ k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
+        if 'Vessel' in k:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                      cumulative_line=False)
+        else:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # Expanded pipeline
     y1 = expand_install_fixed
@@ -221,8 +236,13 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/expanded_component_'+ k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                  myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
+        if 'Vessel' in k:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                      cumulative_line=False)
+        else:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
     # GBF market share
     y1 = pipeline['GBF-UNC']
@@ -257,7 +277,11 @@ if __name__ == '__main__':
 
     for k, v in component_plots.items():
         plot_name = 'Figs/uniform_found_component_'+ k
-        pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+        if 'Vessel' in k:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'], cumulative_line=False)
+        else:
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
                                   myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
 

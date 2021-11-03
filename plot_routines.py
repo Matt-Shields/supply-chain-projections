@@ -158,6 +158,7 @@ def stacked_bar_cumulative(x, y_zip,
     xticks=x
     xv = [x.min(), x.max() + 1]
     axL.set_xticks(xticks)
+
     axL.set_xticklabels([str(m) for m in xticks], rotation=90)
     axL.set_xlabel(myxlabel)
     axL.set_ylabel(myylabel)

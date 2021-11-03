@@ -314,6 +314,17 @@ if __name__ == '__main__':
     }
     scenario_plots = {
 
+        '25JobPlots': {
+        'data_25':[p1['25domEC_UNC'], p2['25domEC_UNC'], p3['25domEC_UNC'], p4['25domEC_UNC'], p5['25domEC_UNC'], p6['25domEC_UNC'], p7['25domEC_UNC'],
+            p8['25domEC_UNC'], p9['25domEC_UNC'], p10['25domEC_UNC'], p11['25domEC_UNC']],
+        'colors_25': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'], colors_list['transp'], colors_list['jacket_t'],
+            colors_list['gbfs'], colors_list['jackets'], colors_list['subt'], colors_list['static_array'], colors_list['static_export']],
+        'names_25': ['25% Domestic Content, Nacelle Baseline Scenario', '25% Domestic Content, Rotor Blades Baseline Scenario', '25% Domestic Content, Towers Baseline Scenario', '25% Domestic Content, Monopiles Baseline Scenario',
+            '25% Domestic Content, Transition Piece Baseline Scenario', '25% Domestic Content, Jacket (For Turbine) Baseline Scenario', '25% Domestic Content, GBF Baseline Scenario', '25% Domestic Content, Jacket (For Substation) Baseline Scenario',
+            '25% Domestic Content, Substation (Topside) Baseline Scenario', '25% Domestic Content, Array Cable Baseline Scenario'],
+
+        }
+
         'Nacelle': {
             'data': [p1['25domEC_UNC'], p1['100domEC_UNC']],
             'data_lh': [p1['25domEC_LOW'], p1['100domEC_LOW'], p1['25domEC_HIGH'], p1['100domEC_HIGH']],
@@ -543,11 +554,11 @@ if __name__ == '__main__':
 
     ###Area plot for Baseline Scenario East Coast Components
     ##Area plot 25% domestic content
-    for v in scenario_plots.items():
+    for k, v in scenario_plots.items():
         plot_name = 'Figs/25Percent_Fixed_JobRequirements'
         pr.area_plotsv2(dateYrs, zip(v['data25'], v['colors_25_100'], v['lines25'], v['names_25']), fname=plot_name)
     ##ARea plot 100% domestic content
-    for v in scenario_plots.items():
+    for k, v in scenario_plots.items():
         plot_name = 'Figs/100Percent_Fixed_JobRequirements'
         pr.area_plotsv2(dateYrs, zip(v['data100'], v['colors_25_100'], v['lines100'], v['names_100']), fname=plot_name)
 

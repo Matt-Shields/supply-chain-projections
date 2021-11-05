@@ -117,7 +117,7 @@ def initFigAxis():
     ax = fig.add_subplot(111)
     return fig, ax
 
-
+##Moser TODO: plot vessel EC & WC baseline scenarios w/o cumulative line
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
                            width=None, order=1, single=True, cumulative_line=True,
@@ -402,10 +402,10 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title=None, myylabel='Jobs, Full 
     leglist = []
     hand = []
     ht = []
-    for y, c, l, n in y_zip:
+    for y, c, n in y_zip:
         yPlot = yBase + y
-        ax.plot(x,yPlot, 'k')
-        ax.fill_between(x, list(yBase), list(yPlot), color=c, linestyle=l, alpha=0.5, label=n)
+        ax.plot(x,yPlot, 'k', linewidth = 0.9)
+        ax.fill_between(x, list(yBase), list(yPlot), color=c, alpha=0.5, label=n)
     # #     # leglist.append(Rectangle((0, 0), 1, 1, color=colors[i]))  # creates rectangle patch for legend use.
     # #     # if legpos == 'text':
     # #     #     ht.append(ax.text(2041, (0.1 * (yPlot - yBase) + yBase)[i2040], labels[i], color=colors[-1]))
@@ -418,6 +418,9 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title=None, myylabel='Jobs, Full 
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+    ax.set_title(title)
+    ax.legend(loc='center left', bbox_to_anchor=(1.04, 0.7),
+          fancybox=True, shadow=True, ncol=1)
 
     if fname:
         myformat(ax)

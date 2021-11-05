@@ -180,7 +180,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=56, ind=DNV_indic
     _turb18MW = df.iloc[ind['turb18MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
-    # _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
+    # _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy() ##TODO: probably going to need a separate call for the different berths
     if 'WC' in sheet:
         # Floating
         _semiTurb = df.iloc[ind_WC['semiTurb'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()

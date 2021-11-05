@@ -395,7 +395,7 @@ def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', 
 
     return ax
 
-def area_plotsv2(x, y_zip, fname, ymax = None, title=None, myylabel='Jobs, Full Time Equivalents', myxlabel='Year'):
+def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Baseline Scenario', myylabel='Jobs, Full Time Equivalents', myxlabel='Year'):
     fig, ax = initFigAxis()
 
     yBase = np.zeros(len(x))
@@ -404,7 +404,7 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title=None, myylabel='Jobs, Full 
     ht = []
     for y, c, n in y_zip:
         yPlot = yBase + y
-        ax.plot(x,yPlot, 'k', linewidth = 0.9)
+        ax.plot(x,yPlot, 'k', linewidth = 0.5)
         ax.fill_between(x, list(yBase), list(yPlot), color=c, alpha=0.5, label=n)
     # #     # leglist.append(Rectangle((0, 0), 1, 1, color=colors[i]))  # creates rectangle patch for legend use.
     # #     # if legpos == 'text':

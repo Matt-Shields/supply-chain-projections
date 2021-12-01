@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Define input spreadsheet
-    DNV_gantt = 'DNV_pipelines_v2.xlsm'
+    DNV_gantt = 'DNV_pipelines_v3_expand.xlsm'
     # Define scenarios to plot
-    scenarios = ['EC-UNC', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC']
+    scenarios = ['EC-UNC', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC', 'EC-ACCEL','WC-ACCEL']
     # Define date range
     CODstart = 2022
     CODend = 2035
@@ -66,6 +66,13 @@ if __name__ == '__main__':
     yvals_expand = [expand_install_fixed['installMW'], expand_install_float['installMW']]
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_expand, colors, names), fname='Figs/expanded_installedMW', y1max=10000)
+
+    # Updated expanded leasing scenarios
+    yvals_exp2 = [pipeline['EC-UNC']['installMW'], pipeline['WC-UNC']['installMW'], pipeline['EC-ACCEL']['installMW'], pipeline['WC-ACCEL']['installMW']]
+    colors_exp2 = [colors_list['fixed'], colors_list['float'],colors_list['expand_fix'], colors_list['expand_float']]
+    names_exp2 = ['Fixed bottom', 'Floating', 'Expanded fixed bottom leasing', 'Expanded floating leasing']
+
+    pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/expanded2_installedMW', y1max=10000, y2max=40000)
 
     ### Number of projects and installation vessels
     yvals_proj = [pipeline['EC-UNC']['projects'], pipeline['WC-UNC']['projects']]

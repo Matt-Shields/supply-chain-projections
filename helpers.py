@@ -143,6 +143,8 @@ GDP_indicies = {
 colors_list = {
     'fixed': '#0B5E90',
     'float': '#00A4E4',
+    'expand_fix': '#3D6321',
+    'expand_float': '#5D9732',
     'wtiv':'#F7A11A',
     'barge': '#5D9732',
     'clv': '#933C06',

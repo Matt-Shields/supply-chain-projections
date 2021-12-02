@@ -264,7 +264,7 @@ def stacked_bar_line(x, y_bar_zip, y_line_zip,
         plt.close()
 
     return axL, axR
-#TODO: component timeline domestic content scneraios #1
+
 def line_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
     fig, ax = initFigAxis()
 

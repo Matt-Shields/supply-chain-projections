@@ -107,9 +107,9 @@ if __name__ == '__main__':
             'ylabel': 'Length of Cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts'], y1['berths']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts'], colors_list['berths']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS', 'Berths'],
             'ylabel': 'Number of Vessels'
         }
     }
@@ -123,6 +123,11 @@ if __name__ == '__main__':
         else:
             pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
                                       myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
+
+    ###Baseline vessels
+    #y1 = pipeline['EC-UNC']
+    #y2 = pipeline['WC-UNC']
+
 
     # Significant supply chain constraints
     y1 = pipeline['EC-HIGH']

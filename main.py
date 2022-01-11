@@ -44,17 +44,13 @@ if __name__ == '__main__':
     pr.stacked_bar_cumulative(COD_years, zip(yvals_constr_low, colors, names), fname='Figs/constrained_installedMW_low',
                               y1max=10000, y2max=40000)
 
-    # Constant throughput after 2029
+    # Expanded leasing baseline
     # Extend out baseline scenarios
     max_ind_fixed = 7  # 2028 - max fixed deployment
     max_ind_float = 8  # 2029 - max floating deployment
     num_repeat_fixed = len(COD_years) - max_ind_fixed
     num_repeat_float = len(COD_years) - max_ind_float
 
-    # expand_install_fixed = np.concatenate([pipeline['EC-UNCONSTR']['installMW'][0:max_ind_fixed],
-    #                                        np.repeat(pipeline['EC-UNCONSTR']['installMW'][max_ind_fixed-1], num_repeat_fixed)])
-    # expand_install_float = np.concatenate([pipeline['WC-UNC']['installMW'][0:max_ind_float],
-    #                                        np.repeat(pipeline['WC-UNC']['installMW'][max_ind_float-1], num_repeat_float)])
     expand_install_fixed = {}
     expand_install_float = {}
     for k,v in pipeline['EC-UNC'].items():
@@ -114,9 +110,9 @@ if __name__ == '__main__':
             'ylabel': 'Length of Cable, km'
         },
         'Vessels':{
-            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts'], y1['berths']],
-            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts'], colors_list['berths']],
-            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS', 'Berths'],
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
             'ylabel': 'Number of Vessels'
         }
     }
@@ -296,12 +292,28 @@ if __name__ == '__main__':
             pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
                                   myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'])
 
+    ## Berths and laydown area
+    # y_EC_berth = pipeline['EC-UNC']
+    # y_WC_berth = pipeline['WC-UNC']
+
+    yvals_berths = [pipeline['EC-UNC']['berths']]
+    colors_berths = [colors_list['fixed']]
+    names_berths = ['Fixed bottom']
+
+    pr.stacked_bar_cumulative(COD_years, zip(yvals_berths, colors_berths, names_berths), fname='Figs/berths',
+                              cumulative_line=False)
 
     #JEDI - Varied Scenarios graphs
 
     JEDI_pipeline = 'All Scenarios_Varied LC_Jobs.xlsx' #Define input spreadsheet
+    JEDI_floating_pipeline = 'WC_Varied LC_Jobs.xlsx'
 
-    scenarios_JEDI = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece', 'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
+    scenarios_JEDI = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
+                      'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
+                      'Export Cable'] #Define sheet to pull from to plot scenarios
+    scenarios_JEDI_floating = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (turbine)', 'Floating (floating OSS)',
+                      'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
+
     #data start and end dates
     dateStart = 2021
     dateEnd = 2035 #2035? - check w/ matt or jeremy
@@ -310,14 +322,19 @@ if __name__ == '__main__':
     #loop through scenarios
     EC_jobs_LH = {}
     jobsPipeline = {}
+    jobsPipeline_floating = {}
     for s in scenarios_JEDI:
         jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
         EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
+    for s in scenarios_JEDI_floating:
+        jobsPipeline_floating[s] = read_jobvars_WC(file=JEDI_floating_pipeline, sheet=s, xrange=dateYrs)  # read in Excel
 
+    # print(jobsPipeline_floating)
     ######### GENERATE PLOTS
     ### Domestic Content via JEDI Model for Baseline Scenario
     # looped plots for jobs
+    # East coast
     p0 = EC_jobs_LH['Scenarios']
     p1 = jobsPipeline['Nacelle']
     p2 = jobsPipeline['Rotor Blades']
@@ -330,6 +347,17 @@ if __name__ == '__main__':
     p9 = jobsPipeline['Substation (Topside)']
     p10 = jobsPipeline['Array Cable']
     p11 = jobsPipeline['Export Cable']
+
+    # West Cast
+    # p0 = EC_jobs_LH['Scenarios']
+    p1_fl = jobsPipeline_floating['Nacelle']
+    p2_fl = jobsPipeline_floating['Rotor Blades']
+    p3_fl = jobsPipeline_floating['Towers']
+    p4_fl = jobsPipeline_floating['Floating (turbine)']
+    p5_fl = jobsPipeline_floating['Floating (floating OSS)']
+    p6_fl = jobsPipeline_floating['Floating OSS Topside']
+    p7_fl = jobsPipeline_floating['Array Cable']
+    p8_fl = jobsPipeline_floating['Export Cable']
 
     scenario_plots_LH = {
         'Low_Scenario': {
@@ -353,7 +381,7 @@ if __name__ == '__main__':
 
         'JobPlots100': {
             'data':[p1['100domEC_UNC'], p2['100domEC_UNC'], p3['100domEC_UNC'], p4['100domEC_UNC'], p5['100domEC_UNC'], p6['100domEC_UNC'], p7['100domEC_UNC'], p8['100domEC_UNC'], p9['100domEC_UNC'], p10['100domEC_UNC'], p11['100domEC_UNC']],
-            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'], colors_list['transp'], colors_list['jackt_t'], colors_list['gbfs'], colors_list['jackets'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
+            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'], colors_list['transp'], colors_list['jackt_t'], colors_list['gbfs'], colors_list['jackets'], colors_list['subt'], colors_list['static_array'], colors_list['static_export']],
             'names': ['Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece', 'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable', 'Export Cable']
             #'names_100': ['100% Domestic Content, Nacelle Baseline Scenario', '100% Domestic Content, Rotor Blades Baseline Scenario', '100% Domestic Content, Towers Baseline Scenario', '100% Domestic Content, Monopiles Baseline Scenario',
                 #'100% Domestic Content, Transition Piece Baseline Scenario', '100% Domestic Content, Jacket (For Turbine) Baseline Scenario', '100% Domestic Content, GBF Baseline Scenario', '100% Domestic Content, Jacket (For Substation) Baseline Scenario',
@@ -361,11 +389,37 @@ if __name__ == '__main__':
         },
         'JobPlots25': {
             'data':[p1['25domEC_UNC'], p2['25domEC_UNC'], p3['25domEC_UNC'], p4['25domEC_UNC'], p5['25domEC_UNC'], p6['25domEC_UNC'], p7['25domEC_UNC'], p8['25domEC_UNC'], p9['25domEC_UNC'], p10['25domEC_UNC'], p11['25domEC_UNC']],
-            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'], colors_list['transp'], colors_list['jackt_t'], colors_list['gbfs'], colors_list['jackets'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
+            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'], colors_list['transp'], colors_list['jackt_t'], colors_list['gbfs'], colors_list['jackets'], colors_list['subt'], colors_list['static_array'], colors_list['static_export']],
             'names': ['Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece', 'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable', 'Export Cable' ]
             #'names_25': ['25% Domestic Content, Nacelle Baseline Scenario', '25% Domestic Content, Rotor Blades Baseline Scenario', '25% Domestic Content, Towers Baseline Scenario', '25% Domestic Content, Monopiles Baseline Scenario',
                 #'25% Domestic Content, Transition Piece Baseline Scenario', '25% Domestic Content, Jacket (For Turbine) Baseline Scenario', '25% Domestic Content, GBF Baseline Scenario', '25% Domestic Content, Jacket (For Substation) Baseline Scenario',
                 #'25% Domestic Content, Substation (Topside) Baseline Scenario', '25% Domestic Content, Array Cable Baseline Scenario', '25% Domestic Content, Export Cable Baseline Scenario']
+        }
+    }
+
+    workforce_plots_floating = {
+
+        'JobPlots100': {
+            'data': [p1_fl['100domWC_UNC'], p2_fl['100domWC_UNC'], p3_fl['100domWC_UNC'], p4_fl['100domWC_UNC'], p5_fl['100domWC_UNC'],
+                     p6_fl['100domWC_UNC'], p7_fl['100domWC_UNC'], p8_fl['100domWC_UNC']],
+            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'],
+                       colors_list['transp'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
+            'names': ['Nacelle', 'Rotor Blades', 'Towers', 'Floating Platform', 'Floating OSS Platform', 'Floating OSS Topside',
+                      'Dynamic Array Cable', 'Dynamic Export Cable']
+            # 'names_100': ['100% Domestic Content, Nacelle Baseline Scenario', '100% Domestic Content, Rotor Blades Baseline Scenario', '100% Domestic Content, Towers Baseline Scenario', '100% Domestic Content, Monopiles Baseline Scenario',
+            # '100% Domestic Content, Transition Piece Baseline Scenario', '100% Domestic Content, Jacket (For Turbine) Baseline Scenario', '100% Domestic Content, GBF Baseline Scenario', '100% Domestic Content, Jacket (For Substation) Baseline Scenario',
+            # '100% Domestic Content, Substation (Topside) Baseline Scenario', '100% Domestic Content, Array Cable Baseline Scenario', '100% Domestic Content, Export Cable Baseline Scenario']
+        },
+        'JobPlots25': {
+            'data': [p1_fl['25domWC_UNC'], p2_fl['25domWC_UNC'], p3_fl['25domWC_UNC'], p4_fl['25domWC_UNC'], p5_fl['25domWC_UNC'],
+                     p6_fl['25domWC_UNC'], p7_fl['25domWC_UNC'], p8_fl['25domWC_UNC']],
+            'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'],
+                       colors_list['transp'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
+            'names': ['Nacelle', 'Rotor Blades', 'Towers', 'Floating Platform', 'Floating OSS Platform', 'Floating OSS Topside',
+                      'Dynamic Array Cable', 'Dynamic Export Cable']
+            # 'names_25': ['25% Domestic Content, Nacelle Baseline Scenario', '25% Domestic Content, Rotor Blades Baseline Scenario', '25% Domestic Content, Towers Baseline Scenario', '25% Domestic Content, Monopiles Baseline Scenario',
+            # '25% Domestic Content, Transition Piece Baseline Scenario', '25% Domestic Content, Jacket (For Turbine) Baseline Scenario', '25% Domestic Content, GBF Baseline Scenario', '25% Domestic Content, Jacket (For Substation) Baseline Scenario',
+            # '25% Domestic Content, Substation (Topside) Baseline Scenario', '25% Domestic Content, Array Cable Baseline Scenario', '25% Domestic Content, Export Cable Baseline Scenario']
         }
     }
 
@@ -376,6 +430,9 @@ if __name__ == '__main__':
         plot_name = 'Figs/Fixed_JobRequirements_' + k
         pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), fname=plot_name)
 
+    for k, v in workforce_plots_floating.items():
+        plot_name = 'Figs/Floating_JobRequirements_' + k
+        pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), fname=plot_name)
 
     scenario_plots = {
 

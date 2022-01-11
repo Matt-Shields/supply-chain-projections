@@ -418,7 +418,7 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Bas
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
-    ax.set_title(title)
+    # ax.set_title(title)
     ax.legend(loc='center left', bbox_to_anchor=(1.04, 0.7),
           fancybox=True, shadow=True, ncol=1)
 

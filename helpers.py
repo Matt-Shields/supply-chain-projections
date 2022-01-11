@@ -183,6 +183,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
     _turb18MW = df.iloc[ind['turb18MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy() ##TODO: probably going to need a separate call for the different berths
+
     if 'WC' in sheet:
         # Floating
         _semiTurb = df.iloc[ind_WC['semiTurb'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
@@ -194,7 +195,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
         _ahts = df.iloc[ind_WC['ahts'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _ctv = df.iloc[ind_WC['ctv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _clv = df.iloc[ind_WC['clv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
-        #_berths = df.iloc[ind_WC['berths'], ind_WC['2022col']:ind_WC['2022col']+len(xrange)].to_numpy()
+        #
         _out = {
                 'installMW': _installMW,
                 'projects': _projects,
@@ -211,7 +212,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'ahts': _ahts,
                 'ctv': _ctv,
                 'clv': _clv,
-                'berths': _berths,
+                # 'berths': _berths,
             }
     else:
         _monopiles = df.iloc[ind['monopiles'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
@@ -244,6 +245,14 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'clv': _clv,
                 #'berths': _berths,
             }
+
+    if sheet == 'EC-UNC':
+        _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _out['berths'] = _berths
+    elif sheet == 'WC-UNC':
+        _berths = df.iloc[ind_WC['berths'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _out['berths'] = _berths
+
     return _out
 
 #ignore 50%, 75%, and MED scenerios
@@ -341,6 +350,7 @@ def read_varsEC(file, sheet, xrange, header=2, cols='B:Q', rows=150, ind=EC_indi
 #ignore 50%, 75%, and MED scenerios
 def read_jobvars_WC(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_indices_WC):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    df = df.fillna(0)
     # Extract all required variables as numpy arrays
     _25domWC_UNC = df.iloc[ind['25domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100domWC_UNC = df.iloc[ind['100domWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()

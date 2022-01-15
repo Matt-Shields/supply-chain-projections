@@ -40,9 +40,10 @@ DNV_indices_EC = {
     'wtiv': 43,
     'barge': 46,
     'ctv': 47,
-    'clv': 48,
-    'berths': 53,
-    'laydown': 54,
+    'sov': 48,
+    'clv': 49,
+    'berths': 54,
+    'laydown': 55,
     '2022col': 2,
 }
 
@@ -60,9 +61,10 @@ DNV_indices_WC = {
     'tugs': 37,
     'ahts': 38,
     'ctv': 40,
-    'clv': 41,
-    'berths': 45,
-    'laydown': 46,
+    'sov': 41,
+    'clv': 42,
+    'berths': 46,
+    'laydown': 47,
     '2022col': 2,
 }
 
@@ -151,6 +153,7 @@ colors_list = {
     'ctv': '#5E6A71',
     'tugs': 'k',
     'ahts': 'g',
+    'sov': 'lightseagreen',
     '12MW': 'orange',
     '15MW': 'blue',
     '18MW': 'seagreen',
@@ -195,6 +198,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
         _ahts = df.iloc[ind_WC['ahts'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _ctv = df.iloc[ind_WC['ctv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _clv = df.iloc[ind_WC['clv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _sov = df.iloc[ind_WC['sov'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         #
         _out = {
                 'installMW': _installMW,
@@ -212,6 +216,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'ahts': _ahts,
                 'ctv': _ctv,
                 'clv': _clv,
+                'sov': _sov,
                 # 'berths': _berths,
             }
     else:
@@ -224,6 +229,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
         _export = df.iloc[ind['export'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _ctv = df.iloc[ind['ctv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _clv = df.iloc[ind['clv'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
+        _sov = df.iloc[ind['sov'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         #_berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
         _out = {
                 'installMW': _installMW,
@@ -243,6 +249,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'barge': _barge,
                 'ctv': _ctv,
                 'clv': _clv,
+                'sov': _sov
                 #'berths': _berths,
             }
 

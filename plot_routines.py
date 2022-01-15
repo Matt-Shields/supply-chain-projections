@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from matplotlib.patches import Rectangle
 import matplotlib.cm as cm
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.text as txt
 import os
@@ -162,6 +163,8 @@ def stacked_bar_cumulative(x, y_zip,
     axL.set_xticklabels([str(m) for m in xticks], rotation=90)
     axL.set_xlabel(myxlabel)
     axL.set_ylabel(myylabel)
+    axL.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     # axL.grid()
     # yv = np.array( axL.get_ylim() )
@@ -170,6 +173,8 @@ def stacked_bar_cumulative(x, y_zip,
         axR.set_xlim(xv)
         axR.set_ylabel(myy2label)
         axR.set_ylim([0, y2max])
+        axR.get_yaxis().set_major_formatter(
+            mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     if single == True:
         axL.legend(loc='upper left')
@@ -310,6 +315,8 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     if fname:
         myformat(ax)
@@ -335,7 +342,9 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
-    ax.set_title(title)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+    # ax.set_title(title)
 
     if fname:
         myformat(ax)
@@ -361,6 +370,8 @@ def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalent
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     if fname:
         myformat(ax)
@@ -386,7 +397,9 @@ def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', 
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
-    ax.set_title(title)
+    # ax.set_title(title)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     if fname:
         myformat(ax)
@@ -418,6 +431,8 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Bas
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+    ax.get_yaxis().set_major_formatter(
+        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
     # ax.set_title(title)
     ax.legend(loc='center left', bbox_to_anchor=(1.04, 0.7),
           fancybox=True, shadow=True, ncol=1)

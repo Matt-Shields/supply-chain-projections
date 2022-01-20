@@ -153,16 +153,16 @@ colors_list = {
     'ctv': '#5E6A71',
     'tugs': 'k',
     'ahts': 'g',
-    'sov': 'lightseagreen',
+    'sov': 'mediumaquamarine',
     '12MW': 'orange',
     '15MW': 'blue',
     '18MW': 'seagreen',
-    'static_array': 'olive',
+    'static_array': 'darkkhaki',
     'static_export': 'steelblue',
     'dynamic_array': 'maroon',
     'dynamic_export': 'darkviolet',
     'monopiles': '#282D30',
-    'jackets': 'lightsalmon',
+    'jackets': 'orangered',
     'gbfs': '#8CC63F',
     'semis': '#5DD2FF',
     'rotors':'firebrick',
@@ -187,7 +187,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy() ##TODO: probably going to need a separate call for the different berths
 
-    if 'WC' in sheet:
+    if 'WC' in sheet or 'FLOAT' in sheet:
         # Floating
         _semiTurb = df.iloc[ind_WC['semiTurb'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _semiOSS = df.iloc[ind_WC['semiOSS'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()

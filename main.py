@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Define input spreadsheet
-    DNV_gantt = 'DNV_expanded_pipeline.xlsx'
+    DNV_gantt = 'US OSW EC-WC Pipeline Gantt Charts 20220119.xlsm'
     # Define scenarios to plot
-    scenarios = ['EC-UNC', 'WC-UNC', 'EC-HIGH', 'EC-LOW', 'GBF-UNC', 'FIX-EX','FLOAT-EX']
+    scenarios = ['EC-known', 'WC-known', 'EC-HIGH', 'EC-LOW', 'GBF-UNC', 'ALL-MONO', 'FIX-EX','FLOAT-EX']
     # Define date range
     CODstart = 2022
     CODend = 2035
@@ -37,7 +37,7 @@ if __name__ == '__main__':
     y1max_vessels = 150
 
     # Baseline
-    yvals = [pipeline['EC-UNC']['installMW'], pipeline['WC-UNC']['installMW']]
+    yvals = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW']]
     colors = [colors_list['fixed'], colors_list['float']]
     names = ['Fixed bottom', 'Floating']
 
@@ -45,13 +45,13 @@ if __name__ == '__main__':
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
     # Significant supply chain constraints
-    yvals_constr = [pipeline['EC-HIGH']['installMW'], pipeline['WC-UNC']['installMW']]
+    yvals_constr = [pipeline['EC-HIGH']['installMW'], pipeline['WC-known']['installMW']]
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_constr, colors, names), fname='Figs/constrained_installedMW_high',
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
     # Moderate supply chain constraints
-    yvals_constr_low = [pipeline['EC-LOW']['installMW'], pipeline['WC-UNC']['installMW']]
+    yvals_constr_low = [pipeline['EC-LOW']['installMW'], pipeline['WC-known']['installMW']]
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_constr_low, colors, names), fname='Figs/constrained_installedMW_low',
                               y1max=y1max_deploy, y2max=y2max_deploy)
@@ -65,10 +65,10 @@ if __name__ == '__main__':
     #
     # expand_install_fixed = {}
     # expand_install_float = {}
-    # for k,v in pipeline['EC-UNC'].items():
+    # for k,v in pipeline['EC-known'].items():
     #     expand_install_fixed[k] = np.concatenate(
     #         [v[0:max_ind_fixed], np.repeat(v[max_ind_fixed-1], num_repeat_fixed)])
-    # for k, v in pipeline['WC-UNC'].items():
+    # for k, v in pipeline['WC-known'].items():
     #     expand_install_float[k] = np.concatenate(
     #         [v[0:max_ind_float], np.repeat(v[max_ind_float - 1], num_repeat_float)])
     # yvals_expand = [expand_install_fixed['installMW'], expand_install_float['installMW']]
@@ -77,19 +77,19 @@ if __name__ == '__main__':
     #                           y1max=y1max_deploy, y2max=y2max_deploy)
 
     # Updated expanded leasing scenarios
-    yvals_exp2 = [pipeline['EC-UNC']['installMW'], pipeline['WC-UNC']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
+    yvals_exp2 = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
     colors_exp2 = [colors_list['fixed'], colors_list['float'],colors_list['expand_fix'], colors_list['expand_float']]
-    names_exp2 = ['Fixed bottom', 'Floating', 'Expanded fixed bottom leasing', 'Expanded floating leasing']
+    names_exp2 = ['Fixed bottom', 'Floating', 'Anticipated fixed bottom leasing', 'Anticipated floating leasing']
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/expanded2_installedMW',
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
     ### Number of projects and installation vessels
-    # yvals_proj = [pipeline['EC-UNC']['projects'], pipeline['WC-UNC']['projects']]
-    # y_vals_wtiv = pipeline['EC-UNC']['wtiv']
-    # y_vals_barge= pipeline['EC-UNC']['barge']
-    # y_vals_clv = pipeline['EC-UNC']['clv'] + pipeline['WC-UNC']['clv']
-    # y_vals_ctv = pipeline['EC-UNC']['ctv'] + pipeline['WC-UNC']['ctv']
+    # yvals_proj = [pipeline['EC-known']['projects'], pipeline['WC-known']['projects']]
+    # y_vals_wtiv = pipeline['EC-known']['wtiv']
+    # y_vals_barge= pipeline['EC-known']['barge']
+    # y_vals_clv = pipeline['EC-known']['clv'] + pipeline['WC-known']['clv']
+    # y_vals_ctv = pipeline['EC-known']['ctv'] + pipeline['WC-known']['ctv']
     #
     # y_vessels = [y_vals_wtiv, y_vals_barge, y_vals_clv, y_vals_ctv]
     # vessel_colors = [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']]
@@ -102,8 +102,8 @@ if __name__ == '__main__':
 
     ### Line plots for individual components
     # Baseline
-    y1 = pipeline['EC-UNC']
-    y2 = pipeline['WC-UNC']
+    y1 = pipeline['EC-known']
+    y2 = pipeline['WC-known']
     y3 = pipeline['FIX-EX']
     y4 = pipeline['FLOAT-EX']
 
@@ -161,13 +161,13 @@ if __name__ == '__main__':
                                       y1max=v['y1max'], y2max=v['y2max'])
 
     ###Baseline vessels
-    #y1 = pipeline['EC-UNC']
-    #y2 = pipeline['WC-UNC']
+    #y1 = pipeline['EC-known']
+    #y2 = pipeline['WC-known']
 
 
     # Significant supply chain constraints
     y1 = pipeline['EC-HIGH']
-    y2 = pipeline['WC-UNC']
+    y2 = pipeline['WC-known']
     # Todo: Add expanded
     component_plots = {
         'Turbines': {
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     # Moderate supply chain constraints
     y1 = pipeline['EC-LOW']
-    y2 = pipeline['WC-UNC']
+    y2 = pipeline['WC-known']
     component_plots = {
         'Turbines': {
                     'data': [y1['turb12MW']+y2['turb12MW'], y1['turb15MW']+y2['turb15MW'], y1['turb18MW']+y2['turb18MW']],
@@ -322,7 +322,7 @@ if __name__ == '__main__':
 
     # GBF market share
     y1 = pipeline['GBF-UNC']
-    y2 = pipeline['WC-UNC']
+    y2 = pipeline['WC-known']
     component_plots = {
         'Turbines': {
             'data': [y1['turb12MW'] + y2['turb12MW'], y1['turb15MW'] + y2['turb15MW'], y1['turb18MW'] + y2['turb18MW']],
@@ -373,12 +373,14 @@ if __name__ == '__main__':
                                       y1max=v['y1max'], y2max=v['y2max'])
 
     ## Berths and laydown area
-    # y_EC_berth = pipeline['EC-UNC']
-    # y_WC_berth = pipeline['WC-UNC']
+    # y_EC_berth = pipeline['EC-known']
+    # y_WC_berth = pipeline['WC-known']
 
-    yvals_berths = [pipeline['EC-UNC']['berths']]
-    colors_berths = [colors_list['fixed']]
-    names_berths = ['Fixed bottom']
+    yvals_berths = [pipeline['EC-known']['berths'] + pipeline['FIX-EX']['berths'],
+                    pipeline['WC-known']['berths'] + pipeline['FLOAT-EX']['berths']
+                    ]
+    colors_berths = [colors_list['fixed'], colors_list['float']]
+    names_berths = ['Fixed bottom', 'Floating']
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_berths, colors_berths, names_berths), fname='Figs/berths',
                               cumulative_line=False)

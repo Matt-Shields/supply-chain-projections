@@ -253,10 +253,10 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 #'berths': _berths,
             }
 
-    if sheet == 'EC-UNC':
+    if sheet == 'EC-known' or sheet == 'FIX-EX':
         _berths = df.iloc[ind['berths'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
         _out['berths'] = _berths
-    elif sheet == 'WC-UNC':
+    elif sheet == 'WC-known' or sheet == 'FLOAT-EX':
         _berths = df.iloc[ind_WC['berths'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _out['berths'] = _berths
 

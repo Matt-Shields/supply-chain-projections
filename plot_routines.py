@@ -36,6 +36,7 @@ tickLabelSize = 18  # 30 #28
 legendSize = tickLabelSize + 2
 textSize = legendSize - 2
 deltaShow = 4
+linewidth = 4
 
 
 def myformat(ax, mode='save'):
@@ -50,7 +51,7 @@ def myformat(ax, mode='save'):
 
             for i in myax.get_lines():
                 if i.get_marker() == 'D': continue  # Don't modify baseline diamond
-                i.set_linewidth(4)
+                i.set_linewidth(linewidth)
                 # i.set_markeredgewidth(4)
                 i.set_markersize(10)
 
@@ -82,7 +83,7 @@ def myformat(ax, mode='save'):
 
             for i in myax.get_lines():
                 if i.get_marker() == 'D': continue  # Don't modify baseline diamond
-                i.set_linewidth(4)
+                i.set_linewidth(linewidth)
                 # i.set_markeredgewidth(4)
                 i.set_markersize(10)
 
@@ -118,7 +119,6 @@ def initFigAxis():
     ax = fig.add_subplot(111)
     return fig, ax
 
-##Moser TODO: plot vessel EC & WC baseline scenarios w/o cumulative line
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
                            width=None, order=1, single=True, cumulative_line=True,
@@ -417,7 +417,7 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Bas
     ht = []
     for y, c, n in y_zip:
         yPlot = yBase + y
-        ax.plot(x,yPlot, 'k', linewidth = 0.5)
+        ax.plot(x,yPlot, 'k')
         ax.fill_between(x, list(yBase), list(yPlot), color=c, alpha=0.5, label=n)
     # #     # leglist.append(Rectangle((0, 0), 1, 1, color=colors[i]))  # creates rectangle patch for legend use.
     # #     # if legpos == 'text':
@@ -431,6 +431,10 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Bas
     ax.set_xticklabels([str(m) for m in xticks], rotation=90)
     ax.set_xlabel(myxlabel)
     ax.set_ylabel(myylabel)
+
+    if ymax:
+        ax.set_ylim([0, ymax])
+
     ax.get_yaxis().set_major_formatter(
         mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
     # ax.set_title(title)

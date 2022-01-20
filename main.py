@@ -3,7 +3,8 @@
 import numpy as np
 import pandas as pd
 import plot_routines as pr
-from helpers import group_rows, read_vars, read_jobvars, read_varsTot, read_jobvars_WC, colors_list, read_varsEC, read_varsGDP
+from helpers import group_rows, read_vars, read_component_jobvars, read_varsTot, read_jobvars_WC, \
+    colors_list, read_varsEC, read_varsGDP
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -389,12 +390,16 @@ if __name__ == '__main__':
 
     JEDI_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' # Define input spreadsheet - total jobs + fixed bottom component jobs
     JEDI_floating_pipeline = 'WC-UNC.xlsx' # floating component jobs
+    JEDI_constrained_pipeline = 'EC-UNC Constraints.xlsx' # Constrained East Coast deployment
 
     scenarios_JEDI = ['Total-Expand Scenario', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
                       'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
                       'Export Cable'] #Define sheet to pull from to plot scenarios
     scenarios_JEDI_floating = ['WC Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (semisubmersible)', 'Floating (floating OSS)',
                       'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
+    scenarios_JEDI_constrained = ['Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
+                      'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
+                      'Export Cable']  # Define sheet to pull from to plot scenarios
 
     #data start and end dates
     dateStart = 2021
@@ -424,13 +429,16 @@ if __name__ == '__main__':
     ### Area plots for component demand
     # EC_jobs_LH = {}
     jobsPipeline = {}
+    jobsPipeline_lh = {}
     jobsPipeline_floating = {}
     for s in scenarios_JEDI:
-        jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
+        jobsPipeline[s] = read_component_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
         # EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
     for s in scenarios_JEDI_floating:
         jobsPipeline_floating[s] = read_jobvars_WC(file=JEDI_floating_pipeline, sheet=s, xrange=dateYrs)  # read in Excel
+    for s in scenarios_JEDI_constrained:
+        jobsPipeline_lh[s] = read_varsEC(file=JEDI_constrained_pipeline, sheet=s, xrange=dateYrs)  # read in Excel
 
     # Component demand, East coast
     # p0 = EC_jobs_LH['Total-Expand Scenario']
@@ -445,6 +453,19 @@ if __name__ == '__main__':
     p9 = jobsPipeline['Substation (Topside)']
     p10 = jobsPipeline['Array Cable']
     p11 = jobsPipeline['Export Cable']
+
+    p1_lh = jobsPipeline_lh['Nacelle']
+    p2_lh = jobsPipeline_lh['Rotor Blades']
+    p3_lh = jobsPipeline_lh['Towers']
+    p4_lh = jobsPipeline_lh['Monopiles']
+    p5_lh = jobsPipeline_lh['Transition Piece']
+    p6_lh = jobsPipeline_lh['Jacket (For Turbine)']
+    p7_lh = jobsPipeline_lh['GBF']
+    p8_lh = jobsPipeline_lh['Jacket (For Substation)']
+    p9_lh = jobsPipeline_lh['Substation (Topside)']
+    p10_lh = jobsPipeline_lh['Array Cable']
+    p11_lh = jobsPipeline_lh['Export Cable']
+
 
     # West Cast
     # p0 = EC_jobs_LH['WC Scenarios']
@@ -503,7 +524,7 @@ if __name__ == '__main__':
             'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'],
                        colors_list['transp'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
             'names': ['Nacelle', 'Rotor blades', 'Towers', 'Floating platform', 'Substation platform', 'Substation topside',
-                      'Dynamic array Cable', 'Dynamic export cable']
+                      'Dynamic array cable', 'Dynamic export cable']
             # 'names_100': ['100% Domestic Content, Nacelle Baseline Scenario', '100% Domestic Content, Rotor Blades Baseline Scenario', '100% Domestic Content, Towers Baseline Scenario', '100% Domestic Content, Monopiles Baseline Scenario',
             # '100% Domestic Content, Transition Piece Baseline Scenario', '100% Domestic Content, Jacket (For Turbine) Baseline Scenario', '100% Domestic Content, GBF Baseline Scenario', '100% Domestic Content, Jacket (For Substation) Baseline Scenario',
             # '100% Domestic Content, Substation (Topside) Baseline Scenario', '100% Domestic Content, Array Cable Baseline Scenario', '100% Domestic Content, Export Cable Baseline Scenario']
@@ -514,29 +535,26 @@ if __name__ == '__main__':
             'colors': [colors_list['fixed'], colors_list['rotors'], colors_list['towers'], colors_list['monopiles'],
                        colors_list['transp'], colors_list['subt'], colors_list['static_array'], colors_list['dynamic_export']],
             'names': ['Nacelle', 'Rotor blades', 'Towers', 'Floating platform', 'Substation platform', 'Substation topside',
-                      'Dynamic array Cable', 'Dynamic export cable']
+                      'Dynamic array cable', 'Dynamic export cable']
             # 'names_25': ['25% Domestic Content, Nacelle Baseline Scenario', '25% Domestic Content, Rotor Blades Baseline Scenario', '25% Domestic Content, Towers Baseline Scenario', '25% Domestic Content, Monopiles Baseline Scenario',
             # '25% Domestic Content, Transition Piece Baseline Scenario', '25% Domestic Content, Jacket (For Turbine) Baseline Scenario', '25% Domestic Content, GBF Baseline Scenario', '25% Domestic Content, Jacket (For Substation) Baseline Scenario',
             # '25% Domestic Content, Substation (Topside) Baseline Scenario', '25% Domestic Content, Array Cable Baseline Scenario', '25% Domestic Content, Export Cable Baseline Scenario']
         }
     }
 
-    ###Area plot for Baseline Scenario East Coast Components
-
-    ##Area plot 25% domestic content
     for k, v in workforce_plots.items():
         plot_name = 'Figs/Fixed_JobRequirements_' + k
-        pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), fname=plot_name)
+        pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), ymax = 70000, fname=plot_name)
 
     for k, v in workforce_plots_floating.items():
         plot_name = 'Figs/Floating_JobRequirements_' + k
-        pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), fname=plot_name)
+        pr.area_plotsv2(dateYrs, zip(v['data'], v['colors'], v['names']), ymax = 50000, fname=plot_name)
 
     scenario_plots = {
 
         'Nacelle': {
             'data': [p1['25domEC_UNC'], p1['100domEC_UNC']],
-            'data_lh': [p1['25domEC_LOW'], p1['100domEC_LOW'], p1['25domEC_HIGH'], p1['100domEC_HIGH']],
+            'data_lh': [p1_lh['25demandEC_LOW'], p1_lh['100demandEC_LOW'], p1_lh['25demandEC_HIGH'], p1_lh['100demandEC_HIGH']],
             'data100':[p1['100domEC_UNC']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
             'colors_lh': [colors_list['clv'], colors_list['clv'], colors_list['wtiv'], colors_list['wtiv']],
@@ -552,7 +570,7 @@ if __name__ == '__main__':
         },
         'Rotor Blades': {
             'data': [p2['25domEC_UNC'], p2['100domEC_UNC']],
-            'data_lh': [p2['25domEC_LOW'], p2['100domEC_LOW'], p2['25domEC_HIGH'], p2['100domEC_HIGH']],
+            'data_lh': [p2_lh['25demandEC_LOW'], p2_lh['100demandEC_LOW'], p2_lh['25demandEC_HIGH'], p2_lh['100demandEC_HIGH']],
             'data25':[p2['25domEC_UNC']],
             'data100':[p2['100domEC_UNC']],
             'colors_25_100': [colors_list['rotors']],
@@ -572,7 +590,7 @@ if __name__ == '__main__':
         },
         'Towers': {
             'data': [p3['25domEC_UNC'], p3['100domEC_UNC']],
-            'data_lh': [p3['25domEC_LOW'], p3['100domEC_LOW'], p3['25domEC_HIGH'], p3['100domEC_HIGH']],
+            'data_lh': [p3_lh['25demandEC_LOW'], p3_lh['100demandEC_LOW'], p3_lh['25demandEC_HIGH'], p3_lh['100demandEC_HIGH']],
             'data25':[p3['25domEC_UNC']],
             'data100':[p3['100domEC_UNC']],
             'colors_25_100': [colors_list['towers']],
@@ -591,7 +609,7 @@ if __name__ == '__main__':
         },
         'Monopiles': {
             'data': [p4['25domEC_UNC'], p4['100domEC_UNC']],
-            'data_lh': [p4['25domEC_LOW'], p4['100domEC_LOW'], p4['25domEC_HIGH'], p4['100domEC_HIGH']],
+            'data_lh': [p4_lh['25demandEC_LOW'], p4_lh['100demandEC_LOW'], p4_lh['25demandEC_HIGH'], p4_lh['100demandEC_HIGH']],
             'data25':[p4['25domEC_UNC']],
             'data100':[p4['100domEC_UNC']],
             'colors_25_100': [colors_list['monopiles']],
@@ -606,11 +624,11 @@ if __name__ == '__main__':
             'lines25': ['dashed'],
             'lines100':['solid'],
             'yvalmax': 9000,
-            'yval_lh': 9500
+            'yval_lh': 10000
         },
         'Transition Piece': {
             'data': [p5['25domEC_UNC'], p5['100domEC_UNC']],
-            'data_lh': [p5['25domEC_LOW'], p5['100domEC_LOW'], p5['25domEC_HIGH'], p5['100domEC_HIGH']],
+            'data_lh': [p5_lh['25demandEC_LOW'], p5_lh['100demandEC_LOW'], p5_lh['25demandEC_HIGH'], p5_lh['100demandEC_HIGH']],
             'data25':[p5['25domEC_UNC']],
             'data100':[p5['100domEC_UNC']],
             'colors_25_100': [colors_list['transp']],
@@ -629,7 +647,7 @@ if __name__ == '__main__':
         },
         'Jacket (For Turbine)': {
             'data': [p6['25domEC_UNC'], p6['100domEC_UNC']],
-            'data_lh': [p6['25domEC_LOW'], p6['100domEC_LOW'], p6['25domEC_HIGH'], p6['100domEC_HIGH']],
+            'data_lh': [p6_lh['25demandEC_LOW'], p6_lh['100demandEC_LOW'], p6_lh['25demandEC_HIGH'], p6_lh['100demandEC_HIGH']],
             'data25':[p6['25domEC_UNC']],
             'data100':[p6['100domEC_UNC']],
             'colors_25_100': [colors_list['jackt_t']],
@@ -648,7 +666,7 @@ if __name__ == '__main__':
         },
         'GBF': {
             'data': [p7['25domEC_UNC'], p7['100domEC_UNC']],
-            'data_lh': [p7['25domEC_LOW'], p7['100domEC_LOW'], p7['25domEC_HIGH'], p7['100domEC_HIGH']],
+            'data_lh': [p7_lh['25demandEC_LOW'], p7_lh['100demandEC_LOW'], p7_lh['25demandEC_HIGH'], p7_lh['100demandEC_HIGH']],
             'data25':[p7['25domEC_UNC']],
             'data100':[p7['100domEC_UNC']],
             'colors_25_100': [colors_list['gbfs']],
@@ -667,7 +685,7 @@ if __name__ == '__main__':
         },
         'Jacket (For Substation)': {
             'data': [p8['25domEC_UNC'], p8['100domEC_UNC']],
-            'data_lh': [p8['25domEC_LOW'], p8['100domEC_LOW'], p8['25domEC_HIGH'], p8['100domEC_HIGH']],
+            'data_lh': [p8_lh['25demandEC_LOW'], p8_lh['100demandEC_LOW'], p8_lh['25demandEC_HIGH'], p8_lh['100demandEC_HIGH']],
             'data25':[p8['25domEC_UNC']],
             'data100':[p8['100domEC_UNC']],
             'colors_25_100': [colors_list['jackets']],
@@ -686,7 +704,7 @@ if __name__ == '__main__':
         },
         'Substation (Topside)': {
             'data': [p9['25domEC_UNC'], p9['100domEC_UNC']],
-            'data_lh': [p9['25domEC_LOW'], p9['100domEC_LOW'], p9['25domEC_HIGH'], p9['100domEC_HIGH']],
+            'data_lh': [p9_lh['25demandEC_LOW'], p9_lh['100demandEC_LOW'], p9_lh['25demandEC_HIGH'], p9_lh['100demandEC_HIGH']],
             'data25':[p9['25domEC_UNC']],
             'data100':[p9['100domEC_UNC']],
             'colors_25_100': [colors_list['subt']],
@@ -705,7 +723,7 @@ if __name__ == '__main__':
         },
         'Array Cable': {
             'data': [p10['25domEC_UNC'], p10['100domEC_UNC']],
-            'data_lh': [p10['25domEC_LOW'], p10['100domEC_LOW'], p10['25domEC_HIGH'], p10['100domEC_HIGH']],
+            'data_lh': [p10_lh['25demandEC_LOW'], p10_lh['100demandEC_LOW'], p10_lh['25demandEC_HIGH'], p10_lh['100demandEC_HIGH']],
             'data25':[p10['25domEC_UNC']],
             #'data100':[p10['100domEC_UNC']],
             #'colors_25_100': [colors_list['static_array']],
@@ -724,7 +742,7 @@ if __name__ == '__main__':
         },
         'Export Cable': {
             'data': [p11['25domEC_UNC'], p11['100domEC_UNC']],
-            'data_lh': [p11['25domEC_LOW'], p11['100domEC_LOW'], p11['25domEC_HIGH'], p11['100domEC_HIGH']],
+            'data_lh': [p11_lh['25demandEC_LOW'], p11_lh['100demandEC_LOW'], p11_lh['25demandEC_HIGH'], p11_lh['100demandEC_HIGH']],
             'data100':[p11['100domEC_UNC']],
             'colors_25_100': [colors_list['static_export']],
             'colors': [colors_list['static_export'], colors_list['fixed']],
@@ -759,19 +777,19 @@ if __name__ == '__main__':
 
     #####Total direct and indirect jobs for east and west Coast
     #JEDI - Varied Scenarios graphs
-    total_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' #Define input spreadsheet
-
-    total_JEDI = ['Total-Expand Scenario'] #Define sheet to pull from to plot scenarios
-    #data start and end dates
-    dateStrt = 2021
-    dateND = 2033 #2035? - check w/ matt or jeremy
-    dateYears = np.arange(dateStrt, dateND+1)
-
-    #loop through scenarios
-    ECWCPipeline = {}
-    for s in total_JEDI:
-        ECWCPipeline[s] = read_varsTot(file=total_pipeline, sheet=s, xrange=dateYears) #read in Excel
-        #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
+    # total_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' #Define input spreadsheet
+    #
+    # total_JEDI = ['Total-Expand Scenario'] #Define sheet to pull from to plot scenarios
+    # #data start and end dates
+    # dateStrt = 2021
+    # dateND = 2033 #2035? - check w/ matt or jeremy
+    # dateYears = np.arange(dateStrt, dateND+1)
+    #
+    # #loop through scenarios
+    # ECWCPipeline = {}
+    # for s in total_JEDI:
+    #     ECWCPipeline[s] = read_varsTot(file=total_pipeline, sheet=s, xrange=dateYears) #read in Excel
+    #     #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
     # print(ECWCPipeline)
     ###Total workforce for baseline scenarios
@@ -801,12 +819,12 @@ if __name__ == '__main__':
 
     #JEDI - Floating Varied Scenarios graphs
 
-    float_pipeline = 'WC_Varied LC_Jobs.xlsx' #Define input spreadsheet
+    float_pipeline = 'WC-UNC.xlsx' #Define input spreadsheet
 
-    scenarios_float = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (turbine)', 'Floating (floating OSS)', 'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
+    scenarios_float = ['WC Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (semisubmersible)', 'Floating (floating OSS)', 'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
     #data start and end dates
     strt = 2021
-    end = 2035 #2035? - check w/ matt or jeremy
+    end = 2033 #2035? - check w/ matt or jeremy
     yrs = np.arange(strt, end+1)
 
     #loop through scenarios
@@ -821,7 +839,7 @@ if __name__ == '__main__':
     f1 = floatPipeline['Nacelle']
     f2 = floatPipeline['Rotor Blades']
     f3 = floatPipeline['Towers']
-    f4 = floatPipeline['Floating (turbine)']
+    f4 = floatPipeline['Floating (semisubmersible)']
     f5 = floatPipeline['Floating (floating OSS)']
     f6 = floatPipeline['Floating OSS Topside']
     f7 = floatPipeline['Array Cable']

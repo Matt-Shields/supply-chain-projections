@@ -29,12 +29,12 @@ if __name__ == '__main__':
     y1max_deploy = 10000
     y2max_deploy = 60000
     y1max_turbines = 450
-    y2max_turbines = 3000
+    y2max_turbines = 3500
     y1max_foundations = 450
-    y2max_foundations = 3000
+    y2max_foundations = 3500
     y1max_cables = 2500
-    y2max_cables = 16000
-    y1max_vessels = 150
+    y2max_cables = 20000
+    y1max_vessels = 140
 
     # Baseline
     yvals = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW']]
@@ -387,37 +387,53 @@ if __name__ == '__main__':
 
     #JEDI - Varied Scenarios graphs
 
-    JEDI_pipeline = 'All Scenarios_Varied LC_Jobs.xlsx' #Define input spreadsheet
-    JEDI_floating_pipeline = 'WC_Varied LC_Jobs.xlsx'
+    JEDI_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' # Define input spreadsheet - total jobs + fixed bottom component jobs
+    JEDI_floating_pipeline = 'WC-UNC.xlsx' # floating component jobs
 
-    scenarios_JEDI = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
+    scenarios_JEDI = ['Total-Expand Scenario', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
                       'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
                       'Export Cable'] #Define sheet to pull from to plot scenarios
-    scenarios_JEDI_floating = ['Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (turbine)', 'Floating (floating OSS)',
+    scenarios_JEDI_floating = ['WC Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (semisubmersible)', 'Floating (floating OSS)',
                       'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
 
     #data start and end dates
     dateStart = 2021
-    dateEnd = 2035 #2035? - check w/ matt or jeremy
+    dateEnd = 2033
     dateYrs = np.arange(dateStart, dateEnd+1)
 
-    #loop through scenarios
-    EC_jobs_LH = {}
+    ### Total job demand, EC+ WC
+    ECWCPipeline = {}
+    ECWCPipeline['Total-Expand Scenario'] = read_varsTot(file=JEDI_pipeline,
+                                                         sheet='Total-Expand Scenario',
+                                                         xrange=dateYrs) #read in Excel
+    colors_tot = ['k', 'k']
+    names_tot = ['25% Domestic Content, Total Workforce Baseline Scenario',
+                 '100% Domestic Content, Total Workforce Baseline Scenario']
+    lines_tot = ['dashed', 'solid']
+
+    # Baseline
+    yvals_EC = [ECWCPipeline['Total-Expand Scenario']['25demandTot_UNC'],
+                ECWCPipeline['Total-Expand Scenario']['100demandTot_UNC']]
+    pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand',
+                   ymax=85000)
+
+    # Moderate constrained
+
+    # Significant constraint
+
+    ### Area plots for component demand
+    # EC_jobs_LH = {}
     jobsPipeline = {}
     jobsPipeline_floating = {}
     for s in scenarios_JEDI:
         jobsPipeline[s] = read_jobvars(file=JEDI_pipeline, sheet=s, xrange=dateYrs) #read in Excel
-        EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
+        # EC_jobs_LH[s] = read_varsEC(file=JEDI_pipeline, sheet=s, xrange=dateYrs)
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
     for s in scenarios_JEDI_floating:
         jobsPipeline_floating[s] = read_jobvars_WC(file=JEDI_floating_pipeline, sheet=s, xrange=dateYrs)  # read in Excel
 
-    # print(jobsPipeline_floating)
-    ######### GENERATE PLOTS
-    ### Domestic Content via JEDI Model for Baseline Scenario
-    # looped plots for jobs
-    # East coast
-    p0 = EC_jobs_LH['Scenarios']
+    # Component demand, East coast
+    # p0 = EC_jobs_LH['Total-Expand Scenario']
     p1 = jobsPipeline['Nacelle']
     p2 = jobsPipeline['Rotor Blades']
     p3 = jobsPipeline['Towers']
@@ -431,33 +447,33 @@ if __name__ == '__main__':
     p11 = jobsPipeline['Export Cable']
 
     # West Cast
-    # p0 = EC_jobs_LH['Scenarios']
+    # p0 = EC_jobs_LH['WC Scenarios']
     p1_fl = jobsPipeline_floating['Nacelle']
     p2_fl = jobsPipeline_floating['Rotor Blades']
     p3_fl = jobsPipeline_floating['Towers']
-    p4_fl = jobsPipeline_floating['Floating (turbine)']
+    p4_fl = jobsPipeline_floating['Floating (semisubmersible)']
     p5_fl = jobsPipeline_floating['Floating (floating OSS)']
     p6_fl = jobsPipeline_floating['Floating OSS Topside']
     p7_fl = jobsPipeline_floating['Array Cable']
     p8_fl = jobsPipeline_floating['Export Cable']
 
-    scenario_plots_LH = {
-        'Low_Scenario': {
-        'data': [p0['25demandEC_LOW'], p0['100demandEC_LOW']],
-        'colors': [colors_list['ctv'], colors_list['tugs']],
-        'names': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints'],
-        'lines': ['dashed','solid'],
-        'yvalmax': 60000
-        },
-
-        'High_Scenario': {
-        'data': [p0['25demandEC_HIGH'], p0['100demandEC_HIGH']],
-        'colors': [colors_list['ctv'], colors_list['tugs']],
-        'names': ['25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
-        'lines': ['dashed','solid'],
-        'yvalmax': 60000
-        }
-    }
+    # scenario_plots_LH = {
+    #     'Low_Scenario': {
+    #     'data': [p0['25demandEC_LOW'], p0['100demandEC_LOW']],
+    #     'colors': [colors_list['ctv'], colors_list['tugs']],
+    #     'names': ['25% Domestic Content, Moderate Supply Constraints', '100% Domestic Content, Moderate Supply Constraints'],
+    #     'lines': ['dashed','solid'],
+    #     'yvalmax': 60000
+    #     },
+    #
+    #     'High_Scenario': {
+    #     'data': [p0['25demandEC_HIGH'], p0['100demandEC_HIGH']],
+    #     'colors': [colors_list['ctv'], colors_list['tugs']],
+    #     'names': ['25% Domestic Content, Significant Supply Constraints', '100% Domestic Content, Significant Supply Constraints'],
+    #     'lines': ['dashed','solid'],
+    #     'yvalmax': 60000
+    #     }
+    # }
 
     workforce_plots = {
 
@@ -731,9 +747,9 @@ if __name__ == '__main__':
         pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
     ########Total job requirements for east coast low and high constraints
-    for k, v in scenario_plots_LH.items():
-        plot_name = 'Figs/EC_WorkforcePipeline_'+ k
-        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
+    # for k, v in scenario_plots_LH.items():
+    #     plot_name = 'Figs/EC_WorkforcePipeline_'+ k
+    #     pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names']), fname=plot_name, ymax = v['yvalmax'])
 
     #####Varied Scenario Job Requirements for east coast
         ##Low vs High constrained
@@ -743,12 +759,12 @@ if __name__ == '__main__':
 
     #####Total direct and indirect jobs for east and west Coast
     #JEDI - Varied Scenarios graphs
-    total_pipeline = 'East Coast + West Coast.xlsx' #Define input spreadsheet
+    total_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' #Define input spreadsheet
 
-    total_JEDI = ['Total Jobs EC-WC Job Impact'] #Define sheet to pull from to plot scenarios
+    total_JEDI = ['Total-Expand Scenario'] #Define sheet to pull from to plot scenarios
     #data start and end dates
     dateStrt = 2021
-    dateND = 2035 #2035? - check w/ matt or jeremy
+    dateND = 2033 #2035? - check w/ matt or jeremy
     dateYears = np.arange(dateStrt, dateND+1)
 
     #loop through scenarios
@@ -757,28 +773,29 @@ if __name__ == '__main__':
         ECWCPipeline[s] = read_varsTot(file=total_pipeline, sheet=s, xrange=dateYears) #read in Excel
         #line_plots2(x, y_zip,  fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year')
 
+    # print(ECWCPipeline)
     ###Total workforce for baseline scenarios
     ##define variables
-    colors_ecwc = [colors_list['ctv'], colors_list['tugs']]
-    names_ec = ['25% Domestic Content, East Coast Baseline Scenario', '100% Domestic Content, East Coast Baseline Scenario']
-    names_wc = ['25% Domestic Content, West Coast Baseline Scenario', '100% Domestic Content, West Coast Baseline Scenario']
-    lines_ecwc = ['dashed', 'solid']
+    # colors_ecwc = [colors_list['ctv'], colors_list['tugs']]
+    # names_ec = ['25% Domestic Content, East Coast Baseline Scenario', '100% Domestic Content, East Coast Baseline Scenario']
+    # names_wc = ['25% Domestic Content, West Coast Baseline Scenario', '100% Domestic Content, West Coast Baseline Scenario']
+    # lines_ecwc = ['dashed', 'solid']
 
     #east coast workforce demand
-    yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandEC_UNC'], ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandEC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ec), fname='Figs/East_Coast_Workforce_Demand', ymax = 85000)
+    # yvals_EC = [ECWCPipeline['Total-Expand Scenario']['25demandEC_UNC'], ECWCPipeline['Total-Expand Scenario']['100demandEC_UNC']]
+    # pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_ec), fname='Figs/East_Coast_Workforce_Demand', ymax = 85000)
 
     #west coast workforce demand
-    yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandWC_UNC'],ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandWC_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_wc), fname='Figs/West_Coast_Workforce_Demand', ymax = 25000)
+    # yvals_EC = [ECWCPipeline['Total-Expand Scenario']['25demandWC_UNC'],ECWCPipeline['Total-Expand Scenario']['100demandWC_UNC']]
+    # pr.line_plots2(dateYrs, zip(yvals_EC, colors_ecwc, lines_ecwc, names_wc), fname='Figs/West_Coast_Workforce_Demand', ymax = 25000)
 
-    colors_tot = [colors_list['ctv'], colors_list['tugs']]
-    names_tot = ['25% Domestic Content, Total Workforce Baseline Scenario', '100% Domestic Content, Total Workforce Baseline Scenario']
-    lines_tot = ['dashed', 'solid']
-
-    #Total workforce demand
-    yvals_EC = [ECWCPipeline['Total Jobs EC-WC Job Impact']['25demandTot_UNC'], ECWCPipeline['Total Jobs EC-WC Job Impact']['100demandTot_UNC']]
-    pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand', ymax = 85000)
+    # colors_tot = [colors_list['ctv'], colors_list['tugs']]
+    # names_tot = ['25% Domestic Content, Total Workforce Baseline Scenario', '100% Domestic Content, Total Workforce Baseline Scenario']
+    # lines_tot = ['dashed', 'solid']
+    #
+    # #Total workforce demand
+    # yvals_EC = [ECWCPipeline['Total-Expand Scenario']['25demandTot_UNC'], ECWCPipeline['Total-Expand Scenario']['100demandTot_UNC']]
+    # pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand', ymax = 85000)
 
 
 

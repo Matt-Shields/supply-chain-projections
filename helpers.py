@@ -113,12 +113,12 @@ Jobs_indices_WC = { #west coast job indicies
 EC_WC_indicies = { #east coast + west coast job indicies for ttoal workforce demand
     'yr': 0,
     '2021col': 1,
-    '25demandEC_UNC': 0,
-    '100demandEC_UNC': 3,
-    '25demandWC_UNC': 7,
-    '100demandWC_UNC': 10,
-    '25demandTot_UNC': 14,
-    '100demandTot_UNC': 17
+    # '25demandEC_UNC': 0,
+    # '100demandEC_UNC': 3,
+    # '25demandWC_UNC': 7,
+    # '100demandWC_UNC': 10,
+    '25demandTot_UNC': 0,
+    '100demandTot_UNC': 3
 }
 
 EC_indicies = {
@@ -318,19 +318,19 @@ def read_jobvars(file, sheet, xrange, header=2, cols='B:Q', rows=58, ind=Jobs_in
         }
     return _outjobs
 
-def read_varsTot(file, sheet, xrange, header=2, cols='B:Q', rows=24, ind=EC_WC_indicies):
+def read_varsTot(file, sheet, xrange, header=129, cols='B:Q', rows=5, ind=EC_WC_indicies):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
-    _25demandEC_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    _100demandEC_UNC = df.iloc[ind['100demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    _25demandWC_UNC = df.iloc[ind['25demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    _100demandWC_UNC = df.iloc[ind['100demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    # _25demandEC_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    # _100demandEC_UNC = df.iloc[ind['100demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    # _25demandWC_UNC = df.iloc[ind['25demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    # _100demandWC_UNC = df.iloc[ind['100demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25demandTot_UNC = df.iloc[ind['25demandTot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandTot_UNC = df.iloc[ind['100demandTot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _outTot = {
-            '25demandEC_UNC': _25demandEC_UNC,
-            '100demandEC_UNC': _100demandEC_UNC,
-            '25demandWC_UNC': _25demandWC_UNC,
-            '100demandWC_UNC': _100demandWC_UNC,
+            # '25demandEC_UNC': _25demandEC_UNC,
+            # '100demandEC_UNC': _100demandEC_UNC,
+            # '25demandWC_UNC': _25demandWC_UNC,
+            # '100demandWC_UNC': _100demandWC_UNC,
             '25demandTot_UNC': _25demandTot_UNC,
             '100demandTot_UNC': _100demandTot_UNC
             }

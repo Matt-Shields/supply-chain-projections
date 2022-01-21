@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import plot_routines as pr
 from helpers import group_rows, read_vars, read_component_jobvars, read_varsTot, read_jobvars_WC, \
-    colors_list, read_varsEC, read_varsGDP
+    colors_list, read_varsEC, read_varsGDP, read_varsTot_constrained
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
@@ -398,7 +398,7 @@ if __name__ == '__main__':
                       'Export Cable'] #Define sheet to pull from to plot scenarios
     scenarios_JEDI_floating = ['WC Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Floating (semisubmersible)', 'Floating (floating OSS)',
                       'Floating OSS Topside', 'Array Cable', 'Export Cable'] #Define sheet to pull from to plot scenarios
-    scenarios_JEDI_constrained = ['Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
+    scenarios_JEDI_constrained = ['Constrained Scenarios', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
                       'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
                       'Export Cable']  # Define sheet to pull from to plot scenarios
     GDP_ECWC = ['Total-Expand GDP', 'Total-Expand Induced Impacts']
@@ -424,9 +424,21 @@ if __name__ == '__main__':
     pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand',
                    ymax=85000)
 
-    # Moderate constrained
+    ### Constrained throughput
+    ECWCPipeline['Constrained'] = read_varsTot_constrained(file=JEDI_constrained_pipeline,
+                                                            sheet='Constrained Scenarios',
+                                                            xrange=dateYrs)
+    # Moderate
+    yvals_EC_mod = [ECWCPipeline['Constrained']['25demandTot_LOW'],
+                    ECWCPipeline['Constrained']['100demandTot_LOW']]
+    pr.line_plots2(dateYrs, zip(yvals_EC_mod, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand_ModerateCstr',
+                   ymax=85000)
 
-    # Significant constraint
+    # Significant
+    yvals_EC_sig = [ECWCPipeline['Constrained']['25demandTot_HIGH'],
+                    ECWCPipeline['Constrained']['100demandTot_HIGH']]
+    pr.line_plots2(dateYrs, zip(yvals_EC_sig, colors_tot, lines_tot, names_tot), fname='Figs/Total_Workforce_Demand_SigCstr',
+                   ymax=85000)
 
     ### Area plots for component demand
     # EC_jobs_LH = {}

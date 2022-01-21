@@ -113,10 +113,6 @@ Jobs_indices_WC = { #west coast job indicies
 EC_WC_indicies = { #east coast + west coast job indicies for ttoal workforce demand
     'yr': 0,
     '2021col': 1,
-    # '25demandEC_UNC': 0,
-    # '100demandEC_UNC': 3,
-    # '25demandWC_UNC': 7,
-    # '100demandWC_UNC': 10,
     '25demandTot_UNC': 0,
     '100demandTot_UNC': 3
 }
@@ -124,12 +120,10 @@ EC_WC_indicies = { #east coast + west coast job indicies for ttoal workforce dem
 EC_WC_indicies_cstr = { #east coast + west coast job indicies for ttoal workforce demand under constrained scnearios
     'yr': 0,
     '2021col': 1,
-    # '25demandEC_UNC': 0,
-    # '100demandEC_UNC': 3,
-    # '25demandWC_UNC': 7,
-    # '100demandWC_UNC': 10,
-    '25demandTot_UNC': 0,
-    '100demandTot_UNC': 3
+    '25demandTot_LOW': 0,
+    '100demandTot_LOW': 3,
+    '25demandTot_HIGH': 32,
+    '100demandTot_HIGH': 35
 }
 
 EC_indicies = {
@@ -332,19 +326,25 @@ def read_component_jobvars(file, sheet, xrange, header=3, cols='B:Q', rows=2, in
 
 def read_varsTot(file, sheet, xrange, header=129, cols='B:Q', rows=5, ind=EC_WC_indicies):
     df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
-    # _25demandEC_UNC = df.iloc[ind['25demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    # _100demandEC_UNC = df.iloc[ind['100demandEC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    # _25demandWC_UNC = df.iloc[ind['25demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
-    # _100demandWC_UNC = df.iloc[ind['100demandWC_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _25demandTot_UNC = df.iloc[ind['25demandTot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _100demandTot_UNC = df.iloc[ind['100demandTot_UNC'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
     _outTot = {
-            # '25demandEC_UNC': _25demandEC_UNC,
-            # '100demandEC_UNC': _100demandEC_UNC,
-            # '25demandWC_UNC': _25demandWC_UNC,
-            # '100demandWC_UNC': _100demandWC_UNC,
             '25demandTot_UNC': _25demandTot_UNC,
             '100demandTot_UNC': _100demandTot_UNC
+            }
+    return _outTot
+
+def read_varsTot_constrained(file, sheet, xrange, header=3, cols='B:Q', rows=40, ind=EC_WC_indicies_cstr):
+    df = pd.read_excel(file, sheet_name=sheet, header=header, usecols=cols, nrows=rows)
+    _25demandTot_LOW = df.iloc[ind['25demandTot_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _100demandTot_LOW = df.iloc[ind['100demandTot_LOW'], ind['2021col']:ind['2021col'] + len(xrange) ].to_numpy()
+    _25demandTot_HIGH = df.iloc[ind['25demandTot_HIGH'], ind['2021col']:ind['2021col'] + len(xrange)].to_numpy()
+    _100demandTot_HIGH = df.iloc[ind['100demandTot_HIGH'], ind['2021col']:ind['2021col'] + len(xrange)].to_numpy()
+    _outTot = {
+            '25demandTot_LOW': _25demandTot_LOW,
+            '100demandTot_LOW': _100demandTot_LOW,
+            '25demandTot_HIGH': _25demandTot_HIGH,
+            '100demandTot_HIGH': _100demandTot_HIGH
             }
     return _outTot
 

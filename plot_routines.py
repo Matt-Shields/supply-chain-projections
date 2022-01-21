@@ -119,6 +119,11 @@ def initFigAxis():
     ax = fig.add_subplot(111)
     return fig, ax
 
+def moving_average(a, n=3):
+    ret = np.cumsum(a, dtype=float)
+    ret[n:] = ret[n:] - ret[:-n]
+    return ret[n - 1:] / n
+
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
                            width=None, order=1, single=True, cumulative_line=True,
@@ -325,11 +330,21 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
 
     return ax
 
-def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
+def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year',
+                n_moving_average=3):
     fig, ax = initFigAxis()
 
-    for y, c, l, n in y_zip:
-        ax.plot(x, y, color=c, linestyle=l, label=n)
+    y_fill = []
+    for y, c, l, n, lbl in y_zip:
+        # ax.scatter(x, y, color=c, linestyle=l, marker=m, label=n)
+        # if n_moving_average:
+        x_avg = x[n_moving_average-1:]
+        y_avg = moving_average(y, n_moving_average)
+        _leg = str(n_moving_average)+' year moving average for ' + lbl + ' domestic content'
+        ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
+        y_fill.append(y_avg)
+
+    ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
 
     if ymax:
         ax.set_ylim([0, ymax])
@@ -353,38 +368,70 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
 
     return ax
 
-def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year'):
+def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year',
+                n_moving_average=3):
+    fig1, ax1 = initFigAxis()
+    fig2, ax2 = initFigAxis()
+
+    y_fill1 = []
+    y_fill2 = []
+    x_avg = x[n_moving_average - 1:]
+
+    for y, c, l, n, lbl in y_zip:
+        if 'Moderate' in n:
+            y_avg1 = moving_average(y, n_moving_average)
+            _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+            ax1.plot(x_avg, y_avg1, color=c, linestyle=l, label=_leg)
+            y_fill1.append(y_avg1)
+            fname1 = fname+'Moderate'
+        elif 'Significant' in n:
+            y_avg2= moving_average(y, n_moving_average)
+            _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+            ax2.plot(x_avg, y_avg2, color=c, linestyle=l, label=_leg)
+            y_fill2.append(y_avg2)
+            fname2 = fname+'Significant'
+
+    ax1.fill_between(x_avg, y_fill1[0], y_fill1[1], color='tab:gray', alpha=0.5, linewidth=0)
+    ax2.fill_between(x_avg, y_fill2[0], y_fill2[1], color='tab:gray', alpha=0.5, linewidth=0)
+
+    for a in [ax1, ax2]:
+        if ymax:
+            a.set_ylim([0, ymax])
+
+        a.legend(loc='upper left')
+
+        xticks=x
+        xv = [x.min(), x.max() + 1]
+        a.set_xticks(xticks)
+        a.set_xticklabels([str(m) for m in xticks], rotation=90)
+        a.set_xlabel(myxlabel)
+        a.set_ylabel(myylabel)
+        a.get_yaxis().set_major_formatter(
+            mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+
+        if fname:
+            myformat(a)
+            if a==ax1:
+                mysave(fig1, fname1)
+            elif a==ax2:
+                mysave(fig2, fname2)
+            plt.close()
+
+    return ax1, ax2
+
+def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', myxlabel='Year',
+                  n_moving_average=3):
     fig, ax = initFigAxis()
 
-    for y, c, l, n in y_zip:
-        ax.plot(x, y, color=c, linestyle=l, label=n)
+    y_fill=[]
+    for y, c, l, n, lbl in y_zip:
+        x_avg = x[n_moving_average - 1:]
+        y_avg = moving_average(y, n_moving_average)
+        _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+        ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
+        y_fill.append(y_avg)
 
-    if ymax:
-        ax.set_ylim([0, ymax])
-
-    ax.legend(loc='upper left')
-
-    xticks=x
-    xv = [x.min(), x.max() + 1]
-    ax.set_xticks(xticks)
-    ax.set_xticklabels([str(m) for m in xticks], rotation=90)
-    ax.set_xlabel(myxlabel)
-    ax.set_ylabel(myylabel)
-    ax.get_yaxis().set_major_formatter(
-        mpl.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-
-    if fname:
-        myformat(ax)
-        mysave(fig, fname)
-        plt.close()
-
-    return ax
-
-def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', myxlabel='Year'):
-    fig, ax = initFigAxis()
-
-    for y, c, l, n in y_zip:
-        ax.plot(x, y, color=c, linestyle=l, label=n)
+    ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
 
     if ymax:
         ax.set_ylim([0, ymax])
@@ -440,6 +487,39 @@ def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Bas
     # ax.set_title(title)
     ax.legend(loc='center left', bbox_to_anchor=(1.04, 0.7),
           fancybox=True, shadow=True, ncol=1)
+
+    if fname:
+        myformat(ax)
+        mysave(fig, fname)
+        plt.close()
+
+    return ax
+
+def pie_plot(y, c, n, fname=None):
+    fig, ax = initFigAxis()
+
+    y_pie = y / np.sum(y)
+    _dict = {}
+    _c_dict={}
+    for name, val, col in zip(n, y_pie, c):
+        _val = np.round(100*val, 1)
+        _leg = (name + ' (' + str(_val) + '%)')
+        _dict[_leg] = _val
+        _c_dict[col] = _val
+
+    sort_dict = {k: v for k, v in sorted(_dict.items(), key=lambda item: item[1])}
+    sort_c_dict = {k: v for k, v in sorted(_c_dict.items(), key=lambda item: item[1])}
+
+    wedges, texts = ax.pie(sort_dict.values(), colors=sort_c_dict.keys())
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    ax.legend(wedges[::-1], list(sort_dict.keys())[::-1],
+              loc='center left',
+              bbox_to_anchor=(0.9, 0, 0.5, 1))
+
+    # handles, labels = ax.get_legend_handles_labels()
+    # ax.legend(handles=handles[::-1],
+    #            labels=labels[::-1])
 
     if fname:
         myformat(ax)

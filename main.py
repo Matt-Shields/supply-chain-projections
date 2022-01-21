@@ -37,12 +37,20 @@ if __name__ == '__main__':
     y2max_cables = 20000
     y1max_vessels = 140
 
-    # Baseline
+    # Baseline, including anticipated leasing scenarios
+    yvals_exp2 = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
+    colors_exp2 = [colors_list['fixed'], colors_list['float'],colors_list['expand_fix'], colors_list['expand_float']]
+    names_exp2 = ['Fixed bottom', 'Floating', 'Anticipated fixed bottom leasing', 'Anticipated floating leasing']
+
+    pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/baseline_installedMW',
+                              y1max=y1max_deploy, y2max=y2max_deploy)
+
+    # Existing leases only
     yvals = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW']]
     colors = [colors_list['fixed'], colors_list['float']]
     names = ['Fixed bottom', 'Floating']
 
-    pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), fname='Figs/baseline_installedMW',
+    pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), fname='Figs/existing_installedMW',
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
     # Significant supply chain constraints
@@ -56,50 +64,6 @@ if __name__ == '__main__':
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_constr_low, colors, names), fname='Figs/constrained_installedMW_low',
                               y1max=y1max_deploy, y2max=y2max_deploy)
-
-    # Expanded leasing baseline
-    # Extend out baseline scenarios
-    # max_ind_fixed = 7  # 2028 - max fixed deployment
-    # max_ind_float = 8  # 2029 - max floating deployment
-    # num_repeat_fixed = len(COD_years) - max_ind_fixed
-    # num_repeat_float = len(COD_years) - max_ind_float
-    #
-    # expand_install_fixed = {}
-    # expand_install_float = {}
-    # for k,v in pipeline['EC-known'].items():
-    #     expand_install_fixed[k] = np.concatenate(
-    #         [v[0:max_ind_fixed], np.repeat(v[max_ind_fixed-1], num_repeat_fixed)])
-    # for k, v in pipeline['WC-known'].items():
-    #     expand_install_float[k] = np.concatenate(
-    #         [v[0:max_ind_float], np.repeat(v[max_ind_float - 1], num_repeat_float)])
-    # yvals_expand = [expand_install_fixed['installMW'], expand_install_float['installMW']]
-    #
-    # pr.stacked_bar_cumulative(COD_years, zip(yvals_expand, colors, names), fname='Figs/expanded_installedMW',
-    #                           y1max=y1max_deploy, y2max=y2max_deploy)
-
-    # Updated expanded leasing scenarios
-    yvals_exp2 = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
-    colors_exp2 = [colors_list['fixed'], colors_list['float'],colors_list['expand_fix'], colors_list['expand_float']]
-    names_exp2 = ['Fixed bottom', 'Floating', 'Anticipated fixed bottom leasing', 'Anticipated floating leasing']
-
-    pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/expanded2_installedMW',
-                              y1max=y1max_deploy, y2max=y2max_deploy)
-
-    ### Number of projects and installation vessels
-    # yvals_proj = [pipeline['EC-known']['projects'], pipeline['WC-known']['projects']]
-    # y_vals_wtiv = pipeline['EC-known']['wtiv']
-    # y_vals_barge= pipeline['EC-known']['barge']
-    # y_vals_clv = pipeline['EC-known']['clv'] + pipeline['WC-known']['clv']
-    # y_vals_ctv = pipeline['EC-known']['ctv'] + pipeline['WC-known']['ctv']
-    #
-    # y_vessels = [y_vals_wtiv, y_vals_barge, y_vals_clv, y_vals_ctv]
-    # vessel_colors = [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv']]
-    # vessel_names = ['WTIV', 'Feeder barge', 'CLV', 'CTV']
-    #
-    # pr.stacked_bar_line(COD_years, zip(yvals_proj, colors, names), zip(y_vessels, vessel_colors, vessel_names),
-    #                     fname='Figs/baseline_proj_vessels', myylabel='Installed projects', myy2label='Number of vessels')
-
-    #### Add for other scenarios
 
     ### Line plots for individual components
     # Baseline
@@ -139,7 +103,7 @@ if __name__ == '__main__':
             'y2max': y2max_cables
         },
         'Vessels':{
-            'data': [y1['wtiv']+y3['wtiv'], y1['barge']+y1['barge'], y1['clv']+y2['clv']+y3['clv']+y4['clv'],
+            'data': [y1['wtiv']+y3['wtiv'], y1['barge']+y3['barge'], y1['clv']+y2['clv']+y3['clv']+y4['clv'],
                      y1['sov']+y2['sov']+y3['sov']+y4['sov'], y1['ctv']+y2['ctv']+y3['ctv']+y4['ctv'],
                           y2['tugs']+y4['tugs'], y2['ahts']+y4['ahts']],
             'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['sov'],
@@ -161,15 +125,10 @@ if __name__ == '__main__':
                                       myylabel=v['ylabel'], myy2label='Cumulative ' + v['y2label'],
                                       y1max=v['y1max'], y2max=v['y2max'])
 
-    ###Baseline vessels
-    #y1 = pipeline['EC-known']
-    #y2 = pipeline['WC-known']
-
 
     # Significant supply chain constraints
     y1 = pipeline['EC-HIGH']
     y2 = pipeline['WC-known']
-    # Todo: Add expanded
     component_plots = {
         'Turbines': {
                     'data': [y1['turb12MW']+y2['turb12MW'], y1['turb15MW']+y2['turb15MW'], y1['turb18MW']+y2['turb18MW']],
@@ -273,92 +232,50 @@ if __name__ == '__main__':
                                       myylabel=v['ylabel'], myy2label='Cumulative ' + v['y2label'],
                                       y1max=v['y1max'], y2max=v['y2max'])
 
-    # Expanded pipeline
-    # y1 = expand_install_fixed
-    # y2 = expand_install_float
-    # component_plots = {
-    #     'Turbines': {
-    #         'data': [y1['turb12MW']+y2['turb12MW'], y1['turb15MW']+y2['turb15MW'], y1['turb18MW']+y2['turb18MW']],
-    #         'colors': [colors_list['12MW'], colors_list['15MW'], colors_list['18MW']],
-    #         'names': [ '12MW', '15MW','18MW'],
-    #         'ylabel': 'Number of turbines',
-    #         'y1max': y1max_turbines,
-    #         'y2max': y2max_turbines
-    #         },
-    #     'Foundations': {
-    #         'data': [y1['monopiles'], y1['jacket'], y1['gbf'], y2['semi']],
-    #         'colors': [colors_list['monopiles'], colors_list['jackets'], colors_list['gbfs'], colors_list['semis']],
-    #         'names': ['Monopiles', 'Jackets', 'GBFs', 'Semisubmersibles'],
-    #         'ylabel': 'Number of foundations',
-    #         'y1max': y1max_foundations,
-    #         'y2max': y2max_foundations
-    #     },
-    #     'Cables': {
-    #         'data': [y1['array'], y1['export'], y2['array'], y2['export']],
-    #         'colors': [colors_list['static_array'], colors_list['static_export'], colors_list['dynamic_array'], colors_list['dynamic_export']],
-    #         'names': ['Static array cables', 'Static export cables', 'Dynamic array cables', 'Dynamic export cables'],
-    #         'ylabel': 'Length of cable, km',
-    #         'y1max': y1max_cables,
-    #         'y2max': y2max_cables
-    #     },
-    #     'Vessels':{
-    #         'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['ctv']+y2['ctv'], y2['tugs'], y2['ahts']],
-    #         'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
-    #         'names': ['WTIV', 'Feeder barge', 'CLV', 'CTV', 'Tugboats','AHTS'],
-    #         'ylabel': 'Number of vessels',
-    #         'y1max': y1max_vessels
-    #     }
-    # }
-    #
-    # for k, v in component_plots.items():
-    #     plot_name = 'Figs/expanded_component_'+ k
-    #     if 'Vessel' in k:
-    #         pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-    #                                   myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
-    #                                   cumulative_line=False, y1max=v['y1max'])
-    #     else:
-    #         pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-    #                                   myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
-    #                                   y1max=v['y1max'], y2max=v['y2max'])
 
     # GBF market share
     y1 = pipeline['GBF-UNC']
     y2 = pipeline['WC-known']
+    y4 = pipeline['FLOAT-EX']
     component_plots = {
         'Turbines': {
-            'data': [y1['turb12MW'] + y2['turb12MW'], y1['turb15MW'] + y2['turb15MW'], y1['turb18MW'] + y2['turb18MW']],
-            'colors': [colors_list['12MW'], colors_list['15MW'], colors_list['18MW']],
-            'names': ['12MW', '15MW', '18MW'],
-            'ylabel': 'Number of turbines',
-            'y1max': y1max_turbines,
-            'y2max': y2max_turbines
-
-        },
+                    'data': [y1['turb12MW']+y2['turb12MW']+y4['turb12MW'],
+                             y1['turb15MW']+y2['turb15MW']+y4['turb15MW'],
+                             y1['turb18MW']+y2['turb18MW']+y4['turb18MW']],
+                    'colors': [colors_list['12MW'], colors_list['15MW'], colors_list['18MW']],
+                    'names': [ '12MW', '15MW','18MW'],
+                    'ylabel': 'Number of turbines',
+                    'y2label': 'number of turbines',
+                    'y1max': y1max_turbines,
+                    'y2max': y2max_turbines
+                    },
         'Foundations': {
-            'data': [y1['monopiles'], y1['jacket'], y1['gbf'], y2['semi']],
+            'data': [y1['monopiles'], y1['jacket'], y1['gbf'], y2['semi']+y4['semi']],
             'colors': [colors_list['monopiles'], colors_list['jackets'], colors_list['gbfs'], colors_list['semis']],
             'names': ['Monopiles', 'Jackets', 'GBFs', 'Semisubmersibles'],
             'ylabel': 'Number of foundations',
+            'y2label': 'number of foundations',
             'y1max': y1max_foundations,
             'y2max': y2max_foundations
         },
         'Cables': {
-            'data': [y1['array'], y1['export'], y2['array'], y2['export']],
-            'colors': [colors_list['static_array'], colors_list['static_export'], colors_list['dynamic_array'],
-                       colors_list['dynamic_export']],
+            'data': [y1['array'], y1['export'], y2['array']+y4['array'], y2['export']+y4['export']],
+            'colors': [colors_list['static_array'], colors_list['static_export'], colors_list['dynamic_array'], colors_list['dynamic_export']],
             'names': ['Static array cables', 'Static export cables', 'Dynamic array cables', 'Dynamic export cables'],
             'ylabel': 'Length of cable, km',
+            'y2label': 'length of cable, km',
             'y1max': y1max_cables,
             'y2max': y2max_cables
         },
         'Vessels': {
-            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv'], y1['sov']+y2['sov'],y1['ctv']+y2['ctv'],
-                          y2['tugs'], y2['ahts']],
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv']+y4['clv'],
+                     y1['sov']+y2['sov']+y4['sov'], y1['ctv']+y2['ctv']+y4['ctv'],
+                          y2['tugs']+y4['tugs'], y2['ahts']+y4['ahts']],
             'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['sov'],
                        colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
             'names': ['WTIV', 'Feeder barge', 'CLV', 'SOV', 'CTV', 'Tugboats','AHTS'],
             'ylabel': 'Number of vessels',
-            'y1max': y1max_vessels
+            'y1max': y1max_vessels,
         }
     }
 
@@ -373,6 +290,62 @@ if __name__ == '__main__':
                                       myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
                                       y1max=v['y1max'], y2max=v['y2max'])
 
+        # 100% monopiles
+        y1 = pipeline['ALL-MONO']
+        y2 = pipeline['WC-known']
+        y4 = pipeline['FLOAT-EX']
+        component_plots = {
+            'Turbines': {
+                    'data': [y1['turb12MW']+y2['turb12MW']+y4['turb12MW'],
+                             y1['turb15MW']+y2['turb15MW']+y4['turb15MW'],
+                             y1['turb18MW']+y2['turb18MW']+y4['turb18MW']],
+                    'colors': [colors_list['12MW'], colors_list['15MW'], colors_list['18MW']],
+                    'names': [ '12MW', '15MW','18MW'],
+                    'ylabel': 'Number of turbines',
+                    'y2label': 'number of turbines',
+                    'y1max': y1max_turbines,
+                    'y2max': y2max_turbines
+                    },
+            'Foundations': {
+                'data': [y1['monopiles'],  y2['semi']+y4['semi']],
+                'colors': [colors_list['monopiles'], colors_list['semis']],
+                'names': ['Monopiles',  'Semisubmersibles'],
+                'ylabel': 'Number of foundations',
+                'y1max': y1max_foundations,
+                'y2max': y2max_foundations
+            },
+            'Cables': {
+                'data': [y1['array'], y1['export'], y2['array']+y4['array'], y2['export']+y4['export']],
+                'colors': [colors_list['static_array'], colors_list['static_export'], colors_list['dynamic_array'], colors_list['dynamic_export']],
+                'names': ['Static array cables', 'Static export cables', 'Dynamic array cables', 'Dynamic export cables'],
+                'ylabel': 'Length of cable, km',
+                'y2label': 'length of cable, km',
+                'y1max': y1max_cables,
+                'y2max': y2max_cables
+        },
+            'Vessels': {
+            'data': [y1['wtiv'], y1['barge'], y1['clv']+y2['clv']+y3['clv']+y4['clv'],
+                     y1['sov']+y2['sov']+y4['sov'], y1['ctv']+y2['ctv']+y4['ctv'],
+                          y2['tugs']+y4['tugs'], y2['ahts']+y4['ahts']],
+            'colors': [colors_list['wtiv'], colors_list['barge'], colors_list['clv'], colors_list['sov'],
+                       colors_list['ctv'], colors_list['tugs'], colors_list['ahts']],
+            'names': ['WTIV', 'Feeder barge', 'CLV', 'SOV', 'CTV', 'Tugboats','AHTS'],
+            'ylabel': 'Number of vessels',
+            'y1max': y1max_vessels,
+        }
+        }
+
+        for k, v in component_plots.items():
+            plot_name = 'Figs/allmono_component_' + k
+            if 'Vessel' in k:
+                pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                          myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                          cumulative_line=False, y1max=v['y1max'])
+            else:
+                pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
+                                          myylabel=v['ylabel'], myy2label='Cumulative ' + v['ylabel'],
+                                          y1max=v['y1max'], y2max=v['y2max'])
+
     ## Berths and laydown area
     # y_EC_berth = pipeline['EC-known']
     # y_WC_berth = pipeline['WC-known']
@@ -384,7 +357,8 @@ if __name__ == '__main__':
     names_berths = ['Fixed bottom', 'Floating']
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_berths, colors_berths, names_berths), fname='Figs/berths',
-                              cumulative_line=False)
+                              myylabel='Number of berths', cumulative_line=False)
+
 
     #JEDI - Varied Scenarios graphs
 

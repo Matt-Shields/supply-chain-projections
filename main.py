@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # Baseline, including anticipated leasing scenarios
     yvals_exp2 = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
     colors_exp2 = [colors_list['fixed'], colors_list['float'],colors_list['expand_fix'], colors_list['expand_float']]
-    names_exp2 = ['Fixed bottom', 'Floating', 'Anticipated fixed bottom leasing', 'Anticipated floating leasing']
+    names_exp2 = ['Fixed-bottom existing leasing', 'Floating existing leasing', 'Fixed-bottom anticipated leasing', 'Floating anticipated leasing']
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/baseline_installedMW',
                               y1max=y1max_deploy, y2max=y2max_deploy)
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     # Existing leases only
     yvals = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW']]
     colors = [colors_list['fixed'], colors_list['float']]
-    names = ['Fixed bottom', 'Floating']
+    names = ['Fixed-bottom', 'Floating']
 
     pr.stacked_bar_cumulative(COD_years, zip(yvals, colors, names), fname='Figs/existing_installedMW',
                               y1max=y1max_deploy, y2max=y2max_deploy)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     # Significant supply chain constraints
     yvals_constr = [pipeline['EC-HIGH']['installMW'], pipeline['WC-known']['installMW'],
                     pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
-    names_constr = ['Fixed bottom (constrained)', 'Floating', 'Anticipated fixed bottom leasing', 'Anticipated floating leasing']
+    names_constr = ['Fixed-bottom existing leasing (constrained)', 'Floating existing leasing', 'Fixed-bottom anticipated leasing', 'Floating anticipated leasing']
     pr.stacked_bar_cumulative(COD_years, zip(yvals_constr, colors_exp2, names_constr), fname='Figs/constrained_installedMW_high',
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
@@ -419,7 +419,7 @@ if __name__ == '__main__':
     yvals_EC = [ECWCPipeline['Total-Expand Scenario']['25demandTot_UNC'],
                 ECWCPipeline['Total-Expand Scenario']['100demandTot_UNC']]
     pr.line_plots2(dateYrs, zip(yvals_EC, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Total_Workforce_Demand',
-                   ymax=85000, n_moving_average=3)
+                   ymax=85000, n_moving_average=3, end_i=8)
 
     ### Constrained throughput
     ECWCPipeline['Constrained'] = read_varsTot_constrained(file=JEDI_constrained_pipeline,
@@ -429,13 +429,13 @@ if __name__ == '__main__':
     yvals_EC_mod = [ECWCPipeline['Constrained']['25demandTot_LOW'],
                     ECWCPipeline['Constrained']['100demandTot_LOW']]
     pr.line_plots2(dateYrs, zip(yvals_EC_mod, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Total_Workforce_Demand_ModerateCstr',
-                   ymax=85000, n_moving_average=3)
+                   ymax=85000, n_moving_average=3, end_i=8)
 
     # Significant
     yvals_EC_sig = [ECWCPipeline['Constrained']['25demandTot_HIGH'],
                     ECWCPipeline['Constrained']['100demandTot_HIGH']]
     pr.line_plots2(dateYrs, zip(yvals_EC_sig, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Total_Workforce_Demand_SigCstr',
-                   ymax=85000, n_moving_average=3)
+                   ymax=85000, n_moving_average=3, end_i=8)
 
     ### Area plots for component demand
     # EC_jobs_LH = {}
@@ -799,11 +799,13 @@ if __name__ == '__main__':
     # Baseline
     for k, v in scenario_plots.items():
         plot_name = 'Figs/EC_UNC_JobRequirements_'+ k
-        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names'], label_tot), fname=plot_name, ymax = v['yvalmax'])
+        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names'], label_tot),
+                       fname=plot_name, ymax = v['yvalmax'], end_i=8)
     # Constrained
     for k, v in scenario_plots.items():
         plot_name = 'Figs/EC_LH_JobRequirements_'+ k
-        pr.line_plots4(dateYrs, zip(v['data_lh'], v['colors_lh'], v['lines_lh'], v['names_lh'], v['label']), fname=plot_name, ymax = v['yval_lh'])
+        pr.line_plots4(dateYrs, zip(v['data_lh'], v['colors_lh'], v['lines_lh'], v['names_lh'], v['label']),
+                       fname=plot_name, ymax = v['yval_lh'], end_i=8)
 
 
     ### Flaoting component demand plots
@@ -867,16 +869,18 @@ if __name__ == '__main__':
     }
     for k, v in scenario_plots_WC.items():
         plot_name = 'Figs/WC_UNC_JobRequirements_' + k
-        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names'], label_tot), fname=plot_name, ymax=v['yvalmax'])
+        pr.line_plots2(dateYrs, zip(v['data'], v['colors'], v['lines'], v['names'], label_tot),
+                       fname=plot_name, ymax=v['yvalmax'], start_i=3, end_i=8)
 
     ### GDP and induced jobs
     # GDP
     print('Plotting GDP and induced jobs')
     yvals_GDP = [totalGDP['Total-Expand GDP']['25GDP_tot_UNC'], totalGDP['Total-Expand GDP']['100GDP_tot_UNC']]
-    pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Total_GDP', ymax=10000)
+    pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot),
+                     fname='Figs/Total_GDP', ymax=10000, end_i=8)
     # Induced jobs
     yvals_GDP = [totalGDP['Total-Expand Induced Impacts']['25GDP_tot_UNC'],
                  totalGDP['Total-Expand Induced Impacts']['100GDP_tot_UNC']]
     pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Induced_jobs',
-                     ymax=50000, myylabel='Jobs, Full-Time Equivalents')
+                     ymax=50000, myylabel='Jobs, Full-Time Equivalents', end_i=8)
 

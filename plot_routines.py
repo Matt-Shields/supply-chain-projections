@@ -124,6 +124,15 @@ def moving_average(a, n=3):
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
 
+def print_vals(x, y, start_i, end_i, n):
+    ymax = np.max(y[start_i:end_i])
+    xmax = x[np.argmax(y[start_i:end_i])]
+    yavg = np.mean(y[start_i:end_i])
+    x0 = x[start_i]
+    x1 = x[end_i]
+    print(n, 'Max value=', ymax, 'in ', xmax, '. Avg from ', x0, ' to ', x1-1, ': ', yavg)
+
+
 def stacked_bar_cumulative(x, y_zip,
                            fname=None, fig_in=None, ax_in=None, axR_in=None,  y1max=None, y2max=None,
                            width=None, order=1, single=True, cumulative_line=True,
@@ -331,7 +340,7 @@ def area_plots(x, y_zip, fname, myylabel, myxlabel='Year'):
     return ax
 
 def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year',
-                n_moving_average=3):
+                n_moving_average=3, start_i=0, end_i=-1):
     fig, ax = initFigAxis()
 
     y_fill = []
@@ -340,8 +349,9 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
         # if n_moving_average:
         x_avg = x[n_moving_average-1:]
         y_avg = moving_average(y, n_moving_average)
-        _leg = str(n_moving_average)+' year moving average for ' + lbl + ' domestic content'
+        _leg = str(n_moving_average)+'-year moving average for ' + lbl + ' domestic content'
         ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
+        print_vals(x_avg, y_avg, start_i, end_i, fname)
         y_fill.append(y_avg)
 
     ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
@@ -369,7 +379,7 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
     return ax
 
 def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalents', myxlabel='Year',
-                n_moving_average=3):
+                n_moving_average=3, start_i=0, end_i=-1):
     fig1, ax1 = initFigAxis()
     fig2, ax2 = initFigAxis()
 
@@ -380,16 +390,18 @@ def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalent
     for y, c, l, n, lbl in y_zip:
         if 'Moderate' in n:
             y_avg1 = moving_average(y, n_moving_average)
-            _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+            _leg = str(n_moving_average) + '-year moving average for ' + lbl + ' domestic content'
             ax1.plot(x_avg, y_avg1, color=c, linestyle=l, label=_leg)
             y_fill1.append(y_avg1)
             fname1 = fname+'Moderate'
+            print_vals(x_avg, y_avg1, start_i, end_i, fname1)
         elif 'Significant' in n:
             y_avg2= moving_average(y, n_moving_average)
-            _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+            _leg = str(n_moving_average) + '-year moving average for ' + lbl + ' domestic content'
             ax2.plot(x_avg, y_avg2, color=c, linestyle=l, label=_leg)
             y_fill2.append(y_avg2)
             fname2 = fname+'Significant'
+            print_vals(x_avg, y_avg2, start_i, end_i, fname2)
 
     ax1.fill_between(x_avg, y_fill1[0], y_fill1[1], color='tab:gray', alpha=0.5, linewidth=0)
     ax2.fill_between(x_avg, y_fill2[0], y_fill2[1], color='tab:gray', alpha=0.5, linewidth=0)
@@ -420,16 +432,17 @@ def line_plots4(x, y_zip, fname, ymax=None, myylabel='Jobs, Full-Time Equivalent
     return ax1, ax2
 
 def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', myxlabel='Year',
-                  n_moving_average=3):
+                  n_moving_average=3, start_i = 0, end_i = -1):
     fig, ax = initFigAxis()
 
     y_fill=[]
     for y, c, l, n, lbl in y_zip:
         x_avg = x[n_moving_average - 1:]
         y_avg = moving_average(y, n_moving_average)
-        _leg = str(n_moving_average) + ' year moving average for ' + lbl + ' domestic content'
+        _leg = str(n_moving_average) + '-year moving average for ' + lbl + ' domestic content'
         ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
         y_fill.append(y_avg)
+        print_vals(x_avg, y_avg, start_i, end_i, fname)
 
     ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
 

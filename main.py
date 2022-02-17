@@ -384,7 +384,7 @@ if __name__ == '__main__':
 
     JEDI_pipeline = 'Total-Expand_Jobs and EC-UNC-Feb22.xlsx' # Define input spreadsheet - total jobs + fixed bottom component jobs
     JEDI_floating_pipeline = 'WC-UNC-Feb22.xlsx' # floating component jobs
-    JEDI_constrained_pipeline = 'EC-UNC Constraints.xlsx' # Constrained East Coast deployment
+    JEDI_constrained_pipeline = 'EC-Constraints-Feb22.xlsx' # Constrained East Coast deployment
     JEDI_GDP_induced = 'Total-Expand_GDP and Induced Impacts-Feb22.xlsx' # GDP and induced jobs for baseline
 
     scenarios_JEDI = ['Total-Expand Scenario', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',

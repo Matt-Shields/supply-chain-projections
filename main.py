@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # Define input spreadsheet
-    DNV_gantt = 'US OSW EC-WC Pipeline Gantt Charts 20220119.xlsm'
+    DNV_gantt = 'US OSW EC-WC Pipeline Gantt Charts 20220208.xlsm'
     # Define scenarios to plot
     scenarios = ['EC-known', 'WC-known', 'EC-HIGH', 'EC-LOW', 'GBF-UNC', 'ALL-MONO', 'FIX-EX','FLOAT-EX']
     # Define date range
@@ -28,14 +28,14 @@ if __name__ == '__main__':
     ######### GENERATE PLOTS
     ### Annual deployment + cumulative line
     y1max_deploy = 10000
-    y2max_deploy = 60000
-    y1max_turbines = 450
-    y2max_turbines = 3500
-    y1max_foundations = 450
-    y2max_foundations = 3500
-    y1max_cables = 2500
-    y2max_cables = 20000
-    y1max_vessels = 140
+    y2max_deploy = 70000
+    y1max_turbines = 500
+    y2max_turbines = 4000
+    y1max_foundations = 500
+    y2max_foundations = 4000
+    y1max_cables = 3500
+    y2max_cables = 25000
+    y1max_vessels = 160
 
     # Baseline, including anticipated leasing scenarios
     yvals_exp2 = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW'], pipeline['FIX-EX']['installMW'], pipeline['FLOAT-EX']['installMW']]
@@ -382,10 +382,10 @@ if __name__ == '__main__':
 
     #JEDI - Varied Scenarios graphs
 
-    JEDI_pipeline = 'Total-Expand_Jobs and EC-UNC.xlsx' # Define input spreadsheet - total jobs + fixed bottom component jobs
-    JEDI_floating_pipeline = 'WC-UNC.xlsx' # floating component jobs
+    JEDI_pipeline = 'Total-Expand_Jobs and EC-UNC-Feb22.xlsx' # Define input spreadsheet - total jobs + fixed bottom component jobs
+    JEDI_floating_pipeline = 'WC-UNC-Feb22.xlsx' # floating component jobs
     JEDI_constrained_pipeline = 'EC-UNC Constraints.xlsx' # Constrained East Coast deployment
-    JEDI_GDP_induced = 'Total-Expand_GDP and Induced Impacts.xlsx' # GDP and induced jobs for baseline
+    JEDI_GDP_induced = 'Total-Expand_GDP and Induced Impacts-Feb22.xlsx' # GDP and induced jobs for baseline
 
     scenarios_JEDI = ['Total-Expand Scenario', 'Nacelle', 'Rotor Blades', 'Towers', 'Monopiles', 'Transition Piece',
                       'Jacket (For Turbine)', 'GBF', 'Jacket (For Substation)', 'Substation (Topside)', 'Array Cable',
@@ -752,8 +752,8 @@ if __name__ == '__main__':
             'label': ['25%', '100%', '25%', '100%'],
             'lines25': ['dashed'],
             'lines100':['solid'],
-            'yvalmax': 65,
-            'yval_lh': 65
+            'yvalmax': 200,
+            'yval_lh': 200
         },
         'Array Cable': {
             'data': [p10['25domEC_UNC'], p10['100domEC_UNC']],
@@ -815,56 +815,56 @@ if __name__ == '__main__':
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 14000
+            'yvalmax': 20000
         },
         'Rotor Blades': {
             'data': [p2_fl['25domWC_UNC'], p2_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 2500
+            'yvalmax': 4000
         },
         'Towers': {
             'data': [p3_fl['25domWC_UNC'], p3_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 3500
+            'yvalmax': 5000
         },
         'Floating (turbine)': {
             'data': [p4_fl['25domWC_UNC'], p4_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 25000
+            'yvalmax': 35000
         },
         'Floating (floating OSS)': {
             'data': [p5_fl['25domWC_UNC'], p5_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 700
+            'yvalmax': 1200
         },
         'Floating OSS Topside': {
             'data': [p6_fl['25domWC_UNC'], p6_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 25
+            'yvalmax': 140
         },
         'Array Cable': {
             'data': [p7_fl['25domWC_UNC'], p7_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 1200
+            'yvalmax': 1800
         },
         'Export Cable': {
             'data': [p8_fl['25domWC_UNC'], p8_fl['100domWC_UNC']],
             'colors': [colors_list['ctv'], colors_list['tugs']],
             'names': ['25% Domestic Content, Baseline Scenario', '100% Domestic Content, Baseline Scenario'],
             'lines': ['dashed', 'solid'],
-            'yvalmax': 2000
+            'yvalmax': 3500
         }
     }
     for k, v in scenario_plots_WC.items():
@@ -877,10 +877,10 @@ if __name__ == '__main__':
     print('Plotting GDP and induced jobs')
     yvals_GDP = [totalGDP['Total-Expand GDP']['25GDP_tot_UNC'], totalGDP['Total-Expand GDP']['100GDP_tot_UNC']]
     pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot),
-                     fname='Figs/Total_GDP', ymax=10000, end_i=8)
+                     fname='Figs/Total_GDP', ymax=12000, end_i=8)
     # Induced jobs
     yvals_GDP = [totalGDP['Total-Expand Induced Impacts']['25GDP_tot_UNC'],
                  totalGDP['Total-Expand Induced Impacts']['100GDP_tot_UNC']]
     pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Induced_jobs',
-                     ymax=50000, myylabel='Jobs, Full-Time Equivalents', end_i=8)
+                     ymax=70000, myylabel='Jobs, Full-Time Equivalents', end_i=8)
 

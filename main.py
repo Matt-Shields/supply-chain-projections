@@ -116,6 +116,25 @@ if __name__ == '__main__':
         }
     }
 
+    df_out = {'COD': COD_years,
+        'Turbine':y1['turb12MW']+y2['turb12MW']+y3['turb12MW']+y4['turb12MW']+
+             y1['turb15MW']+y2['turb15MW']+y3['turb15MW']+y4['turb15MW']+
+             y1['turb18MW']+y2['turb18MW']+y3['turb18MW']+y4['turb18MW'],
+        'Monopile': y1['monopiles']+y3['monopiles'],
+        'Jacket':  y1['jacket']+y3['jacket'],
+        'GBF': y1['gbf']+y3['gbf'],
+        'Semisub': y2['semi']+y4['semi'],
+        'Array cable': y1['array']+y3['array'] + y2['array']+y4['array'],
+        'Export cable': y1['export']+y3['export'] + y2['export']+y4['export'],
+        'WTIV': y1['wtiv']+y3['wtiv']
+        }
+    df_out['Blade'] = df_out['Turbine'] * 3
+    df_out['Nacelle'] = df_out['Turbine']
+    df_out['Tower'] = df_out['Turbine']
+    df_out['Transition piece'] = df_out['Monopile']
+    pd.DataFrame(df_out).to_csv('Figs/total_demand.csv', index=False)
+
+
     for k, v in component_plots.items():
         plot_name = 'Figs/baseline_component_' + k
         if 'Vessel' in k:
@@ -883,4 +902,3 @@ if __name__ == '__main__':
                  totalGDP['Total-Expand Induced Impacts']['100GDP_tot_UNC']]
     pr.line_plotsGDP(dateYrs, zip(yvals_GDP, colors_tot, lines_tot, names_tot, label_tot), fname='Figs/Induced_jobs',
                      ymax=70000, myylabel='Jobs, Full-Time Equivalents', end_i=8)
-

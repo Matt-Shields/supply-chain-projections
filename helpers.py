@@ -176,8 +176,37 @@ colors_list = {
     'jackt_t':'navy',
     'subt':'indigo',
     'berths':'navy',
+}
 
-
+hatch_list = {
+    # 'fixed': '#0B5E90',
+    # 'float': '#00A4E4',
+    # 'expand_fix': '#3D6321',
+    # 'expand_float': '#5D9732',
+    'wtiv':'.O',
+    'barge': '+',
+    'clv': '-',
+    'ctv': '+',
+    'tugs': '+',
+    'ahts': '+',
+    'sov': '+',
+    '12MW': '+',
+    '15MW': '+',
+    '18MW': '+',
+    'static_array': 'x',
+    'static_export': 'o',
+    'dynamic_array': '.',
+    'dynamic_export': '*',
+    'monopiles': '/',
+    'jackets': '\\',
+    'gbfs': '+',
+    'semis': '.',
+    # 'rotors':'firebrick',
+    # 'towers':'rebeccapurple',
+    # 'transp': 'darkorange',
+    # 'jackt_t':'navy',
+    # 'subt':'indigo',
+    # 'berths':'navy',
 }
 
 def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indices_EC, ind_WC=DNV_indices_WC):

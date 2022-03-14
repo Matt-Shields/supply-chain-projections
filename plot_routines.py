@@ -144,19 +144,19 @@ def stacked_bar_cumulative(x, y_zip,
     else:
         fig, axL = initFigAxis()
     data_num = 0
-    for y, c, n in y_zip:
+    for y, c, n, h in y_zip:
         if data_num == 0:
             try:
-                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n)
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', hatch=h, label=n)
             except TypeError:
                 # Width not defined
-                axL.bar(x, y, color=c, edgecolor='k', label=n)
+                axL.bar(x, y, color=c, edgecolor='k', hatch=h,label=n)
             y_total = np.copy(y)
         else:
             try:
-                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', label=n, bottom=y_total)
+                axL.bar(x - order*width/2, y, width=width, color=c, edgecolor='k', hatch=h, label=n, bottom=y_total)
             except TypeError:
-                axL.bar(x, y,  color=c, edgecolor='k', label=n, bottom=y_total)
+                axL.bar(x, y,  color=c, edgecolor='k', hatch=h, label=n, bottom=y_total)
             y_total += y
         data_num+=1
     if y1max:

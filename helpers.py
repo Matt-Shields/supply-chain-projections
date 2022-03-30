@@ -45,6 +45,7 @@ DNV_indices_EC = {
     'berths': 54,
     'laydown': 55,
     '2022col': 2,
+    'oss': 25
 }
 
 DNV_indices_WC = {
@@ -66,6 +67,7 @@ DNV_indices_WC = {
     'berths': 46,
     'laydown': 47,
     '2022col': 2,
+    'oss': 25
 }
 
 Jobs_indices = { #east coast job indicies
@@ -191,6 +193,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
     _turb18MW = df.iloc[ind['turb18MW'], ind['2022col']:ind['2022col'] + len(xrange)].to_numpy()
     _wtiv = df.iloc[ind['wtiv'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
     _barge = df.iloc[ind['barge'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy() ##TODO: probably going to need a separate call for the different berths
+    _oss = df.iloc[ind['oss'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
 
     if 'WC' in sheet or 'FLOAT' in sheet:
         # Floating
@@ -203,7 +206,8 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
         _ahts = df.iloc[ind_WC['ahts'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _ctv = df.iloc[ind_WC['ctv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _clv = df.iloc[ind_WC['clv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
-        _sov = df.iloc[ind_WC['sov'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
+        _sov = df.iloc[ind_WC['sov'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy(),
+        _oss = df.iloc[ind['oss'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
         #
         _out = {
                 'installMW': _installMW,
@@ -222,6 +226,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'ctv': _ctv,
                 'clv': _clv,
                 'sov': _sov,
+                'oss': _oss
                 # 'berths': _berths,
             }
     else:
@@ -254,7 +259,8 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
                 'barge': _barge,
                 'ctv': _ctv,
                 'clv': _clv,
-                'sov': _sov
+                'sov': _sov,
+                'oss': _oss
                 #'berths': _berths,
             }
 

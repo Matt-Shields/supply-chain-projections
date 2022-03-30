@@ -123,7 +123,8 @@ if __name__ == '__main__':
         'Monopile': y1['monopiles']+y3['monopiles'],
         'Jacket':  y1['jacket']+y3['jacket'],
         'GBF': y1['gbf']+y3['gbf'],
-        'Semisub': y2['semi']+y4['semi'],
+        'Semisubmersibles': y2['semi']+y4['semi'],
+        'Offshore Substations': y1['oss'] + y2['oss'] + y3['oss'] + y4['oss'],
         'Array cable': y1['array']+y3['array'] + y2['array']+y4['array'],
         'Export cable': y1['export']+y3['export'] + y2['export']+y4['export'],
         'WTIV': y1['wtiv']+y3['wtiv']
@@ -138,12 +139,10 @@ if __name__ == '__main__':
     for k, v in component_plots.items():
         plot_name = 'Figs/baseline_component_' + k
         if 'Vessel' in k:
-            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                      myylabel=v['ylabel'],
-                                      cumulative_line=False, y1max=v['y1max'])
+            # TODO: bug in vessel plots
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, y1max=v['y1max'], cumulative_line=False,                                    myylabel=v['ylabel'] )
         else:
-            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,
-                                      myylabel=v['ylabel'], myy2label='Cumulative ' + v['y2label'],
+            pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,                                     myylabel=v['ylabel'], myy2label='Cumulative ' + v['y2label'],
                                       y1max=v['y1max'], y2max=v['y2max'])
 
 

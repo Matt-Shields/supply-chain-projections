@@ -123,8 +123,8 @@ if __name__ == '__main__':
         'Monopile': y1['monopiles']+y3['monopiles'],
         'Jacket':  y1['jacket']+y3['jacket'],
         'GBF': y1['gbf']+y3['gbf'],
-        'Semisubmersibles': y2['semi']+y4['semi'],
-        'Offshore Substations': y1['oss'] + y2['oss'] + y3['oss'] + y4['oss'],
+        'Semisubmersible': y2['semi']+y4['semi'],
+        'Offshore Substation': y1['oss'] + y2['oss'] + y3['oss'] + y4['oss'],
         'Array cable': y1['array']+y3['array'] + y2['array']+y4['array'],
         'Export cable': y1['export']+y3['export'] + y2['export']+y4['export'],
         'WTIV': y1['wtiv']+y3['wtiv']
@@ -135,11 +135,9 @@ if __name__ == '__main__':
     df_out['Transition piece'] = df_out['Monopile']
     pd.DataFrame(df_out).to_csv('Figs/total_demand.csv', index=False)
 
-
     for k, v in component_plots.items():
         plot_name = 'Figs/baseline_component_' + k
         if 'Vessel' in k:
-            # TODO: bug in vessel plots
             pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name, y1max=v['y1max'], cumulative_line=False,                                    myylabel=v['ylabel'] )
         else:
             pr.stacked_bar_cumulative(COD_years, zip(v['data'], v['colors'], v['names']), fname=plot_name,                                     myylabel=v['ylabel'], myy2label='Cumulative ' + v['y2label'],

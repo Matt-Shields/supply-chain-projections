@@ -344,15 +344,25 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
     fig, ax = initFigAxis()
 
     y_fill = []
+    df_out = pd.DataFrame()
+    x_avg = x[n_moving_average-1:]
+    df_out['COD'] = x_avg
+    minmax = 0
     for y, c, l, n, lbl in y_zip:
         # ax.scatter(x, y, color=c, linestyle=l, marker=m, label=n)
         # if n_moving_average:
-        x_avg = x[n_moving_average-1:]
+        # x_avg = x[n_moving_average-1:]
         y_avg = moving_average(y, n_moving_average)
         _leg = str(n_moving_average)+'-year moving average for ' + lbl + ' domestic content'
         ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
         print_vals(x_avg, y_avg, start_i, end_i, fname)
         y_fill.append(y_avg)
+        if minmax==0:
+            df_out['Min jobs'] = y_avg
+        else:
+            df_out['Max jobs'] = y_avg
+        minmax+=1
+
 
     ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
 
@@ -375,6 +385,9 @@ def line_plots2(x, y_zip, fname, ymax=None, title=None, myylabel='Jobs, Full-Tim
         myformat(ax)
         mysave(fig, fname)
         plt.close()
+
+    jobs_out = 'job_averages/'+fname.split('/')[1]+'.csv'
+    df_out.to_csv(jobs_out, index=False)
 
     return ax
 
@@ -436,6 +449,10 @@ def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', 
     fig, ax = initFigAxis()
 
     y_fill=[]
+    df_out = pd.DataFrame()
+    x_avg = x[n_moving_average-1:]
+    df_out['COD'] = x_avg
+    minmax = 0
     for y, c, l, n, lbl in y_zip:
         x_avg = x[n_moving_average - 1:]
         y_avg = moving_average(y, n_moving_average)
@@ -443,6 +460,11 @@ def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', 
         ax.plot(x_avg, y_avg, color=c, linestyle=l, label=_leg)
         y_fill.append(y_avg)
         print_vals(x_avg, y_avg, start_i, end_i, fname)
+        if minmax==0:
+            df_out['Min jobs'] = y_avg
+        else:
+            df_out['Max jobs'] = y_avg
+        minmax+=1
 
     ax.fill_between(x_avg, y_fill[0], y_fill[1], alpha=0.5, linewidth=0)
 
@@ -466,6 +488,9 @@ def line_plotsGDP(x, y_zip, fname, ymax=None, title=None, myylabel='$ Million', 
         mysave(fig, fname)
         plt.close()
 
+    jobs_out = 'job_averages/'+fname.split('/')[1]+'.csv'
+    df_out.to_csv(jobs_out, index=False)
+    
     return ax
 
 def area_plotsv2(x, y_zip, fname, ymax = None, title='100% Domestic Content, Baseline Scenario', myylabel='Jobs, Full Time Equivalents', myxlabel='Year'):

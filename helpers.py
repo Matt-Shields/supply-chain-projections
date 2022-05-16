@@ -206,7 +206,7 @@ def read_vars(file, sheet, xrange, header=81, cols='B:Q', rows=59, ind=DNV_indic
         _ahts = df.iloc[ind_WC['ahts'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _ctv = df.iloc[ind_WC['ctv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _clv = df.iloc[ind_WC['clv'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
-        _sov = df.iloc[ind_WC['sov'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy(),
+        _sov = df.iloc[ind_WC['sov'], ind_WC['2022col']:ind_WC['2022col'] + len(xrange)].to_numpy()
         _oss = df.iloc[ind['oss'], ind['2022col']:ind['2022col']+len(xrange)].to_numpy()
         #
         _out = {

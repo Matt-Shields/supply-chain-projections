@@ -45,6 +45,17 @@ if __name__ == '__main__':
     pr.stacked_bar_cumulative(COD_years, zip(yvals_exp2, colors_exp2, names_exp2), fname='Figs/baseline_installedMW',
                               y1max=y1max_deploy, y2max=y2max_deploy)
 
+    # WRite out CSV
+    ec = pipeline['EC-known']['installMW']
+    wc = pipeline['WC-known']['installMW']
+    fix = pipeline['FIX-EX']['installMW']
+    flt = pipeline['FLOAT-EX']['installMW']
+    _total_deploy = [e+w+x+l for e,w,x,l in zip(ec, wc, fix, flt)]
+
+    df_deploy = pd.DataFrame({'COD': COD_years,
+                            'Annual deployment, MW': _total_deploy,
+                            'Cumulative deployment, MW': np.cumsum(_total_deploy)})
+    pd.DataFrame(df_deploy).to_csv('Figs/total_deployment.csv', index=False)
     # Existing leases only
     yvals = [pipeline['EC-known']['installMW'], pipeline['WC-known']['installMW']]
     colors = [colors_list['fixed'], colors_list['float']]
